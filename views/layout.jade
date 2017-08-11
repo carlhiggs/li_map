@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    // using leaflet 1.1.0 (current 27 June 2017)
+    link(rel='stylesheet', href='/stylesheets/leaflet.css')
+    link(rel='stylesheet', href='/stylesheets/Control.MiniMap.min.css')
+    link(rel='stylesheet', href='/stylesheets/leaflet.fullscreen.css')
+    link(rel='stylesheet', href='/stylesheets/leaflet-sidebar.css')
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css')
+    script(src='javascripts/leaflet.js')
+    script(src='/javascripts/Control.MiniMap.min.js')
+    script(src='/javascripts/Leaflet.fullscreen.min.js')
+    script(src='/javascripts/leaflet-sidebar.js')
+    script(src='/javascripts/bundle.js')
+  body
+    block content

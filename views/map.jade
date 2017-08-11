@@ -1,0 +1,162 @@
+extends layout
+block content
+    #sidebar.sidebar.collapsed
+        // Nav tabs
+        .sidebar-tabs
+            ul(role='tablist')
+                li
+                    a(href='#home', role='tab')
+                        i.fa.fa-home
+                  li
+                    a(href='#measures', role='tab')
+                        i.fa.fa-bar-chart-o
+            ul(role='tablist')
+                li
+                    a(href='#messages', role='tab')
+                        i.fa.fa-envelope
+        // Tab panes
+        .sidebar-content
+            #home.sidebar-pane
+                h1.sidebar-header Pilot Melbourne Liveability Index
+                    span.sidebar-close
+                        i.fa.fa-caret-left
+                span(style='font-style:italic') A policy relevant composite indicator of urban liveability, based on a socio-ecological model of health and wellbeing.
+            #measures.sidebar-pane
+                h1.sidebar-header Indicators
+                    span.sidebar-close
+                        i.fa.fa-caret-left
+            #messages.sidebar-pane
+                h1.sidebar-header Contact
+                    span.sidebar-close
+                        i.fa.fa-caret-left
+    #map.sidebar-map
+    script.
+        var myData = !{JSON.stringify(jsonData)};
+        // Create variable to hold map element, give initial settings to map
+        var map = L.map('map',{ center: [-37.8078244,144.9625175], zoom: 12});
+        
+        // Add CartoDB.Positron tile layer to map element
+        var bmap = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+        var bmap_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+        L.tileLayer(bmap, { attribution: bmap_attrib}).addTo(map);
+        
+        // control that shows state info on hover
+        var info = L.control();
+        
+        info.onAdd = function (map) {
+        	this._div = L.DomUtil.create('div', 'info');
+        	this.update();
+        	return this._div;
+        };
+        
+        info.update = function (props) {
+        	this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011) </h4>' +  (props ?
+        		'<table width="400"><col width="280"><col width="120"><tbody><tr><td><b>SA1</b></td><td>' + props.f1 +                  '</td></tr><tr><td><b>Suburb</b></td><td>' + props.f2 +                  '</td></tr><tr><td><b>LGA</b></td><td>' + props.f3 +                 '</td></tr><tr><td><b></b></td><td>' +                                  '</td></tr><tr><td><b>Indicator</b></td><td align="center"><b>Decile</b>' +                 '</td></tr><tr><td><b>Liveability</b></td><td align="center">' + props.f4 +                 '</td></tr><tr><td><b>Walkability Index</b></td><td align="center">' + props.f5 +                  '</td></tr><tr><td><b>Social infrastructure (/16)</b></td><td align="center">' + props.f6 +                  '</td></tr><tr><td><b>PT access meets policy (%)</b></td><td align="center">' + props.f7 +                 '</td></tr><tr><td><b>POS &ge; 1.5Ha within 400m (%)</b></td><td align="center">' + props.f8 +                 '</td></tr><tr><td><b>Air quality (rev. Mesh Block NO&#x2082; ppb.)</b></td><td align="center">' + props.f9 + '</td></tr><tr><td><b>Affordable housing (30/40 rule, SA1 %)</b></td><td align="center">' + props.f10 + '</td></tr><tr><td><b>Live & work w/in SA3 (SA2 %)</b></td><td align="center">' + props.f11 + '</td></tr></tbody></table>'
+        		: 'Hover over a region');
+        };
+        
+        info.addTo(map);
+        
+        
+        // get color depending on population density value
+        function getColor(d) {
+        	return  d > 9 ? '#081D58':
+        			d > 8 ? '#22318D':
+        			d > 7 ? '#2455A4':
+        			d > 6 ? '#2280B8':
+        			d > 5 ? '#34A5C2':
+        			d > 4 ? '#61C0C0':
+        			d > 3 ? '#99D6B9':
+                    d > 2 ? '#D0ECB3':
+                    d > 1 ? '#EFF9B5':
+                    d > 0 ? '#FFFFD9':
+        					'#f7f7f7';
+        }
+
+        function style(feature) {
+        	return {
+        		weight: 1,
+        		color: 'white',
+        		fillOpacity: 0.7,
+        		fillColor: getColor(feature.properties.f4)
+        	};
+        }
+        
+        function highlightFeature(e) {
+        	var layer = e.target;
+        
+        	layer.setStyle({
+        		weight: 5,
+        		color: '#666',
+        		dashArray: '',
+        		fillOpacity: 0.7
+        	});
+        
+        	if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        		layer.bringToFront();
+        	}
+        
+        	info.update(layer.feature.properties);
+        }
+        
+        var geojson;
+        
+        function resetHighlight(e) {
+        	geojson.resetStyle(e.target);
+        	info.update();
+        }
+        
+        function zoomToFeature(e) {
+        	map.fitBounds(e.target.getBounds());
+        }
+        
+        function onEachFeature(feature, layer) {
+        	layer.on({
+        		mouseover: highlightFeature,
+        		mouseout: resetHighlight,
+        		click: zoomToFeature
+        	});
+        }
+        
+        geojson = L.geoJson(myData, {
+        	style: style,
+        	onEachFeature: onEachFeature
+        }).addTo(map);
+        
+        map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>');
+        
+        var bmap2 = new L.TileLayer(bmap, {minZoom: 0, maxZoom: 13, attribution: bmap_attrib});
+        var miniMap = new L.Control.MiniMap(bmap2).addTo(map);    
+        
+        var legend = L.control({position: 'bottomright'});
+        
+        legend.onAdd = function (map) {
+        	var div = L.DomUtil.create('div', 'info legend'),
+        		deciles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                labels = [],
+                decile;
+            for (var i = 0; i < deciles.length; i++) {
+                decile = deciles[i];
+                labels.push('<i style="background:' + getColor(decile + 1) + '"></i> ' + decile);
+            }
+            div.innerHTML = labels.join('<br>');
+            return div;
+        };
+        
+        legend.addTo(map);
+        // add scale bar
+        L.control.scale().addTo(map);
+        // add full screen toggle
+        map.addControl(new L.Control.Fullscreen());
+        var sidebar = L.control.sidebar('sidebar').addTo(map);
+        var printer = L.easyPrint({
+         	tileLayer: tiles,
+         	sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
+         	filename: 'myMap',
+         	exportOnly: true,
+         	hideControlContainer: true
+        }).addTo(map);
+        
+        function manualPrint () {
+        	printer.printMap('CurrentSize', 'MyManualPrint')
+        }
