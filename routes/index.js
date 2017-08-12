@@ -25,7 +25,7 @@ var client = new pg.Client({
 
 
 // Set up your database query to display GeoJSON
-var li_query = "SELECT row_to_json(fc) FROM (SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features  FROM (SELECT 'Feature' As type, ST_AsGeoJSON(ST_Transform(lg.geom,4326))::json As geometry, row_to_json((sa1_7dig11,suburb,lga,li_ci_est,walkability,si_mix,dest_pt,pos15000_access,pred_no2_2011_col_ppb,sa1_prop_affordablehousing,sa2_prop_live_work_sa3)) As properties FROM (SELECT t1.*,suburb,lga,t3.geom FROM li_deciles_hard_sa1_7dig11 AS t1 LEFT JOIN sa1_area AS t2 ON t1.sa1_7dig11 = t2.sa1_7dig11 LEFT JOIN sa1_2011_AUST AS t3 ON t1.sa1_7dig11 = t3.sa1_7dig11::integer LIMIT 10) As lg) As f) As fc";
+var li_query = "SELECT row_to_json(fc) FROM (SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features  FROM (SELECT 'Feature' As type, ST_AsGeoJSON(ST_Transform(lg.geom,4326))::json As geometry, row_to_json((sa1_7dig11,suburb,lga,li_ci_est,walkability,si_mix,dest_pt,pos15000_access,pred_no2_2011_col_ppb,sa1_prop_affordablehousing,sa2_prop_live_work_sa3)) As properties FROM (SELECT t1.*,suburb,lga,t3.geom FROM li_deciles_hard_sa1_7dig11 AS t1 LEFT JOIN sa1_area AS t2 ON t1.sa1_7dig11 = t2.sa1_7dig11 LEFT JOIN sa1_2011_AUST AS t3 ON t1.sa1_7dig11 = t3.sa1_7dig11::integer) As lg) As f) As fc";
 
 
 /* GET home page. */
