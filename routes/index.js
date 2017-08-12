@@ -1,6 +1,8 @@
 var express = require('express'); // require Express
 var router = express.Router(); // setup usage of the Express router engine
+// var template = require('jade').compileFile(__dirname + '/../views/index.jade')
 
+ 
 /* PostgreSQL and PostGIS module and connection setup */
 var pg = require("pg"); // require Postgres module
 
@@ -29,6 +31,12 @@ var li_query = "SELECT row_to_json(fc) FROM (SELECT 'FeatureCollection' As type,
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Pilot Liveability Index' });
+  // try {
+    // var html = template({ title: 'Pilot Liveability Index' })
+    // res.render(html)
+  // } catch (e) {
+    // next(e)
+  // }
 });
 
 module.exports = router;

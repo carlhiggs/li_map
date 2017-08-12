@@ -32,3 +32,58 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
 	cursor: pointer;
 }
 	
+.header {
+  background: url("../images/aerial_image_of_christchurch_suburbs_-_flickr_-_nz_defence_force-1800x1012.jpg");
+  background-position: center top;
+}
+.header .page-title {
+  font-weight: 100;
+  font-size: 40px;
+  text-align: center;
+  padding: 15px;
+  text-transform: capitalize;
+  color: #fff;
+  position: relative;
+  margin: 0;
+}
+
+.nav {
+  background: #000;
+  text-align: center;
+}
+.nav li {
+  display: inline-block;
+}
+.nav a {
+  display: inline-block;
+  padding: 20px;
+  color: #fff;
+  text-decoration: none;
+}
+.nav a:hover {
+  background-color: #3ab795;
+  text-decoration: underline;
+}
+.center {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+.main-content {
+  margin: 50px auto;
+  max-width: 600px;
+}
+.main-content p {
+  line-height: 1.6;
+  margin-bottom: 1.7em;
+}
+.footer {
+  margin: 50px auto;
+  max-width: 600px;
+  border-top: 1px solid #444;
+  padding: 20px 0;
+}
+.footer p {
+  color: #444;
+  font-size: 12px;
+}
