@@ -45,14 +45,14 @@ block content
         var info = L.control();
         
         info.onAdd = function (map) {
-        	this._div = L.DomUtil.create('div', 'info');
+        	this._div = L.DomUtil.create('div', 'info summarybox');
         	this.update();
         	return this._div;
         };
         
         info.update = function (props) {
-        	this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011) </h4>' +  (props ?
-        		'<table width="300"><col width="270"><col width="30"><tbody><tr><td><b>SA1: </b>' + props.f1 +'</td><td></td></tr><tr><td><b>Suburb: </b>' + props.f2 + '</td><td></td></tr><tr><td><b>LGA: </b>' + props.f3 +'</td><td></td></tr><tr><td><b></b></td><td>' +                                  '</td></tr><tr><td><b>Indicator</b></td><td align="center"><b>Decile</b>' +                 '</td></tr><tr><td><i>Liveability</i></td><td align="center">' + props.f4 +                 '</td></tr><tr><td><i>Walkability Index</i></td><td align="center">' + props.f5 +                  '</td></tr><tr><td><i>Social infrastructure (/16)</i></td><td align="center">' + props.f6 +                  '</td></tr><tr><td><i>PT access meets policy (%)</i></td><td align="center">' + props.f7 +                 '</td></tr><tr><td><i>POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">' + props.f8 +                 '</td></tr><tr><td><i>Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + props.f9 + '</td></tr><tr><td><i>Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + props.f10 + '</td></tr><tr><td><i>Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + props.f11 + '</td></tr></tbody></table>'
+        	this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4>' +  (props ?
+        		'<table width="260"><col width="230"><col width="40"><tbody><tr><td><b>SA1: </b>' + props.f1 +'</td><td></td></tr><tr><td><b>Suburb: </b>' + props.f2 + '</td><td></td></tr><tr><td><b>LGA: </b>' + props.f3 +'</td><td></td></tr><tr><td><b></b></td><td>' +                                  '</td></tr><tr><td><b>Indicator</b></td><td align="center"><b>Decile</b>' +                 '</td></tr><tr><td><i>Liveability</i></td><td align="center">' + props.f4 +                 '</td></tr><tr><td><i>Walkability Index</i></td><td align="center">' + props.f5 +                  '</td></tr><tr><td><i>Social infrastructure (/16)</i></td><td align="center">' + props.f6 +                  '</td></tr><tr><td><i>PT access meets policy (%)</i></td><td align="center">' + props.f7 +                 '</td></tr><tr><td><i>POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">' + props.f8 +                 '</td></tr><tr><td><i>Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + props.f9 + '</td></tr><tr><td><i>Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + props.f10 + '</td></tr><tr><td><i>Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + props.f11 + '</td></tr></tbody></table>'
         		: 'Hover over a region');
         };
         
@@ -111,12 +111,6 @@ block content
         	map.fitBounds(e.target.getBounds());
         }
         
-        // function popUpulate(props) {
-        	// return {
-        	  // '<table width="250"><col width="245"><col width="15"><tbody><tr><td><b>SA1: </b>' + props.f1 +'</td><td></td></tr><tr><td><b>Suburb: </b>' + props.f2 + '</td><td></td></tr><tr><td><b>LGA: </b>' + props.f3 +'</td><td></td></tr><tr><td><b></b></td><td>' +                                  '</td></tr><tr><td><b>Indicator</b></td><td align="center"><b>Decile</b>' +                 '</td></tr><tr><td><i>Liveability</i></td><td align="center">' + props.f4 +                 '</td></tr><tr><td><i>Walkability Index</i></td><td align="center">' + props.f5 +                  '</td></tr><tr><td><i>Social infrastructure (/16)</i></td><td align="center">' + props.f6 +                  '</td></tr><tr><td><i>PT access meets policy (%)</i></td><td align="center">' + props.f7 +                 '</td></tr><tr><td><i>POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">' + props.f8 +                 '</td></tr><tr><td><i>Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + props.f9 + '</td></tr><tr><td><i>Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + props.f10 + '</td></tr><tr><td><i>Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + props.f11 + '</td></tr></tbody></table>'
-          // };
-        // }
-        
         function onEachFeature(feature, layer) {
         	layer.on({
         		mouseover: highlightFeature,
@@ -143,12 +137,12 @@ block content
         	var div = L.DomUtil.create('div', 'info legend'),
         		deciles = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                 labels = [],
-                decile;
+                decile = ['1 (low)', '2','3','4','5','6','7','8','9','10 (high)'];
+                labels.push('<table style="table-layout:fixed;"><col width="20"><col width="8"><col width="50"><tr><td></td><td></td><td><b>Decile</b></td>');
             for (var i = 0; i < deciles.length; i++) {
-                decile = deciles[i];
-                labels.push('<i style="background:' + getColor(decile + 1) + '"></i> ' + decile);
+                labels.push('<tr><td style="background:' + getColor(deciles[i]) + '"></td><td></td><td>' + decile[i] + '</td>');
             }
-            div.innerHTML = labels.join('<br>');
+            div.innerHTML = labels.join('</tr>')+ '</tr></table>';
             return div;
         };
         
