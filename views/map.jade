@@ -22,14 +22,61 @@ block content
                     span.sidebar-close
                         i.fa.fa-caret-left
                 span(style='font-style:italic') A policy relevant composite indicator of urban liveability, based on a socio-ecological model of health and wellbeing.
+                p.
+                  The pilot composite index of urban liveability in Victoria is an extension of the above research undertaken as part of the NHMRC Centre for Research Excellence in Healthy Liveable Communities, conceptualising the social determinants of health through seven domains of liveability using a socio-ecological framework: employment, food, housing, public open space, social infrastructure, transport, and walkability.  
+                p.
+                  The liveability index was developed to measure the distribution of accessibility and availability of the seven liveability domains hypothesized to support health and wellbeing, combining these into a policy-relevant and evidence-informed composite index which may be summarised and visualised spatially. The index will allow integrated urban planning policies for liveable neighbourhoods to be evaluated, in terms of how well they are being delivered across the Melbourne metropolitan region, the health impact of the integration of those policies and to whom. Policies which are (and are not) being delivered may be identified through dis-aggregation of the liveability index into sub-domains, enabling identification of opportunities for future investment.  Inequities in liveability across the metropolitan expanse can be interrogated through visualisation and used as exposure covariates in statistical modelling.
+                p.
+                  The project was initially conceived with a view to mapping spatial variation in access to built environment attributes identified as important for health and wellbeing at the ABS Statistical Area 1 (SA1) level. This is a population balanced geographic expanse ranging from 200 to 800 persons, which may loosely be considered as representative of a local neighbourhood and readily linked to both census and population health survey data. It is an artificial, administrative designation however which does not describe variation in access to amenities within the SA1 area. It therefore offers limited options for aggregation to other geographical scales such as local government areas (LGAs) or meshblocks (the smallest area unit used by the ABS, in general containing either 30-60 households, or none) which can have important implications when considering spatial exposure. Hence, instead of using population weighted centroids at the SA1 level as our unit of analysis, the pilot study was used as an opportunity to test the feasibility of parcel level analysis in the first instance.
+                p. 
+                  The two important benefits of a parcel-based approach to indicator construction are: 1) the ability to flexibly aggregate to any sized administrative extent as required; and 2) being able to estimate the within area variation and relate this to the between area variation, allowing for estimation of the heterogeneity that area-level aggregation occludes. 
+                p.
+                  #[a(href="../map") Return to the pilove Liveability Index visualisation entry page.]
             #measures.sidebar-pane
                 h1.sidebar-header Indicators
                     span.sidebar-close
                         i.fa.fa-caret-left
+                h3.
+                  Liveability
+                p.
+                  Hard- or soft- cutoff version of the pilot Liveability Index; a score of 100 is average, with usual expected range of about 80 to 120.  Composite indicator construction is based on:
+                span(style='font-style:italic') De Muro, P., et al. (2011). "Composite Indices of Development and Poverty: An Application to MDGs." Social Indicators Research 104(1): 1-18.
+                h3.
+                  Walkability Index
+                p.
+                  A sum of z-scores (standardised measures) of dwelling density, street connectivity and daily living score.  The daily living score is an indicator of land use mix, formed through the sum of within-buffer access to a Public transport stop, a convenience destinations, and a supermarket.  See: 
+                span(style='font-style:italic') Badland, H., et al. (2016). "Identifying, creating, and testing urban planning measures for transport walking: Findings from the Australian national liveability study." Journal of Transport & Health 5: 151-162.
+                h3.
+                  Social Infrastructure mix
+                p.
+                  A social infrastructure mix score was calculated as the sum of destination access to 15 types of destination, resulting in a score from 0 to 15:   Community Centre; Museum / Art Gallery; Cinema/Theatre; Libraries; Childcare; Childcare (Out Of School; State Primary Schools; State Secondary Schools; Aged Care; Community Health Centres; Dentists; GP Clinics; Maternal Child Health; Pharmacy; Swimming Pools; and Sport.
+                h3.
+                  PT access meets policy
+                p.
+                  A policy-based public transport indicator based on Victorian government planning guidelines stipulating access to a stop on the public transport network within mode-specific cut-off distances: either a bus stop within 400m, a tram stop within 600m or a train station within 800m.  See clause 56.03-1 in:
+                span(style='font-style:italic') Department of Environment, Land, Water and Planning. 2006. "Victorian Planning Provisions, Clause 56.03: Liveable and Sustainable Communities." Report. Victorian Government. 
+                h3.
+                  Access to public open space > 1.5 Ha in size within 400m 
+                p.
+                  The public open space (POS) access indicator is based on a policy recommendation that access to large public open space should be available within 400m of a residence.  The public open space indicator was only calculated in soft form, which provides more nuance as an indicator of access, given the high-POS access setting of the Melbourne metropolitan region.
+                span(style='font-style:italic') Sugiyama, T., et al. (2010). "Associations Between Recreational Walking and Attractiveness, Size, and Proximity of Neighborhood Open Spaces." American Journal of Public Health 100(9): 1752-1757.
+                span(style='font-style:italic') Sugiyama, T., et al. (2014). "Public open spaces and walking for recreation: Moderation by attributes of pedestrian environments." Preventive Medicine 62: 25-29.
+                h3.
+                  Air pollution
+                p.
+                   As indicated by Mesh Block level predicted nitrogen dioxide (NO2); included in the liveability index as a reverse-scaled measure (air quality). See: 
+                span(style='font-style:italic') Knibbs, L. D., et al. (2014). "A national satellite-based land-use regression model for air pollution exposure assessment in Australia." Environ Res 135: 204-211. 
+                h3.
+                  Affordable housing
+                p.
+                  30-40 measure of housing affordability at the SA1-level:
+                span(style='font-style:italic') "The ABS defines an area as having 'affordable' housing if the lowest 40% of household incomes in a given area spend < 30% of gross income on mortgage / rental payments [35]. This measure is commonly referred to as the 30/40 rule [36]. Accordingly, the ABS generated this customised measure as a proportion for each local area, which was collapsed into quartiles." -- Badland, H., et al. (2017). "Examining associations between area-level spatial measures of housing with selected health and wellbeing behaviours and outcomes in an urban context." Health & Place 43: 17-24.
             #messages.sidebar-pane
                 h1.sidebar-header Contact
                     span.sidebar-close
                         i.fa.fa-caret-left
+                p.
+                  For further information and contact details, please visit the #[a(href="http://cur.org.au/project/developing-pilot-victorian-urban-liveability-index/", target="_blank") pilot Liveability Index project] and the #[a(href="http://cur.org.au/research-programs/healthy-liveable-cities-group/", target="_blank") Healthy Liveable Cities Group] at the official #[a(href="http://cur.org.au/", target="_blank") RMIT Centre for Urban Research] web page.
     #map.sidebar-map
     script.
         var myData = !{JSON.stringify(jsonData)};
