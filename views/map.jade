@@ -86,6 +86,8 @@ block content
         // Add CartoDB.Positron tile layer to map element
         var bmap = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
         var bmap_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+        // var bmap = 'https://api.mapbox.com/styles/v1/gorgonspeaks/cj6aik97139zb2snsdqkdfi4d/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ29yZ29uc3BlYWtzIiwiYSI6ImNqNW9qM2t0OTAwZ2Qyd28wMGswNjZ0NWwifQ.Sp_o2zYX_JUZNkcIyXIdMw'
+        // var bmap_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">Health Liveable Cities Group, RMIT</a>'
         tiles = L.tileLayer(bmap, { attribution: bmap_attrib}).addTo(map);
         
         // control that shows state info on hover
@@ -99,8 +101,8 @@ block content
         
         info.update = function (props) {
         	this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4>' +  (props ?
-        		'<table class="g-pop-table" width="260"><col width="0"><col width="230"><col width="30"><tbody><tr><td></td><td><b>SA1: </b>' + props.f1 +'</td><td></td></tr><tr><td></td><td><b>Suburb: </b>' + props.f2 + '</td><td></td></tr><tr><td></td><td><b>LGA: </b>' + props.f3 +'</td><td></td></tr><tr><td></td><td><b></b></td><td></td></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Decile</b></td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f4/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Liveability</i></td><td align="center">' + props.f4 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f5/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Walkability Index</i></td><td align="center">' + props.f5 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f6/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Social infrastructure (/16)</i></td><td align="center">' + props.f6 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f7/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>PT access meets policy (%)</i></td><td align="center">' + props.f7 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f8/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">' + props.f8 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f9/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + props.f9 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f10/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + props.f10 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f11/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + props.f11 + '</td></tr></tbody></table>'
-        		: 'Hover over a region');
+        		'<table class="g-pop-table" width="260" height="300"><col width="0"><col width="230"><col width="30"><tbody><tr><td></td><td><b>SA1: </b>' + props.f1 +'</td><td></td></tr><tr><td></td><td><b>Suburb: </b>' + props.f2 + '</td><td></td></tr><tr><td></td><td><b>LGA: </b>' + props.f3 +'</td><td></td></tr><tr><td></td><td><b></b></td><td></td></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Decile</b></td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f4/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Liveability</i></td><td align="center">' + props.f4 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f5/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Walkability Index</i></td><td align="center">' + props.f5 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f6/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Social infrastructure (/16)</i></td><td align="center">' + props.f6 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f7/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>PT access meets policy (%)</i></td><td align="center">' + props.f7 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f8/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">' + props.f8 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f9/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + props.f9 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f10/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + props.f10 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f11/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + props.f11 + '</td></tr></tbody></table>'
+        		: '<table class="g-pop-table" width="260" height="300"><col width="0"><col width="230"><col width="30"><tbody><tr><td></td><td><b>SA1:           <i>Hover over a region...</i></b></td><td></td></tr><tr><td></td><td><b>Suburb: </b>-</td><td></td></tr><tr><td></td><td><b>LGA: </b>-</td><td></td></tr><tr><td></td><td><b></b></td><td></td></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Decile</b></td></tr><tr><td style="position: relative;"></td><td><i>Liveability</i></td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>Walkability Index</i></td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>Social infrastructure (/16)</i></td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>PT access meets policy (%)</i></td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>Live & work w/in SA3 (SA2 %)</i></td><td align="center">-</td></tr></tbody></table>');
         };
         
         info.addTo(map);
@@ -109,16 +111,16 @@ block content
         // get color depending on population density value
         function getColor(d) {
         	return  d > 9 ? '#081D58':
-        			d > 8 ? '#22318D':
-        			d > 7 ? '#2455A4':
-        			d > 6 ? '#2280B8':
-        			d > 5 ? '#34A5C2':
-        			d > 4 ? '#61C0C0':
-        			d > 3 ? '#99D6B9':
-                    d > 2 ? '#D0ECB3':
-                    d > 1 ? '#EFF9B5':
-                    d > 0 ? '#FFFFD9':
-        					'#f7f7f7';
+        	    		d > 8 ? '#22318D':
+        	    		d > 7 ? '#2455A4':
+        	    		d > 6 ? '#2280B8':
+        	    		d > 5 ? '#34A5C2':
+        	    		d > 4 ? '#61C0C0':
+        	    		d > 3 ? '#99D6B9':
+                  d > 2 ? '#D0ECB3':
+                  d > 1 ? '#EFF9B5':
+                  d > 0 ? '#FFFFD9':
+        	    '#f7f7f7';
         }
 
         function style(feature) {
@@ -164,7 +166,7 @@ block content
         		mouseout: resetHighlight
         		// click: zoomToFeature
         	});  
-          layer.bindPopup('<table class="g-pop-table" width="260"><col width="0"><col width="230"><col width="30"><tbody><tr><td></td><td><b>SA1: </b>' + feature.properties.f1 +'</td><td></td></tr><tr><td></td><td><b>Suburb: </b>' + feature.properties.f2 + '</td><td></td></tr><tr><td></td><td><b>LGA: </b>' + feature.properties.f3 +'</td><td></td></tr><tr><td></td><td><b></b></td><td></td></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Decile</b></td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f4/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Liveability</i></td><td align="center">' + feature.properties.f4 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f5/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Walkability Index</i></td><td align="center">' + feature.properties.f5 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f6/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Social infrastructure (/16)</i></td><td align="center">' + feature.properties.f6 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f7/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>PT access meets policy (%)</i></td><td align="center">' + feature.properties.f7 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f8/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">' + feature.properties.f8 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f9/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + feature.properties.f9 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f10/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + feature.properties.f10 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f11/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + feature.properties.f11 + '</td></tr></tbody></table>');
+          layer.bindPopup('<table class="g-pop-table" width="260" height="300"><col width="0"><col width="230"><col width="30"><tbody><tr><td></td><td><b>SA1: </b>' + feature.properties.f1 +'</td><td></td></tr><tr><td></td><td><b>Suburb: </b>' + feature.properties.f2 + '</td><td></td></tr><tr><td></td><td><b>LGA: </b>' + feature.properties.f3 +'</td><td></td></tr><tr><td></td><td><b></b></td><td></td></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Decile</b></td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f4/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Liveability</i></td><td align="center">' + feature.properties.f4 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f5/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Walkability Index</i></td><td align="center">' + feature.properties.f5 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f6/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Social infrastructure (/16)</i></td><td align="center">' + feature.properties.f6 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f7/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>PT access meets policy (%)</i></td><td align="center">' + feature.properties.f7 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f8/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">' + feature.properties.f8 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f9/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + feature.properties.f9 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f10/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + feature.properties.f10 + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f11/10)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + feature.properties.f11 + '</td></tr></tbody></table>');
         }
         
         geojson = L.geoJson(myData, {
@@ -191,29 +193,39 @@ block content
             div.innerHTML = labels.join('</tr>')+ '</tr></table>';
             return div;
         };
-        
+        // legend.onAdd = function (map) {
+        	// var div = L.DomUtil.create('div', 'info legend'),
+        		// deciles = [1, 2, 3, 4, 5],
+                // labels = [],
+                // decile = ['Low', '','Average','','High'];
+                // labels.push('<table style="table-layout:fixed;"><col width="20"><col width="8"><col width="50"><tr><td></td><td></td><td><b>Liveability Quintile</b></td>');
+            // for (var i = 0; i < deciles.length; i++) {
+                // labels.push('<tr><td style="background:' + getColor(deciles[i*2]) + '"></td><td></td><td>' + decile[i] + '</td>');
+            // }
+            // div.innerHTML = labels.join('</tr>')+ '</tr></table>';
+            // return div;
+        // };        
         legend.addTo(map);
         // add scale bar
         L.control.scale().addTo(map);
         // add full screen toggle
         map.addControl(new L.Control.Fullscreen());
         var sidebar = L.control.sidebar('sidebar').addTo(map);
-        // var printer = L.easyPrint({
-          // title: 'Download snapshot to png',
-         	// tileLayer: tiles,
-         	// sizeModes: ['Current', 'A4Landscape', 'A4Portrait'],
-         	// filename: 'LiveabilityIndexExport',
-         	// exportOnly: true,
-         	// hideControlContainer: false
-        // }).addTo(map);
+        var printer = L.easyPrint({
+          title: 'Download snapshot to png (ctr+alt+s)',
+         	tileLayer: tiles,
+         	filename: 'LiveabilityIndexExport',
+         	exportOnly: true,
+         	hideControlContainer: false
+        }).addTo(map);
         
-        // function manualPrint () {
-        	// printer.printMap('CurrentSize', 'MyManualPrint')
-        // }
+        function manualPrint () {
+        	printer.printMap('CurrentSize', 'MyManualPrint')
+        }
         
-        // document.onkeyup=function(e){
-          // var e = e || window.event; // for IE to cover IEs window event-object
-          // if(e.altKey && e.which == 83) {
-            // printer.printMap('A4Landscape', 'LiveabilityIndexExport');
-            // }
-          // }
+        document.onkeyup=function(e){
+          var e = e || window.event; // for IE to cover IEs window event-object
+          if(e.altKey && e.which == 83) {
+            printer.printMap('CurrentSize', 'LiveabilityIndexExport');
+            }
+          }
