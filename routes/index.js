@@ -17,7 +17,7 @@ var pg = require("pg"); // require Postgres module
 var client = new pg.Client({
   user: "spatial@ligres",
   password: "sp$nUggy",
-  database: "ligres",
+  database: "li_hard",
   port: 5432,
   host: "ligres.postgres.database.azure.com",
   ssl: true
@@ -25,7 +25,7 @@ var client = new pg.Client({
 
 
 // Set up your database query to display GeoJSON
-var li_query = "SELECT * FROM li_map";
+var li_query = "SELECT * FROM li_map_json_hard";
 
 
 /* GET home page. */
