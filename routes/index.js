@@ -39,7 +39,7 @@ var auth = function (req, res, next) {
 
 // Set up your database query to display GeoJSON
 // var li_query = "SELECT * FROM li_map_json_hard";
-var li_query = "SELECT * FROM li_map_json_h_mini";
+var li_query = "SELECT * FROM li_map_json_hard";
 
 
 /* GET home page. */
