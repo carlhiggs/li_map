@@ -22,8 +22,13 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
 .info h4 { margin: 0 0 5px; color: #777; }
 
 .summarybox {
-  width: 430px; 
+  width: 490px; 
 }
+
+.subindicator {
+    color: #d1d1e0;
+}
+
 
 .legend { text-align: left; line-height: 18px; color: #555; } 
 
