@@ -1,0 +1,77 @@
+'<table class="g-pop-table" width="440" height="300"><col width="0"><col width="260"><col width="90"><col width="90"><tbody><tr><td></td>    
+<td><b>SA1: ' + feature.properties.f1 +'</b></td>    
+<td></td>    
+<td></td>     
+</tr>
+<tr><td></td>    
+<td><b>Suburb: </b>' + feature.properties.f2 + '</td>    
+<td></td>    
+<td></td>      
+</tr>
+<tr><td></td>    
+<td><b>LGA: </b>' + feature.properties.f3 +'</td>    
+<td></td>    
+<td></td>    
+</tr>
+<tr></tr>
+<tr><td></td>    
+<td><b>Indicator</b></td>    
+<td align="center"><b>Average</b></td>    
+<td align="center"><b>Score (/100)</b></td>    
+</tr>
+<tr><td style="position: relative;"><div class="g-ind-b-main" style="width:'+  (feature.properties.f20/100)*230 +'px;"></div></td>    
+<td><i><b>Liveability</b></i></td>    
+<td align="center"><b>' + feature.properties.f4 + '</b></td>   
+<td align="center"><b>' + feature.properties.f20 +  '</b></td>    
+</tr>
+<tr><td style="position: relative;"><div class="g-ind-bg" style="width:'+  (feature.properties.f21/100)*230 +'px;"></div></td>    
+<td><i>&emsp;Walkability Index</i></td>    
+<td align="center">' + feature.properties.f13 + '</td>   
+<td align="center">' + feature.properties.f21 +  '</td>    
+</tr>
+<tr><td style="position: relative;"><div class="g-ind-b-alt" style="width:'+  (feature.properties.f75/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td>    
+<td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3)</i></td>    
+<td align="center">' + feature.properties.f68 + '</td>   
+<td align="center">' + feature.properties.f75 +  '</td>    
+</tr>
+<tr><td style="position: relative;"><div class="g-ind-b-alt" style="width:'+  (feature.properties.f82/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td>    
+<td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td>    
+<td align="center">' + feature.properties.f76 + '</td>   
+<td align="center">' + feature.properties.f82 +  '</td>    
+</tr>
+<tr><td style="position: relative;"><div class="g-ind-b-alt" style="width:'+  (feature.properties.f91/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td>    
+<td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per Ha</i></td>    
+<td align="center">' + feature.properties.f84 + '</td>   
+<td align="center">' + feature.properties.f91 +  '</td>    
+</tr>
+<tr><td style="position: relative;"><div class="g-ind-bg" style="width:'+  (feature.properties.f22/100)*230 +'px;"></div></td>    
+<td><i>&emsp;Social infrastructure mix (/16)</i></td>    
+<td align="center">' + feature.properties.f14 + '</td>      
+<td align="center">' + feature.properties.f22 +  '</td>    
+</tr>
+<tr><td style="position: relative;"><div class="g-ind-bg" style="width:'+  (feature.properties.f23/100)*230 +'px;"></div></td>    
+<td><i>&emsp;PT access meets policy (%)</i></td>    
+<td align="center">' + feature.properties.f15 + '</td>   
+<td align="center">' + feature.properties.f23 +  '</td>    
+</tr>
+<tr><td style="position: relative;"><div class="g-ind-bg" style="width:'+  (feature.properties.f24/100)*230 +'px;"></div></td>    
+<td><i>&emsp;POS &ge; 1.5Ha within 400m (%)</i></td>    
+<td align="center">' + feature.properties.f16 + '</td>    
+<td align="center">' + feature.properties.f24 +  '</td>    
+</tr>
+<tr><td style="position: relative;"><div class="g-ind-bg" style="width:'+  (feature.properties.f25/100)*230 +'px;"></div></td>    
+<td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td>    
+<td align="center">' + feature.properties.f17 + '</td>    
+<td align="center">' + feature.properties.f25 +  '</td>    
+</tr>
+<tr><td style="position: relative;"><div class="g-ind-bg" style="width:'+  (feature.properties.f26/100)*230 +'px;"></div></td>    
+<td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td>    
+<td align="center">' + feature.properties.f18 + '</td>    
+<td align="center">' + feature.properties.f26 +  '</td>    
+</tr>
+<tr><td style="position: relative;"><div class="g-ind-bg" style="width:'+  (feature.properties.f27/100)*230 +'px;"></div></td>    
+<td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td>    
+<td align="center">' + feature.properties.f19 + '</td>    
+<td align="center">' + feature.properties.f27 +  '</td>    
+</tr>
+</tbody></table>'

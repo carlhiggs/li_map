@@ -1,5 +1,6 @@
 var express = require('express'); // require Express
 var basicAuth = require('basic-auth');
+
 var router = express.Router(); // setup usage of the Express router engine
 // var template = require('jade').compileFile(__dirname + '/../views/index.jade')
 
@@ -39,7 +40,7 @@ var auth = function (req, res, next) {
 
 // Set up your database query to display GeoJSON
 // var li_query = "SELECT * FROM li_map_json_hard";
-var li_query = "SELECT * FROM li_map_json_hard";
+var li_query = "SELECT * FROM li_map_json_h_mini";
 
 
 /* GET home page. */
