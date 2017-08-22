@@ -32,7 +32,7 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
 .info h4 { margin: 0 0 5px; color: #777; }
 
 .summarybox {
-  width: 490px; 
+  width: 440px; 
 }
 
 .holder-table{width:490px; padding:0px;} 
@@ -122,8 +122,8 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
   font-size: 12px;
 }
 
-.g-ind-b-main {
-  opacity: .3;
+.g-ind-main {
+  opacity: .5;
   position: absolute;
   left: 0px;
   top: 0px;
@@ -131,7 +131,7 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
   background: #d65454;
 }
 
-.g-ind-b-sub {
+.g-ind-sub {
   opacity: .3;
   position: absolute;
   left: 0px;
