@@ -10,21 +10,21 @@ var pg = require("pg"); // require Postgres module
 
 // Setup connection
 
-// var client = new pg.Client({
-  // user: "spatial@ligres",
-  // password: "sp$nUggy",
-  // database: "li_hard",
-  // port: 5432,
-  // host: "ligres.postgres.database.azure.com",
-  // ssl: true
-// });
 var client = new pg.Client({
-  user: "spatial",
-  password: "psq115842",
-  database: "li_vic",
+  user: "spatial@ligres",
+  password: "sp$nUggy",
+  database: "li_hard",
   port: 5432,
-  host: "localhost"
+  host: "ligres.postgres.database.azure.com",
+  ssl: true
 });
+// var client = new pg.Client({
+  // user: "spatial",
+  // password: "psq115842",
+  // database: "li_vic",
+  // port: 5432,
+  // host: "localhost"
+// });
 
 var auth = function (req, res, next) {
   function unauthorized(res) {
