@@ -18,6 +18,13 @@ var client = new pg.Client({
   host: "ligres.postgres.database.azure.com",
   ssl: true
 });
+// var client = new pg.Client({
+  // user: "spatial",
+  // password: "psq115842",
+  // database: "li_vic",
+  // port: 5432,
+  // host: "localhost"
+// });
 
 var auth = function (req, res, next) {
   function unauthorized(res) {
@@ -39,8 +46,11 @@ var auth = function (req, res, next) {
 };
 
 // Set up your database query to display GeoJSON
+var li_query_sa1 = "SELECT * FROM li_map_json_sa1_min_soft";
+var li_query_ssc = "SELECT * FROM li_map_json_ssc_min_soft";
+// var li_query = "SELECT * FROM li_map_json_sa1_min_hard";
 // var li_query = "SELECT * FROM li_map_json_hard";
-var li_query = "SELECT * FROM li_map_json_h_mini";
+// var li_query = "SELECT * FROM li_map_json_h_mini";
 
 
 /* GET home page. */
@@ -50,12 +60,23 @@ router.get('/', auth, function(req, res, next) {
 
 module.exports = router;
 
+// /* GET Postgres JSON data */
+// router.get('/data', function (req, res) {
+    // client.connect();
+    // var query = client.query(li_query);
+    // query.on("row", function (row, result) {
+        // result.addRow(row);
+    // });
+    // query.on("end", function (result) {
+        // res.send(result.rows[0].row_to_json);
+        // res.end();
+    // });
+// });
 
-/* GET the map page */
+/* GET the sa1 map page */
 router.get('/map', auth, function(req, res) {
-    // var client = new pg.Client(conString);
     client.connect();
-    var query = client.query(li_query);
+    var query = client.query(li_query_sa1);
     query.on("row", function (row, result) {
         result.addRow(row);
     });
@@ -68,4 +89,19 @@ router.get('/map', auth, function(req, res) {
     });
 });
 
+/* GET the ssc map page */
+router.get('/map_ssc', auth, function(req, res) {
+    client.connect();
+    var query = client.query(li_query_ssc);
+    query.on("row", function (row, result) {
+        result.addRow(row);
+    });
+    query.on("end", function (result) {
+        var data = result.rows[0].row_to_json
+        res.render('map_ssc', {
+            title: "Pilot Liveability Index",
+            jsonData: data
+        });
+    });
+});
 
