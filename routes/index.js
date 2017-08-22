@@ -13,7 +13,7 @@ var pg = require("pg"); // require Postgres module
 var client = new pg.Client({
   user: "spatial@ligres",
   password: "sp$nUggy",
-  database: "li_hard",
+  database: "li_soft",
   port: 5432,
   host: "ligres.postgres.database.azure.com",
   ssl: true
