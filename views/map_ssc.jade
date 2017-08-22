@@ -101,19 +101,6 @@ block content
                 0;
         }
         
-        function toggle() {
-            var ele = document.getElementById("toggleText");
-            var text = document.getElementById("displayText");
-            if(ele.style.display == "block") {
-                ele.style.display = "none";
-                text.innerHTML = "+";
-            }
-            else {
-                ele.style.display = "block";
-                text.innerHTML = "-";
-            }
-        } 
-        
         // control that shows state info on hover
         var info = L.control();
         
@@ -125,8 +112,8 @@ block content
         
         
         info.update = function (props) {
-            this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4>&emsp;<a id="displayText" href="javascript:toggle();">+</a>' + (props ? '<div id="toggleText" style="display: none"><table class="g-pop-table" width="440" height="300"><col width="0"><col width="260"><col width="90"><col width="90"><tbody><tr><td></td><td><b>Suburb: </b>' + props.f2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + props.f3 +'</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Average</b></td><td align="center"><b>Score (/100)</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:'+  (props.f15/100)*230 +'px;"></div></td><td><i><b><a href=# id="15">Liveability</a></b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + props.f15 +  '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f16/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="16">Walkability Index</a></i></td><td align="center"></td>   <td align="center">' + props.f16 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  (props.f17/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="17">Daily Living (/3)</a></i></td><td align="center">' + props.f6 + '</td>   <td align="center">' + props.f17 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  (props.f18/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="18">Dwellings per Ha</a></i></td><td align="center">' + props.f7 + '</td>   <td align="center">' + props.f18 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  (props.f19/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="19">3+ way street connections per Ha</a></i></td><td align="center">' + props.f8 + '</td>   <td align="center">' + props.f19 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f20/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="20">Social infrastructure mix (/16)</a></i></td><td align="center">' + props.f9 + '</td>  <td align="center">' + props.f20 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f21/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="21">PT access meets policy (%)</a></i></td><td align="center">' + props.f10 + '</td>   <td align="center">' + props.f21 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f22/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="22">POS &ge; 1.5Ha within 400m (%)</a></i></td><td align="center">' + props.f11 + '</td><td align="center">' + props.f22 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f23/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="23">Air quality (rev. Mesh Block NO&#x2082; ppb.)</a></i></td><td align="center">' + props.f12 + '</td><td align="center">' + props.f23 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f24/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="24">Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + props.f13 + '</td><td align="center">' + props.f24 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f25/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="25">Live & work w/in SA3 (SA2 %)</a></i></td><td align="center">' + props.f14 + '</td><td align="center">' + props.f25 +  '</td></tr></tbody></table></div>' 
-                : '<div id="toggleText" style="display: none"><table class="g-pop-table" width="440" height="300"><col width="0"><col width="260"><col width="90"><col width="90"><tbody><tr><td></td><td><b>Suburb: </b>-</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>-</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Average</b></td><td align="center"><b>Score (/100)</b></td></tr><tr><td style="position: relative;"></td><td><i><b><a href=# id="15">Liveability</a></b></i></td><td align="center"><b></b></td><td align="center"><b>-</b></td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="16">Walkability Index</a></i></td><td align="center"></td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="17">Daily Living (/3)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="18">Dwellings per Ha</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="19">3+ way street connections per Ha</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="20">Social infrastructure mix (/16)</a></i></td><td align="center">-</td>  <td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="21">PT access meets policy (%)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="22">POS &ge; 1.5Ha within 400m (%)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="23">Air quality (rev. Mesh Block NO&#x2082; ppb.)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="24">Affordable housing (30/40 rule, SA1 %)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="25">Live & work w/in SA3 (SA2 %)</a></i></td><td align="center">-</td><td align="center">-</td></tr></tbody></table></div>');
+            this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4><div id="content"></div><table class="holder-table"><col width="8"><col width="450"><tbody><td><table class="radio-table" ><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f15";" checked /></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f16";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f17";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f18";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f19";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f20";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f21";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f22";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f23";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f24";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f25";" /></label></div></td></tr></table></td><td>' + (props ? '<table class="g-pop-table" width="440" height="300"><col width="0"><col width="260"><col width="90"><col width="90"><tbody><tr><td></td><td><b>Suburb: </b>' + props.f2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + props.f3 +'</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Average</b></td><td align="center"><b>Score (/100)</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:'+  (props.f15/100)*230 +'px;"></div></td><td><i><b><a href=# id="15">Liveability</a></b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + props.f15 +  '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f16/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="16">Walkability Index</a></i></td><td align="center"></td>   <td align="center">' + props.f16 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  (props.f17/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="17">Daily Living (/3)</a></i></td><td align="center">' + props.f6 + '</td>   <td align="center">' + props.f17 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  (props.f18/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="18">Dwellings per Ha</a></i></td><td align="center">' + props.f7 + '</td>   <td align="center">' + props.f18 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  (props.f19/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="19">3+ way street connections per Ha</a></i></td><td align="center">' + props.f8 + '</td>   <td align="center">' + props.f19 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f20/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="20">Social infrastructure mix (/16)</a></i></td><td align="center">' + props.f9 + '</td>  <td align="center">' + props.f20 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f21/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="21">PT access meets policy (%)</a></i></td><td align="center">' + props.f10 + '</td>   <td align="center">' + props.f21 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f22/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="22">POS &ge; 1.5Ha within 400m (%)</a></i></td><td align="center">' + props.f11 + '</td><td align="center">' + props.f22 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f23/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="23">Air quality (rev. Mesh Block NO&#x2082; ppb.)</a></i></td><td align="center">' + props.f12 + '</td><td align="center">' + props.f23 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f24/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="24">Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + props.f13 + '</td><td align="center">' + props.f24 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f25/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="25">Live & work w/in SA3 (SA2 %)</a></i></td><td align="center">' + props.f14 + '</td><td align="center">' + props.f25 +  '</td></tr></tbody></table></td></tbody></table>' 
+                : '<table class="g-pop-table" width="440" height="300"><col width="0"><col width="260"><col width="90"><col width="90"><tbody><tr><td></td><td><b>Suburb: </b>-</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>-</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Average</b></td><td align="center"><b>Score (/100)</b></td></tr><tr><td style="position: relative;"></td><td><i><b><a href=# id="15">Liveability</a></b></i></td><td align="center"><b></b></td><td align="center"><b>-</b></td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="16">Walkability Index</a></i></td><td align="center"></td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="17">Daily Living (/3)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="18">Dwellings per Ha</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="19">3+ way street connections per Ha</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="20">Social infrastructure mix (/16)</a></i></td><td align="center">-</td>  <td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="21">PT access meets policy (%)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="22">POS &ge; 1.5Ha within 400m (%)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="23">Air quality (rev. Mesh Block NO&#x2082; ppb.)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="24">Affordable housing (30/40 rule, SA1 %)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="25">Live & work w/in SA3 (SA2 %)</a></i></td><td align="center">-</td><td align="center">-</td></tr></tbody></table></td></tbody></table>');
         };
         
         info.addTo(map);
@@ -158,7 +145,7 @@ block content
             window.$log = value;
             };
         
-        console.log("20");
+        console.log("15");
         
         function style(feature) {
             // old return 
@@ -188,11 +175,16 @@ block content
             if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
                 layer.bringToFront();
             }
-        
-            info.update(layer.feature.properties);
+            hover(layer.feature.properties)
+            // info.update(layer.feature.properties);
         }
         
         var geojson;
+        
+        function hover(props) {
+            // console.log(props)
+            document.getElementById('content').innerHTML = props.f15;
+        }
         
         function resetHighlight(e) {
             geojson.resetStyle(e.target);
@@ -227,15 +219,21 @@ block content
             // setTimeout(updateColors, 1500);
         } 
         
-        // Create event listener for the active indicator selection
-        document.body.addEventListener("click", function(e) {
-            // e.target was the clicked element
-            if(e.target && e.target.nodeName == "A") {
-                console.log(e.target.id); 
-                document.getElementById("activeTitle").innerHTML = e.target.innerHTML;
-                updateColors();
-                }
-            });
+        // // Create event listener for the active indicator selection
+        // document.body.addEventListener("click", function(e) {
+            // // e.target was the clicked element
+            // if(e.target && e.target.type == "radio") {
+                // console.log(e.target.id); 
+                // document.getElementById("activeTitle").innerHTML = e.target.innerHTML;
+                // updateColors();
+                // }
+            // });
+        $(document).ready(function() {
+             $('input[type=radio][name=ind]').change(function() {
+                 console.log(this.id); 
+                 updateColors();
+             });
+         });
         // add attribution
         map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>');
         
