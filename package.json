@@ -19,7 +19,5 @@
     "pg": "*",
     "basic-auth":"*",
     "compression":"*"
-    "pg-promise":"*",
-    "bluebird":"*"
     }
 }
