@@ -19,6 +19,8 @@
     "pg": "*",
     "basic-auth":"*",
     "compression":"*",
-    "pm2":"*"
+    "pm2":"*",
+    "pg-promise":"*",
+    "bluebird":"*"
     }
 }
