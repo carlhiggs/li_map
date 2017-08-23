@@ -73,35 +73,63 @@ module.exports = router;
     // });
 // });
 
+// /* GET the sa1 map page */
+// router.get('/map', auth, function(req, res) {
+    // client.connect();
+    // var query = client.query(li_query_sa1);
+    // query.on("row", function (row, result) {
+        // result.addRow(row);
+    // });
+    // query.on("end", function (result) {
+        // var data = result.rows[0].row_to_json
+        // res.render('map', {
+            // title: "Pilot Liveability Index",
+            // jsonData: data
+        // });
+    // });
+// });
+
+/* GET the ssc map page */
+// router.get('/map_ssc', auth, function(req, res) {
+    // client.connect();
+    // var query = client.query(li_query_ssc);
+    // query.on("row", function (row, result) {
+        // result.addRow(row);
+    // });
+    // query.on("end", function (result) {
+        // var data = result.rows[0].row_to_json
+        // res.render('map_ssc', {
+            // title: "Pilot Liveability Index",
+            // jsonData: data
+        // });
+    // });
+// });
+
 /* GET the sa1 map page */
-router.get('/map', auth, function(req, res) {
+router.get('/map_sa1', auth, function(req, res) {
     client.connect();
-    var query = client.query(li_query_sa1);
-    query.on("row", function (row, result) {
-        result.addRow(row);
-    });
-    query.on("end", function (result) {
+    client.query(li_query_sa1)
+      .then(function (result) {
         var data = result.rows[0].row_to_json
-        res.render('map', {
+        res.render('map_sa1', {
             title: "Pilot Liveability Index",
             jsonData: data
-        });
-    });
+        })
+      })
+    .catch(e => console.error(e.stack))
 });
+
 
 /* GET the ssc map page */
 router.get('/map_ssc', auth, function(req, res) {
     client.connect();
-    var query = client.query(li_query_ssc);
-    query.on("row", function (row, result) {
-        result.addRow(row);
-    });
-    query.on("end", function (result) {
+    client.query(li_query_ssc)
+      .then(function (result) {
         var data = result.rows[0].row_to_json
         res.render('map_ssc', {
             title: "Pilot Liveability Index",
             jsonData: data
-        });
-    });
+        })
+      })
+    .catch(e => console.error(e.stack))
 });
-
