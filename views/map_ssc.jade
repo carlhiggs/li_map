@@ -85,43 +85,7 @@ block content
     #map.sidebar-map
     script.
         var myData = !{JSON.stringify(jsonData)};
-        // Create variable to hold map element, give initial settings to map
-        var map = L.map('map',{ center: [-37.8078244,144.9625175], zoom: 12});
-        
-        // Add CartoDB.Positron tile layer to map element
-        var bmap = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
-        var bmap_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
-        // var bmap = 'https://api.mapbox.com/styles/v1/gorgonspeaks/cj6aik97139zb2snsdqkdfi4d/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ29yZ29uc3BlYWtzIiwiYSI6ImNqNW9qM2t0OTAwZ2Qyd28wMGswNjZ0NWwifQ.Sp_o2zYX_JUZNkcIyXIdMw'
-        // var bmap_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">Health Liveable Cities Group, RMIT</a>'
-        tiles = L.tileLayer(bmap, { attribution: bmap_attrib}).addTo(map);
-        
-        function formatProp(p) {
-            return p >= 0.01 ? p:
-                   p >  0    ? '< 0.01':
-                0;
-        }
-        
-        // control that shows state info on hover
-        var info = L.control();
-        
-        info.onAdd = function (map) {
-            this._div = L.DomUtil.create('div', 'info summarybox');
-            this.update();
-            return this._div;
-        };
-        
-        
-        info.update = function (props) {
-            this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4><div id="content"></div><table class="holder-table"><col width="8"><col width="450"><tbody><td><table class="radio-table" ><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f15";" checked /></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f16";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f17";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f18";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f19";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f20";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f21";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f22";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f23";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f24";" /></label></div></td></tr><tr><td><div class="radio"><label><input type="radio" name="ind" id="feature.properties.f25";" /></label></div></td></tr></table></td><td>' + (props ? '<table class="g-pop-table" width="440" height="300"><col width="0"><col width="260"><col width="90"><col width="90"><tbody><tr><td></td><td><b>Suburb: </b>' + props.f2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + props.f3 +'</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Average</b></td><td align="center"><b>Score (/100)</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:'+  (props.f15/100)*230 +'px;"></div></td><td><i><b><a href=# id="15">Liveability</a></b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + props.f15 +  '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f16/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="16">Walkability Index</a></i></td><td align="center"></td>   <td align="center">' + props.f16 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  (props.f17/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="17">Daily Living (/3)</a></i></td><td align="center">' + props.f6 + '</td>   <td align="center">' + props.f17 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  (props.f18/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="18">Dwellings per Ha</a></i></td><td align="center">' + props.f7 + '</td>   <td align="center">' + props.f18 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  (props.f19/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="19">3+ way street connections per Ha</a></i></td><td align="center">' + props.f8 + '</td>   <td align="center">' + props.f19 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f20/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="20">Social infrastructure mix (/16)</a></i></td><td align="center">' + props.f9 + '</td>  <td align="center">' + props.f20 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f21/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="21">PT access meets policy (%)</a></i></td><td align="center">' + props.f10 + '</td>   <td align="center">' + props.f21 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f22/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="22">POS &ge; 1.5Ha within 400m (%)</a></i></td><td align="center">' + props.f11 + '</td><td align="center">' + props.f22 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f23/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="23">Air quality (rev. Mesh Block NO&#x2082; ppb.)</a></i></td><td align="center">' + props.f12 + '</td><td align="center">' + props.f23 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f24/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="24">Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + props.f13 + '</td><td align="center">' + props.f24 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (props.f25/100)*230 +'px;"></div></td><td><i>&emsp;<a href=# id="25">Live & work w/in SA3 (SA2 %)</a></i></td><td align="center">' + props.f14 + '</td><td align="center">' + props.f25 +  '</td></tr></tbody></table></td></tbody></table>' 
-                : '<table class="g-pop-table" width="440" height="300"><col width="0"><col width="260"><col width="90"><col width="90"><tbody><tr><td></td><td><b>Suburb: </b>-</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>-</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Average</b></td><td align="center"><b>Score (/100)</b></td></tr><tr><td style="position: relative;"></td><td><i><b><a href=# id="15">Liveability</a></b></i></td><td align="center"><b></b></td><td align="center"><b>-</b></td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="16">Walkability Index</a></i></td><td align="center"></td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="17">Daily Living (/3)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="18">Dwellings per Ha</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i class=".subindicator">&emsp;&emsp;- <a href=# id="19">3+ way street connections per Ha</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="20">Social infrastructure mix (/16)</a></i></td><td align="center">-</td>  <td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="21">PT access meets policy (%)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="22">POS &ge; 1.5Ha within 400m (%)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="23">Air quality (rev. Mesh Block NO&#x2082; ppb.)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="24">Affordable housing (30/40 rule, SA1 %)</a></i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;<a href=# id="25">Live & work w/in SA3 (SA2 %)</a></i></td><td align="center">-</td><td align="center">-</td></tr></tbody></table></td></tbody></table>');
-        };
-        
-        info.addTo(map);
-        
-        function requantile(p,num) {
-            return Math.floor((p-1)/num)+1;
-        }
-   
+ 
         // get color depending on population density value
         function getColor(p) {
             // // Decile colours
@@ -136,59 +100,219 @@ block content
                     p > 10 ? '#EFF9B5':
                     p > 0 ? '#FFFFD9':
                 '#f7f7f7';
+        }       
+
+
+        
+        // Create variable to hold map element, give initial settings to map
+        var map = L.map('map',{ center: [-37.8078244,144.9625175], zoom: 12});    
+
+        
+        // Style and add legend
+        var legend = L.control({position: 'bottomright'});
+        
+        legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', 'info legend'),
+                quantiles = [100,90,80,70,60,50,40,30,20,10],
+                labels = [],
+                quantile = ['100 High','90','80','70','60','50','40','30','20','10 Low'];
+                labels.push('<table style="table-layout:fixed;"><col width="20"><col width="8"><col width="80"><tr><td></td><td></td><td><b><div id="activeTitle">Liveability</div></b></td>');
+            for (var i = 0; i < quantiles.length; i++) {
+                labels.push('<tr><td style="background:' + getColor(quantiles[i]) + '"></td><td></td><td>' + quantile[i] + '</td>');
+            }
+            div.innerHTML = labels.join('</tr>')+ '</tr></table>';
+            return div;
+        };
+     
+        legend.addTo(map);        
+        
+        function li_style(feature) {
+        	return {
+        		weight: 1,
+        		color: 'white',
+        		fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f15)
+        	};
+        }       
+        
+        function wa_style(feature) {
+        	return {
+        		weight: 1,
+        		color: 'white',
+        		fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f16)
+        	};
+        }        
+        
+        function dl_style(feature) {
+        	return {
+        		weight: 1,
+        		color: 'white',
+        		fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f17)
+        	};
+        }       
+        
+        function dd_style(feature) {
+        	return {
+        		weight: 1,
+        		color: 'white',
+        		fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f18)
+        	};
+        }       
+        
+        function sc_style(feature) {
+        	return {
+        		weight: 1,
+        		color: 'white',
+        		fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f19)
+        	};
+        }       
+        
+        function si_style(feature) {
+        	return {
+        		weight: 1,
+        		color: 'white',
+        		fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f20)
+        	};
+        }       
+        
+        function pt_style(feature) {
+        	return {
+        		weight: 1,
+        		color: 'white',
+        		fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f21)
+        	};
+        }       
+        
+        function po_style(feature) {
+        	return {
+        		weight: 1,
+        		color: 'white',
+        		fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f22)
+        	};
+        }       
+        
+        function pr_style(feature) {
+        	return {
+        		weight: 1,
+        		color: 'white',
+        		fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f23)
+        	};
+        }       
+        
+        function af_style(feature) {
+        	return {
+        		weight: 1,
+        		color: 'white',
+        		fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f24)
+        	};
+        }       
+        
+        function lw_style(feature) {
+        	return {
+        		weight: 1,
+        		color: 'white',
+        		fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f25)
+        	};
+        }       
+        
+        var li = L.geoJson(myData, {id: 'ind', style: li_style}).addTo(map);
+        var wa = L.geoJson(myData, {id: 'ind', style: wa_style}),
+            dl = L.geoJson(myData, {id: 'ind', style: dl_style}),
+            dd = L.geoJson(myData, {id: 'ind', style: dd_style}),
+            sc = L.geoJson(myData, {id: 'ind', style: sc_style}),
+            si = L.geoJson(myData, {id: 'ind', style: si_style}),
+            pt = L.geoJson(myData, {id: 'ind', style: pt_style}),
+            po = L.geoJson(myData, {id: 'ind', style: po_style}),
+            pr = L.geoJson(myData, {id: 'ind', style: pr_style}),
+            af = L.geoJson(myData, {id: 'ind', style: af_style}),
+            lw = L.geoJson(myData, {id: 'ind', style: lw_style});
+        
+        // Add CartoDB.Positron tile layer to map element
+        var bmap = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+        var bmap_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+        // var bmap = 'https://api.mapbox.com/styles/v1/gorgonspeaks/cj6aik97139zb2snsdqkdfi4d/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ29yZ29uc3BlYWtzIiwiYSI6ImNqNW9qM2t0OTAwZ2Qyd28wMGswNjZ0NWwifQ.Sp_o2zYX_JUZNkcIyXIdMw'
+        // var bmap_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">Health Liveable Cities Group, RMIT</a>'
+        var tiles = L.tileLayer(bmap, { attribution: bmap_attrib}).addTo(map);
+
+        
+        
+        var indicators = L.layerGroup([li,wa,dl,dd,sc,si,pt,po,pr,af,lw]);
+        
+        
+        var indMaps = {
+            "Liveability Index"                      : li,
+            "Walkability Index"                      : wa,       
+            " - Daily Living (/3)"                   : dl,       
+            " - Dwellings per Ha"                    : dd,       
+            " - 3+ way street connections per Ha"    : sc,       
+            "Social infrastructure mix (/16)	"    : si,       
+            "PT access meets policy (%)"             : pt,       
+            "POS ≥ 1.5Ha within 400m (%)	"        : po,       
+            "Air quality (rev. Mesh Block NO&#x2082; ppb.)" : pr,       
+            "Affordable housing (30/40 rule, SA1 %)" : af,       
+            "Live & work w/in SA3 (SA2 %)"           : lw        
+        };             
+        
+        L.control.layers(indMaps,null,{autoZIndex:false}).addTo(map);
+        
+        $("[name='leaflet-base-layers']").change( function () {
+            geojson.bringToFront();
+            document.getElementById("activeTitle").innerHTML = $(this).parent().text()
+        });
+
+        
+        function requantile(p,num) {
+            return Math.floor((p-1)/num)+1;
         }
-        
-        // redefine console.log for variable tracking
-        console.oldLog = console.log;
-        console.log = function(value){
-            console.oldLog(value);
-            window.$log = value;
-            };
-        
-        console.log("15");
-        
-        function style(feature) {
+   
+
+        function null_style(feature) {
             // old return 
             // fillColor: getColor(feature.properties.f15)
             // fillColor: getColor(current_property{checked_indicator})
             return {
                 weight: 1,
                 color: 'white',
-                fillOpacity: 0.7,
-                fillColor: getColor(eval("feature.properties.f"+$log))
+                fillOpacity: 0
             };
         }
 
         
         function highlightFeature(e) {
             var layer = e.target;
-            // var checked_indicator = document.querySelector('input[name="ind"]:checked').id;
-            // var current_property = {};
         
             layer.setStyle({
                 weight: 3,
                 color: '#d65454',
                 dashArray: '',
-                fillOpacity: 0.7
+                fillOpacity: 0.3
             });
         
             if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
                 layer.bringToFront();
             }
-            hover(layer.feature.properties)
-            // info.update(layer.feature.properties);
         }
         
         var geojson;
         
-        function hover(props) {
-            // console.log(props)
-            document.getElementById('content').innerHTML = props.f15;
+        function bgWidth(value){
+          return (value/100)*230 +'px'
         }
+        
+
         
         function resetHighlight(e) {
             geojson.resetStyle(e.target);
-            info.update();
         }
         
         function zoomToFeature(e) {
@@ -201,39 +325,17 @@ block content
                 mouseout: resetHighlight
                 // click: zoomToFeature
             });  
-          layer.bindPopup('<table class="g-pop-table" width="440" height="300"><col width="0"><col width="260"><col width="90"><col width="90"><tbody><tr><td></td><td><b>Suburb: </b>' + feature.properties.f2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + feature.properties.f3 +'</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Average</b></td><td align="center"><b>Score (/100)</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:'+  (feature.properties.f15/100)*230 +'px;"></div></td><td><i><b>Liveability</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + feature.properties.f15 +  '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (feature.properties.f16/100)*230 +'px;"></div></td><td><i>&emsp;Walkability Index</i></td><td align="center"></td>   <td align="center">' + feature.properties.f16 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  (feature.properties.f17/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3)</i></td><td align="center">' + feature.properties.f6 + '</td>   <td align="center">' + feature.properties.f17 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  (feature.properties.f18/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + feature.properties.f7 + '</td>   <td align="center">' + feature.properties.f18 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  (feature.properties.f19/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per Ha</i></td><td align="center">' + feature.properties.f8 + '</td>   <td align="center">' + feature.properties.f19 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (feature.properties.f20/100)*230 +'px;"></div></td><td><i>&emsp;Social infrastructure mix (/16)</i></td><td align="center">' + feature.properties.f9 + '</td>  <td align="center">' + feature.properties.f20 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (feature.properties.f21/100)*230 +'px;"></div></td><td><i>&emsp;PT access meets policy (%)</i></td><td align="center">' + feature.properties.f10 + '</td>   <td align="center">' + feature.properties.f21 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (feature.properties.f22/100)*230 +'px;"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">' + feature.properties.f11 + '</td><td align="center">' + feature.properties.f22 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (feature.properties.f23/100)*230 +'px;"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + feature.properties.f12 + '</td><td align="center">' + feature.properties.f23 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (feature.properties.f24/100)*230 +'px;"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + feature.properties.f13 + '</td><td align="center">' + feature.properties.f24 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  (feature.properties.f25/100)*230 +'px;"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + feature.properties.f14 + '</td><td align="center">' + feature.properties.f25 +  '</td></tr></tbody></table>', {
-              maxWidth : 490
+          layer.bindPopup('<table class="g-pop-table" width="420" height="300"><col width="0"><col width="240"><col width="90"><col width="90"><tbody><tr><td></td><td><b>Suburb: </b>' + feature.properties.f2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + feature.properties.f3 +'</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Average</b></td><td align="center"><b>Score (/100)</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:'+  bgWidth(feature.properties.f15) +';"></div></td><td><i><b>Liveability</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + feature.properties.f15 +  '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f16) +';"></div></td><td><i>&emsp;Walkability Index</i></td><td align="center"></td>   <td align="center">' + feature.properties.f16 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f17) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3)</i></td><td align="center">' + feature.properties.f6 + '</td>   <td align="center">' + feature.properties.f17 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f18) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + feature.properties.f7 + '</td>   <td align="center">' + feature.properties.f18 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f19) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per Ha</i></td><td align="center">' + feature.properties.f8 + '</td>   <td align="center">' + feature.properties.f19 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f20) +';"></div></td><td><i>&emsp;Social infrastructure mix (/16)</i></td><td align="center">' + feature.properties.f9 + '</td>  <td align="center">' + feature.properties.f20 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f21) +';"></div></td><td><i>&emsp;PT access meets policy (%)</i></td><td align="center">' + feature.properties.f10 + '</td>   <td align="center">' + feature.properties.f21 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f22) +';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">' + feature.properties.f11 + '</td><td align="center">' + feature.properties.f22 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f23) +';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + feature.properties.f12 + '</td><td align="center">' + feature.properties.f23 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f24) +';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + feature.properties.f13 + '</td><td align="center">' + feature.properties.f24 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f25) +';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + feature.properties.f14 + '</td><td align="center">' + feature.properties.f25 +  '</td></tr></tbody></table>', {
+              maxWidth : 420
           });
         }
-        
-        // add polygon data
+          
+        // add info polygon data
         geojson = L.geoJson(myData, {
-            style: style,
+            style: null_style,
             onEachFeature: onEachFeature
         }).addTo(map);
         
-        function updateColors(){
-            geojson.eachLayer(function(layer){
-                geojson.setStyle(style); 
-            }); 
-            // setTimeout(updateColors, 1500);
-        } 
-        
-        // // Create event listener for the active indicator selection
-        // document.body.addEventListener("click", function(e) {
-            // // e.target was the clicked element
-            // if(e.target && e.target.type == "radio") {
-                // console.log(e.target.id); 
-                // document.getElementById("activeTitle").innerHTML = e.target.innerHTML;
-                // updateColors();
-                // }
-            // });
-        $(document).ready(function() {
-             $('input[type=radio][name=ind]').change(function() {
-                 console.log(this.id); 
-                 updateColors();
-             });
-         });
         // add attribution
         map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>');
         
@@ -241,24 +343,7 @@ block content
         // add mini-map
         var bmap2 = new L.TileLayer(bmap, {minZoom: 0, maxZoom: 13, attribution: bmap_attrib});
         var miniMap = new L.Control.MiniMap(bmap2).addTo(map);    
-        
-        // Style and add legend
-        var legend = L.control({position: 'bottomright'});
-        
-        legend.onAdd = function (map) {
-            var div = L.DomUtil.create('div', 'info legend'),
-                quantiles = [100,90,80,70,60,50,40,30,20,10],
-                labels = [],
-                quantile = ['100 High','90','80','70','60','50','40','30','20','10 Low'];
-                labels.push('<table style="table-layout:fixed;"><col width="20"><col width="8"><col width="80"><tr><td></td><td></td><td><b><div id="activeTitle" z>Liveability</div></b></td>');
-            for (var i = 0; i < quantiles.length; i++) {
-                labels.push('<tr><td style="background:' + getColor(quantiles[i]) + '"></td><td></td><td>' + quantile[i] + '</td>');
-            }
-            div.innerHTML = labels.join('</tr>')+ '</tr></table>';
-            return div;
-        };
-     
-        legend.addTo(map);
+
         
         // add scale bar
         L.control.scale().addTo(map);
