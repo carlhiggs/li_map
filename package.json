@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "pm2 start ./bin/www"
+    "start": "node ./bin/www"
     },
   "engines": {
     "node": "6.9.2"
@@ -18,8 +18,7 @@
     "serve-favicon": "~2.4.2",
     "pg": "*",
     "basic-auth":"*",
-    "compression":"*",
-    "pm2":"*",
+    "compression":"*"
     "pg-promise":"*",
     "bluebird":"*"
     }
