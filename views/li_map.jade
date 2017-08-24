@@ -102,11 +102,11 @@ block content
                     p > 0 ? '#FFFFD9':
                 '#f7f7f7';
         }       
-
+ 
 
         
         // Create variable to hold map element, give initial settings to map
-        var map = L.map('map',{ center: [-37.8078244,144.9625175], zoom: 12});    
+        var map = L.map('map',{ center: [-37.8078244,144.9625175], zoom: 12,minZoom: 10,maxZoom: 15});    
         
         // add attribution
         map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>');
@@ -129,10 +129,10 @@ block content
         
         // add mini-map
         var bmap2 = new L.TileLayer(bmap_basic, {minZoom: 0, maxZoom: 13, attribution: bmap_basic_attrib});
-        var miniMap = new L.Control.MiniMap(bmap2,{position: 'bottomleft'}).addTo(map);    
 
         // add scale bar
         L.control.scale().addTo(map);  
+        var miniMap = new L.Control.MiniMap(bmap2,{position: 'bottomleft'}).addTo(map);    
         
         // Style and add legend
         var legend = L.control({position: 'bottomright'});
@@ -431,7 +431,7 @@ block content
                 mouseout: resetHighlight
                 // click: zoomToFeature
             });  
-          layer.bindPopup('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>Suburb: </b>' + feature.properties.f2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + feature.properties.f3 +'</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Average</b></td><td align="center"><b>Score (/100)</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:'+  bgWidth(feature.properties.f15) +';"></div></td><td><i><b>Liveability</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + feature.properties.f15 +  '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f16) +';"></div></td><td><i>&emsp;Walkability Index</i></td><td align="center"></td>   <td align="center">' + feature.properties.f16 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f17) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3)</i></td><td align="center">' + feature.properties.f6 + '</td>   <td align="center">' + feature.properties.f17 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f18) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + feature.properties.f7 + '</td>   <td align="center">' + feature.properties.f18 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f19) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per Ha</i></td><td align="center">' + feature.properties.f8 + '</td>   <td align="center">' + feature.properties.f19 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f20) +';"></div></td><td><i>&emsp;Social infrastructure mix (/16)</i></td><td align="center">' + feature.properties.f9 + '</td>  <td align="center">' + feature.properties.f20 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f21) +';"></div></td><td><i>&emsp;PT access meets policy (%)</i></td><td align="center">' + feature.properties.f10 + '</td>   <td align="center">' + feature.properties.f21 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f22) +';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">' + feature.properties.f11 + '</td><td align="center">' + feature.properties.f22 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f23) +';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + feature.properties.f12 + '</td><td align="center">' + feature.properties.f23 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f24) +';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + feature.properties.f13 + '</td><td align="center">' + feature.properties.f24 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f25) +';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + feature.properties.f14 + '</td><td align="center">' + feature.properties.f25 +  '</td></tr></tbody></table>', {
+          layer.bindPopup('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + feature.properties.f1 +'</b></td><td></td><td></td> </tr>	<tr><td></td><td><b>Suburb: </b>' + feature.properties.f2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + feature.properties.f3 +'</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Average</b></td><td align="center"><b>Score (/100)</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:'+  bgWidth(feature.properties.f15) +';"></div></td><td><i><b>Liveability</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + feature.properties.f15 +  '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f16) +';"></div></td><td><i>&emsp;Walkability Index</i></td><td align="center"></td>   <td align="center">' + feature.properties.f16 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f17) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3)</i></td><td align="center">' + feature.properties.f6 + '</td>   <td align="center">' + feature.properties.f17 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f18) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + feature.properties.f7 + '</td>   <td align="center">' + feature.properties.f18 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f19) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per Ha</i></td><td align="center">' + feature.properties.f8 + '</td>   <td align="center">' + feature.properties.f19 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f20) +';"></div></td><td><i>&emsp;Social infrastructure mix (/16)</i></td><td align="center">' + feature.properties.f9 + '</td>  <td align="center">' + feature.properties.f20 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f21) +';"></div></td><td><i>&emsp;PT access meets policy (%)</i></td><td align="center">' + feature.properties.f10 + '</td>   <td align="center">' + feature.properties.f21 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f22) +';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">' + feature.properties.f11 + '</td><td align="center">' + feature.properties.f22 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f23) +';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + feature.properties.f12 + '</td><td align="center">' + feature.properties.f23 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f24) +';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + feature.properties.f13 + '</td><td align="center">' + feature.properties.f24 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f25) +';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + feature.properties.f14 + '</td><td align="center">' + feature.properties.f25 +  '</td></tr></tbody></table>', {
               maxWidth : 400
           });
         }
@@ -475,7 +475,7 @@ block content
         
         // method that we will use to update the control based on feature properties passed
         info.update = function (props) {
-        this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4><div id="suburb_hover"></div><a id="displayText" href="javascript:toggle();">Map info &#9650;</a><div id="toggleText" style="display: none"><i><div id="bmap_overlay"></div><div id="sa1_overlay"></div><div id="ssc_overlay"></div><div id="popup_overlay">-</div></i></div>';
+        this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4><div id="suburb_hover"></div><a id="displayText" href="javascript:toggle();">Map info &#9650;</a><div id="toggleText" style="display: none"><i><div id="bmap_overlay"></div><div id="sa1_overlay"></div><div id="ssc_overlay"></div><div id="popup_overlay">-</div></i>';
         };
         info.addTo(map);
         
@@ -542,7 +542,8 @@ block content
                 pr_sa1.setStyle({weight: 0.5});
                 af_sa1.setStyle({weight: 0.5});
                 lw_sa1.setStyle({weight: 0.5});
-                null_style.setStyle({weight: 1});
+                sa1_info.setStyle({weight: 1});
+                ssc_info.setStyle({weight: 1});
             }
             else {
                 li_sa1.setStyle({weight: 0});
@@ -556,7 +557,8 @@ block content
                 pr_sa1.setStyle({weight: 0});
                 af_sa1.setStyle({weight: 0});
                 lw_sa1.setStyle({weight: 0});
-                null_style.setStyle({weight: 0.5});
+                sa1_info.setStyle({weight: 0.5});
+                ssc_info.setStyle({weight: 0.5});
             }
         });
         
@@ -594,7 +596,7 @@ block content
         $("[name='leaflet-exclusive-group-layer-3']").change( function () {
             // sa1_info.bringToFront();
             // ssc_info.bringToFront();
-            document.getElementById("popup_overlay").innerHTML  = "Hover/click info: " + $('input[type=radio][name=leaflet-exclusive-group-layer-2]:checked').next()["0"].innerHTML
+            document.getElementById("popup_overlay").innerHTML  = "Hover/click info: " + $('input[type=radio][name=leaflet-exclusive-group-layer-3]:checked').next()["0"].innerHTML
         });        
 
         // add full screen toggle
