@@ -13,7 +13,7 @@ const client = new pg.Client({
   host: "ligres.postgres.database.azure.com",
   ssl: true
 });
-
+client.connect();
 
 var auth = function (req, res, next) {
   function unauthorized(res) {
@@ -50,9 +50,9 @@ router.get('/', auth, function(req, res, next) {
 module.exports = router;
 
 
+
 /* GET the map page */
 router.get('/li_map', auth, function(req, res) {
-    client.connect();
     client.query(li_query_ssc)
       .then(data => {
         var ssc_data = data.rows[0].row_to_json
