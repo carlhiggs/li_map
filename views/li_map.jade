@@ -116,8 +116,8 @@ block content
         var bmap_basic_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
         // var bmap = 'https://api.mapbox.com/styles/v1/gorgonspeaks/cj6aik97139zb2snsdqkdfi4d/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ29yZ29uc3BlYWtzIiwiYSI6ImNqNW9qM2t0OTAwZ2Qyd28wMGswNjZ0NWwifQ.Sp_o2zYX_JUZNkcIyXIdMw'
         // var bmap_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">Health Liveable Cities Group, RMIT</a>'
-        var basic_tiles = L.tileLayer(bmap_basic, { attribution: bmap_basic_attrib}).addTo(map);
-        var sat_tiles = L.tileLayer(bmap_sat, { attribution: bmap_sat_attrib})
+        var basic_tiles = L.tileLayer(bmap_basic, { attribution: bmap_basic_attrib})
+        var sat_tiles = L.tileLayer(bmap_sat, { attribution: bmap_sat_attrib}).addTo(map);
         
         var baseMaps = {
             "Basic": basic_tiles,
@@ -141,7 +141,7 @@ block content
                 labels = [],
                 quantile = ['100 High','90','80','70','60','50','40','30','20','10 Low'];
                 // labels.push('<table style="table-layout:fixed;"><col width="20"><col width="8"><col width="80"><tr><td></td><td></td><td><b><div id="activeTitle">Liveability</div></b></td>');                
-                labels.push('<table style="table-layout:fixed;"><col width="20"><col width="8"><col width="50">');
+                labels.push('<table style="table-layout:fixed;"><col width="20"><col width="8"><col width="80">');
             for (var i = 0; i < quantiles.length; i++) {
                 labels.push('<tr><td style="background:' + getColor(quantiles[i]) + '"></td><td></td><td>' + quantile[i] + '</td>');
             }
@@ -152,105 +152,204 @@ block content
         legend.addTo(map);        
         
         function li_style(feature) {
-        	return {
-        		weight: 1,
-        		color: 'white',
-        		fillOpacity: 0.7,
+            return {
+                weight: 1,
+                color: 'white',
+                fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f15)
-        	};
+            };
         }       
         
         function wa_style(feature) {
-        	return {
-        		weight: 1,
-        		color: 'white',
-        		fillOpacity: 0.7,
+            return {
+                weight: 1,
+                color: 'white',
+                fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f16)
-        	};
+            };
         }        
         
         function dl_style(feature) {
-        	return {
-        		weight: 1,
-        		color: 'white',
-        		fillOpacity: 0.7,
+            return {
+                weight: 1,
+                color: 'white',
+                fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f17)
-        	};
+            };
         }       
         
         function dd_style(feature) {
-        	return {
-        		weight: 1,
-        		color: 'white',
-        		fillOpacity: 0.7,
+            return {
+                weight: 1,
+                color: 'white',
+                fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f18)
-        	};
+            };
         }       
         
         function sc_style(feature) {
-        	return {
-        		weight: 1,
-        		color: 'white',
-        		fillOpacity: 0.7,
+            return {
+                weight: 1,
+                color: 'white',
+                fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f19)
-        	};
+            };
         }       
         
         function si_style(feature) {
-        	return {
-        		weight: 1,
-        		color: 'white',
-        		fillOpacity: 0.7,
+            return {
+                weight: 1,
+                color: 'white',
+                fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f20)
-        	};
+            };
         }       
         
         function pt_style(feature) {
-        	return {
-        		weight: 1,
-        		color: 'white',
-        		fillOpacity: 0.7,
+            return {
+                weight: 1,
+                color: 'white',
+                fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f21)
-        	};
+            };
         }       
         
         function po_style(feature) {
-        	return {
-        		weight: 1,
-        		color: 'white',
-        		fillOpacity: 0.7,
+            return {
+                weight: 1,
+                color: 'white',
+                fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f22)
-        	};
+            };
         }       
         
         function pr_style(feature) {
-        	return {
-        		weight: 1,
-        		color: 'white',
-        		fillOpacity: 0.7,
+            return {
+                weight: 1,
+                color: 'white',
+                fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f23)
-        	};
+            };
         }       
         
         function af_style(feature) {
-        	return {
-        		weight: 1,
-        		color: 'white',
-        		fillOpacity: 0.7,
+            return {
+                weight: 1,
+                color: 'white',
+                fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f24)
-        	};
+            };
         }       
         
         function lw_style(feature) {
-        	return {
-        		weight: 1,
-        		color: 'white',
-        		fillOpacity: 0.7,
+            return {
+                weight: 1,
+                color: 'white',
+                fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f25)
-        	};
+            };
+        }       
+
+        function sa1_li_style(feature) {
+            return {
+                weight: 0.5,
+                color: 'white',
+                fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f15)
+            };
         }       
         
-        var li_sa1 = L.geoJson(sa1, {id: 'ind', style: li_style, interactive:false}).addTo(map);
+        function sa1_wa_style(feature) {
+            return {
+                weight: 0.5,
+                color: 'white',
+                fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f16)
+            };
+        }        
+        
+        function sa1_dl_style(feature) {
+            return {
+                weight: 0.5,
+                color: 'white',
+                fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f17)
+            };
+        }       
+        
+        function sa1_dd_style(feature) {
+            return {
+                weight: 0.5,
+                color: 'white',
+                fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f18)
+            };
+        }       
+        
+        function sa1_sc_style(feature) {
+            return {
+                weight: 0.5,
+                color: 'white',
+                fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f19)
+            };
+        }       
+        
+        function sa1_si_style(feature) {
+            return {
+                weight: 0.5,
+                color: 'white',
+                fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f20)
+            };
+        }       
+        
+        function sa1_pt_style(feature) {
+            return {
+                weight: 0.5,
+                color: 'white',
+                fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f21)
+            };
+        }       
+        
+        function sa1_po_style(feature) {
+            return {
+                weight: 0.5,
+                color: 'white',
+                fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f22)
+            };
+        }       
+        
+        function sa1_pr_style(feature) {
+            return {
+                weight: 0.5,
+                color: 'white',
+                fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f23)
+            };
+        }       
+        
+        function sa1_af_style(feature) {
+            return {
+                weight: 0.5,
+                color: 'white',
+                fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f24)
+            };
+        }       
+        
+        function sa1_lw_style(feature) {
+            return {
+                weight: 0.5,
+                color: 'white',
+                fillOpacity: 0.7,
+                fillColor: getColor(feature.properties.f25)
+            };
+        }     
+        
+        var li_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_li_style, interactive:false}).addTo(map);
         var li_ssc = L.geoJson(ssc, {id: 'ind', style: li_style, interactive:false}),
             wa_ssc = L.geoJson(ssc, {id: 'ind', style: wa_style, interactive:false}),
             dl_ssc = L.geoJson(ssc, {id: 'ind', style: dl_style, interactive:false}),
@@ -262,16 +361,16 @@ block content
             pr_ssc = L.geoJson(ssc, {id: 'ind', style: pr_style, interactive:false}),
             af_ssc = L.geoJson(ssc, {id: 'ind', style: af_style, interactive:false}),
             lw_ssc = L.geoJson(ssc, {id: 'ind', style: lw_style, interactive:false}),
-            wa_sa1 = L.geoJson(sa1, {id: 'ind', style: wa_style, interactive:false}),
-            dl_sa1 = L.geoJson(sa1, {id: 'ind', style: dl_style, interactive:false}),
-            dd_sa1 = L.geoJson(sa1, {id: 'ind', style: dd_style, interactive:false}),
-            sc_sa1 = L.geoJson(sa1, {id: 'ind', style: sc_style, interactive:false}),
-            si_sa1 = L.geoJson(sa1, {id: 'ind', style: si_style, interactive:false}),
-            pt_sa1 = L.geoJson(sa1, {id: 'ind', style: pt_style, interactive:false}),
-            po_sa1 = L.geoJson(sa1, {id: 'ind', style: po_style, interactive:false}),
-            pr_sa1 = L.geoJson(sa1, {id: 'ind', style: pr_style, interactive:false}),
-            af_sa1 = L.geoJson(sa1, {id: 'ind', style: af_style, interactive:false}),
-            lw_sa1 = L.geoJson(sa1, {id: 'ind', style: lw_style, interactive:false});
+            wa_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_wa_style, interactive:false}),
+            dl_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_dl_style, interactive:false}),
+            dd_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_dd_style, interactive:false}),
+            sc_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_sc_style, interactive:false}),
+            si_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_si_style, interactive:false}),
+            pt_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_pt_style, interactive:false}),
+            po_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_po_style, interactive:false}),
+            pr_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_pr_style, interactive:false}),
+            af_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_af_style, interactive:false}),
+            lw_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_lw_style, interactive:false});
         
         function requantile(p,num) {
             return Math.floor((p-1)/num)+1;
@@ -286,7 +385,6 @@ block content
             };
         }
 
-        
         function highlightFeature(e) {
             var layer = e.target;
         
@@ -352,7 +450,34 @@ block content
             style: null_style,
             onEachFeature: onEachFeature
         });
+        
+        function toggle() {
+            var ele = document.getElementById("toggleText");
+            var text = document.getElementById("displayText");
+            if(ele.style.display == "block") {
+                    ele.style.display = "none";
+                text.innerHTML = "Display map info";
+            }
+            else {
+                ele.style.display = "block";
+                text.innerHTML = "Hide map info";
+            }
+        }         
 
+        
+        var info = L.control();
+
+        info.onAdd = function (map) {
+        this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+        this.update();
+        return this._div;
+        };
+        
+        // method that we will use to update the control based on feature properties passed
+        info.update = function (props) {
+        this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4><a id="displayText" href="javascript:toggle();">Display map info</a><div id="toggleText" style="display: none"><i><div id="bmap_overlay"></div><div id="sa1_overlay"></div><div id="ssc_overlay"></div><div id="popup_overlay">-</div></i></div>';
+        };
+        info.addTo(map);
         
         var baseLayers = {
              "Basic": basic_tiles,
@@ -368,39 +493,50 @@ block content
 
         
         var groupedOverlays = {
-          "Suburbs": {
-            "Liveability Index"                            : li_ssc,
-            "Walkability Index"                            : wa_ssc,     
-            " - Daily Living (/3)"                         : dl_ssc,     
-            " - Dwellings per Ha"                          : dd_ssc,     
-            " - 3+ way street connections per Ha"          : sc_ssc,     
-            "Social infrastructure mix (/16)	"          : si_ssc,     
-            "PT access meets policy (%)"                   : pt_ssc,     
-            "POS ≥ 1.5Ha within 400m (%)	"              : po_ssc,     
-            "Air quality (rev. Mesh Block NO&#x2082; ppb.)": pr_ssc,     
-            "Affordable housing (30/40 rule, SA1 %)"       : af_ssc,     
-            "Live & work w/in SA3 (SA2 %)"                 : lw_ssc, 
-            "none"                                         : null_base.Empty
-          },
           "SA1 regions": {
             "Liveability Index"                            : li_sa1,
             "Walkability Index"                            : wa_sa1,      
             " - Daily Living (/3)"                         : dl_sa1,      
             " - Dwellings per Ha"                          : dd_sa1,      
             " - 3+ way street connections per Ha"          : sc_sa1,      
-            "Social infrastructure mix (/16)	"          : si_sa1,      
+            "Social infrastructure mix (/16)    "          : si_sa1,      
             "PT access meets policy (%)"                   : pt_sa1,      
-            "POS ≥ 1.5Ha within 400m (%)	"              : po_sa1,      
+            "POS ≥ 1.5Ha within 400m (%)    "              : po_sa1,      
             "Air quality (rev. Mesh Block NO&#x2082; ppb.)": pr_sa1,      
             "Affordable housing (30/40 rule, SA1 %)"       : af_sa1,      
             "Live & work w/in SA3 (SA2 %)"                 : lw_sa1,   
             "none"                                         : null_base.Empty
           },
+          "Suburbs": {
+            "Liveability Index"                            : li_ssc,
+            "Walkability Index"                            : wa_ssc,     
+            " - Daily Living (/3)"                         : dl_ssc,     
+            " - Dwellings per Ha"                          : dd_ssc,     
+            " - 3+ way street connections per Ha"          : sc_ssc,     
+            "Social infrastructure mix (/16)    "          : si_ssc,     
+            "PT access meets policy (%)"                   : pt_ssc,     
+            "POS ≥ 1.5Ha within 400m (%)    "              : po_ssc,     
+            "Air quality (rev. Mesh Block NO&#x2082; ppb.)": pr_ssc,     
+            "Affordable housing (30/40 rule, SA1 %)"       : af_ssc,     
+            "Live & work w/in SA3 (SA2 %)"                 : lw_ssc, 
+            "none"                                         : null_base.Empty
+          },
           "Popup info": {
-            "Suburb":ssc_info,
-            "SA1":sa1_info
+            "SA1":sa1_info,
+            "Suburb":ssc_info
           }
         };
+        
+        // map.on('zoomend', function () {
+            // currentZoom = map.getZoom();
+            // if (currentZoom < 12) {
+                // polygon.setStyle({weight: 2});
+            // }
+            // else {
+                // polygon.setStyle({weight: 3});
+            // }
+        // });
+        
         
         var options = {
           // Make the "Landmarks" group exclusive (use radio inputs)
@@ -411,17 +547,37 @@ block content
         
         L.control.groupedLayers(baseLayers, groupedOverlays, options).addTo(map);
         
+
+        document.getElementById("bmap_overlay").innerHTML   = "Basemap: Satellite" 
+        document.getElementById("sa1_overlay").innerHTML    = "SA1: Liveability Index"  
+        document.getElementById("ssc_overlay").innerHTML    = "Suburb: Liveability Index"
+        document.getElementById("popup_overlay").innerHTML  = "Hover/click info: Suburb"
         
         $("[name='leaflet-base-layers']").change( function () {
-            sa1_info.bringToFront();
-            ssc_info.bringToFront();
-            // document.getElementById("activeTitle").innerHTML = $(this).parent().text()
+            // sa1_info.bringToFront();
+            // ssc_info.bringToFront();
+            document.getElementById("bmap_overlay").innerHTML = "Basemap: " + $('input[type=radio][name=leaflet-base-layers]:checked').next()["0"].innerHTML
+        });         
+        $("[name='leaflet-exclusive-group-layer-1']").change( function () {
+            // sa1_info.bringToFront();
+            // ssc_info.bringToFront();
+            document.getElementById("sa1_overlay").innerHTML  = "SA1: " + $('input[type=radio][name=leaflet-exclusive-group-layer-1]:checked').next()["0"].innerHTML
+        });         
+        $("[name='leaflet-exclusive-group-layer-2']").change( function () {
+            // sa1_info.bringToFront();
+            // ssc_info.bringToFront();
+            document.getElementById("ssc_overlay").innerHTML  = "Suburb: " + $('input[type=radio][name=leaflet-exclusive-group-layer-2]:checked').next()["0"].innerHTML
+        });        
+        $("[name='leaflet-exclusive-group-layer-3']").change( function () {
+            // sa1_info.bringToFront();
+            // ssc_info.bringToFront();
+            document.getElementById("popup_overlay").innerHTML  = "Hover/click info: " + $('input[type=radio][name=leaflet-exclusive-group-layer-2]:checked').next()["0"].innerHTML
         });        
         
         // add attribution
         map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>');
         
-        
+        // this._leaflet_id" was what I needed, allows me to use: featureGroup.on("click", function(event){ var layerID = event.layer._leaflet_id
 
 
         // add full screen toggle
