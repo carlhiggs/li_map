@@ -107,11 +107,13 @@ block content
         
         // Create variable to hold map element, give initial settings to map
         var map = L.map('map',{ center: [-37.8078244,144.9625175], zoom: 12});    
-
+        
+        // add attribution
+        map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>');
 
         // Add CartoDB.Positron tile layer to map element
         var bmap_sat = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-        var bmap_sat_attrib = 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        var bmap_sat_attrib = '&copy; <a href="http://www.esri.com/" title="Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community">Esri</a>'
         var bmap_basic = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
         var bmap_basic_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
         // var bmap = 'https://api.mapbox.com/styles/v1/gorgonspeaks/cj6aik97139zb2snsdqkdfi4d/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ29yZ29uc3BlYWtzIiwiYSI6ImNqNW9qM2t0OTAwZ2Qyd28wMGswNjZ0NWwifQ.Sp_o2zYX_JUZNkcIyXIdMw'
@@ -127,13 +129,13 @@ block content
         
         // add mini-map
         var bmap2 = new L.TileLayer(bmap_basic, {minZoom: 0, maxZoom: 13, attribution: bmap_basic_attrib});
-        var miniMap = new L.Control.MiniMap(bmap2).addTo(map);    
+        var miniMap = new L.Control.MiniMap(bmap2,{position: 'bottomleft'}).addTo(map);    
 
         // add scale bar
         L.control.scale().addTo(map);  
         
         // Style and add legend
-        var legend = L.control({position: 'bottomleft'});
+        var legend = L.control({position: 'bottomright'});
         
         legend.onAdd = function (map) {
             var div = L.DomUtil.create('div', 'info legend'),
@@ -398,6 +400,9 @@ block content
             if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
                 layer.bringToFront();
             }
+            if(document.getElementById("suburb_hover") !== null){
+              document.getElementById("suburb_hover").innerHTML = layer.feature.properties.f2;
+            }
         }
         
         var ssc_info;
@@ -411,6 +416,9 @@ block content
         function resetHighlight(e) {
             sa1_info.resetStyle(e.target);
             ssc_info.resetStyle(e.target);
+            if(document.getElementById("suburb_hover") !== null){
+              document.getElementById("suburb_hover").innerHTML = '<i>Hover over an area<i>';
+            }
         }
         
         function zoomToFeature(e) {
@@ -427,14 +435,6 @@ block content
               maxWidth : 400
           });
         }
-        
-        // function onMapClick(e) {
-            // map._layers['name'+LayerID].setStyle(highlight);
-        // }
-        
-        // map.on('click', onMapClick);
-
-
 
         
         // add info polygon data
@@ -456,11 +456,11 @@ block content
             var text = document.getElementById("displayText");
             if(ele.style.display == "block") {
                     ele.style.display = "none";
-                text.innerHTML = "Display map info";
+                text.innerHTML = "Map info &#9650;";
             }
             else {
                 ele.style.display = "block";
-                text.innerHTML = "Hide map info";
+                text.innerHTML = "Map info &#9660;";
             }
         }         
 
@@ -475,7 +475,7 @@ block content
         
         // method that we will use to update the control based on feature properties passed
         info.update = function (props) {
-        this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4><a id="displayText" href="javascript:toggle();">Display map info</a><div id="toggleText" style="display: none"><i><div id="bmap_overlay"></div><div id="sa1_overlay"></div><div id="ssc_overlay"></div><div id="popup_overlay">-</div></i></div>';
+        this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4><div id="suburb_hover"></div><a id="displayText" href="javascript:toggle();">Map info &#9650;</a><div id="toggleText" style="display: none"><i><div id="bmap_overlay"></div><div id="sa1_overlay"></div><div id="ssc_overlay"></div><div id="popup_overlay">-</div></i></div>';
         };
         info.addTo(map);
         
@@ -505,7 +505,7 @@ block content
             "Air quality (rev. Mesh Block NO&#x2082; ppb.)": pr_sa1,      
             "Affordable housing (30/40 rule, SA1 %)"       : af_sa1,      
             "Live & work w/in SA3 (SA2 %)"                 : lw_sa1,   
-            "none"                                         : null_base.Empty
+            "-"                                         : null_base.Empty
           },
           "Suburbs": {
             "Liveability Index"                            : li_ssc,
@@ -519,23 +519,46 @@ block content
             "Air quality (rev. Mesh Block NO&#x2082; ppb.)": pr_ssc,     
             "Affordable housing (30/40 rule, SA1 %)"       : af_ssc,     
             "Live & work w/in SA3 (SA2 %)"                 : lw_ssc, 
-            "none"                                         : null_base.Empty
+            "-"                                         : null_base.Empty
           },
           "Popup info": {
             "SA1":sa1_info,
-            "Suburb":ssc_info
+            "Suburb":ssc_info,
+            "-": null_base.Empty
           }
         };
         
-        // map.on('zoomend', function () {
-            // currentZoom = map.getZoom();
-            // if (currentZoom < 12) {
-                // polygon.setStyle({weight: 2});
-            // }
-            // else {
-                // polygon.setStyle({weight: 3});
-            // }
-        // });
+        map.on('zoomend', function () {
+            currentZoom = map.getZoom();
+            if (currentZoom > 10) {
+                li_sa1.setStyle({weight: 0.5});
+                wa_sa1.setStyle({weight: 0.5});
+                dl_sa1.setStyle({weight: 0.5});
+                dd_sa1.setStyle({weight: 0.5});
+                sc_sa1.setStyle({weight: 0.5});
+                si_sa1.setStyle({weight: 0.5});
+                pt_sa1.setStyle({weight: 0.5});
+                po_sa1.setStyle({weight: 0.5});
+                pr_sa1.setStyle({weight: 0.5});
+                af_sa1.setStyle({weight: 0.5});
+                lw_sa1.setStyle({weight: 0.5});
+                null_style.setStyle({weight: 1});
+            }
+            else {
+                li_sa1.setStyle({weight: 0});
+                wa_sa1.setStyle({weight: 0});
+                dl_sa1.setStyle({weight: 0});
+                dd_sa1.setStyle({weight: 0});
+                sc_sa1.setStyle({weight: 0});
+                si_sa1.setStyle({weight: 0});
+                pt_sa1.setStyle({weight: 0});
+                po_sa1.setStyle({weight: 0});
+                pr_sa1.setStyle({weight: 0});
+                af_sa1.setStyle({weight: 0});
+                lw_sa1.setStyle({weight: 0});
+                null_style.setStyle({weight: 0.5});
+            }
+        });
         
         
         var options = {
@@ -550,7 +573,7 @@ block content
 
         document.getElementById("bmap_overlay").innerHTML   = "Basemap: Satellite" 
         document.getElementById("sa1_overlay").innerHTML    = "SA1: Liveability Index"  
-        document.getElementById("ssc_overlay").innerHTML    = "Suburb: Liveability Index"
+        document.getElementById("ssc_overlay").innerHTML    = "Suburb: -"
         document.getElementById("popup_overlay").innerHTML  = "Hover/click info: Suburb"
         
         $("[name='leaflet-base-layers']").change( function () {
@@ -573,12 +596,6 @@ block content
             // ssc_info.bringToFront();
             document.getElementById("popup_overlay").innerHTML  = "Hover/click info: " + $('input[type=radio][name=leaflet-exclusive-group-layer-2]:checked').next()["0"].innerHTML
         });        
-        
-        // add attribution
-        map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>');
-        
-        // this._leaflet_id" was what I needed, allows me to use: featureGroup.on("click", function(event){ var layerID = event.layer._leaflet_id
-
 
         // add full screen toggle
         map.addControl(new L.Control.Fullscreen());
@@ -609,4 +626,5 @@ block content
           if(e.altKey && e.which == 83) {
             printer.printMap('CurrentSize', 'LiveabilityIndexExport');
             }
-          }
+        }
+          
