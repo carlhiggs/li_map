@@ -89,24 +89,36 @@ block content
  
         // get color depending on population density value
         function getColor(p) {
-            // // Decile colours
-            return  p > 90 ? '#081D58':
-                    p > 80 ? '#22318D':
-                    p > 70 ? '#2455A4':
-                    p > 60 ? '#2280B8':
-                    p > 50 ? '#34A5C2':
-                    p > 40 ? '#61C0C0':
-                    p > 30 ? '#99D6B9':
-                    p > 20 ? '#D0ECB3':
-                    p > 10 ? '#EFF9B5':
-                    p > 0 ? '#FFFFD9':
+            // Decile colours
+            // pgrn colour scheme - diverging
+            return  p > 90 ? '#276419':
+                    p > 80 ? '#4d9221':
+                    p > 70 ? '#7fbc41':
+                    p > 60 ? '#b8e186':
+                    p > 50 ? '#e6f5d0':
+                    p > 40 ? '#fde0ef':
+                    p > 30 ? '#f1b6da':
+                    p > 20 ? '#de77ae':
+                    p > 10 ? '#c51b7d':
+                    p > 0  ? '#8e0152':
                 '#f7f7f7';
-        }       
- 
-
+        }    
+        // Blue-Yellow colour scheme (YlGnBu sequential)
+        // #081D58
+        // #22318D
+        // #2455A4
+        // #2280B8
+        // #34A5C2
+        // #61C0C0
+        // #99D6B9
+        // #D0ECB3
+        // #EFF9B5
+        // #FFFFD9
         
         // Create variable to hold map element, give initial settings to map
-        var map = L.map('map',{ center: [-37.8078244,144.9625175], zoom: 12,minZoom: 10,maxZoom: 15});    
+        // Melb coords: -37.8078244,144.9625175
+        // Centered on Black Rock
+        var map = L.map('map',{ center: [-37.966909, 145.023575], zoom: 9,minZoom: 8,maxZoom: 17});    
         
         // add attribution
         map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>');
@@ -118,11 +130,11 @@ block content
         var bmap_basic_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
         // var bmap = 'https://api.mapbox.com/styles/v1/gorgonspeaks/cj6aik97139zb2snsdqkdfi4d/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ29yZ29uc3BlYWtzIiwiYSI6ImNqNW9qM2t0OTAwZ2Qyd28wMGswNjZ0NWwifQ.Sp_o2zYX_JUZNkcIyXIdMw'
         // var bmap_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">Health Liveable Cities Group, RMIT</a>'
-        var basic_tiles = L.tileLayer(bmap_basic, { attribution: bmap_basic_attrib})
-        var sat_tiles = L.tileLayer(bmap_sat, { attribution: bmap_sat_attrib}).addTo(map);
+        var sat_tiles = L.tileLayer(bmap_sat, { attribution: bmap_sat_attrib})
+        var basic_tiles = L.tileLayer(bmap_basic, { attribution: bmap_basic_attrib}).addTo(map);
         
         var baseMaps = {
-            "Basic": basic_tiles,
+            "Cartographic": basic_tiles,
             "Satellite": sat_tiles
         };
 
@@ -155,7 +167,7 @@ block content
         
         function li_style(feature) {
             return {
-                weight: 1,
+                weight: 0.5,
                 color: 'white',
                 fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f15)
@@ -164,7 +176,7 @@ block content
         
         function wa_style(feature) {
             return {
-                weight: 1,
+                weight: 0.5,
                 color: 'white',
                 fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f16)
@@ -173,7 +185,7 @@ block content
         
         function dl_style(feature) {
             return {
-                weight: 1,
+                weight: 0.5,
                 color: 'white',
                 fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f17)
@@ -182,7 +194,7 @@ block content
         
         function dd_style(feature) {
             return {
-                weight: 1,
+                weight: 0.5,
                 color: 'white',
                 fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f18)
@@ -191,7 +203,7 @@ block content
         
         function sc_style(feature) {
             return {
-                weight: 1,
+                weight: 0.5,
                 color: 'white',
                 fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f19)
@@ -200,7 +212,7 @@ block content
         
         function si_style(feature) {
             return {
-                weight: 1,
+                weight: 0.5,
                 color: 'white',
                 fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f20)
@@ -209,7 +221,7 @@ block content
         
         function pt_style(feature) {
             return {
-                weight: 1,
+                weight: 0.5,
                 color: 'white',
                 fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f21)
@@ -218,7 +230,7 @@ block content
         
         function po_style(feature) {
             return {
-                weight: 1,
+                weight: 0.5,
                 color: 'white',
                 fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f22)
@@ -227,7 +239,7 @@ block content
         
         function pr_style(feature) {
             return {
-                weight: 1,
+                weight: 0.5,
                 color: 'white',
                 fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f23)
@@ -236,7 +248,7 @@ block content
         
         function af_style(feature) {
             return {
-                weight: 1,
+                weight: 0.5,
                 color: 'white',
                 fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f24)
@@ -245,115 +257,17 @@ block content
         
         function lw_style(feature) {
             return {
-                weight: 1,
-                color: 'white',
-                fillOpacity: 0.7,
-                fillColor: getColor(feature.properties.f25)
-            };
-        }       
-
-        function sa1_li_style(feature) {
-            return {
-                weight: 0.5,
-                color: 'white',
-                fillOpacity: 0.7,
-                fillColor: getColor(feature.properties.f15)
-            };
-        }       
-        
-        function sa1_wa_style(feature) {
-            return {
-                weight: 0.5,
-                color: 'white',
-                fillOpacity: 0.7,
-                fillColor: getColor(feature.properties.f16)
-            };
-        }        
-        
-        function sa1_dl_style(feature) {
-            return {
-                weight: 0.5,
-                color: 'white',
-                fillOpacity: 0.7,
-                fillColor: getColor(feature.properties.f17)
-            };
-        }       
-        
-        function sa1_dd_style(feature) {
-            return {
-                weight: 0.5,
-                color: 'white',
-                fillOpacity: 0.7,
-                fillColor: getColor(feature.properties.f18)
-            };
-        }       
-        
-        function sa1_sc_style(feature) {
-            return {
-                weight: 0.5,
-                color: 'white',
-                fillOpacity: 0.7,
-                fillColor: getColor(feature.properties.f19)
-            };
-        }       
-        
-        function sa1_si_style(feature) {
-            return {
-                weight: 0.5,
-                color: 'white',
-                fillOpacity: 0.7,
-                fillColor: getColor(feature.properties.f20)
-            };
-        }       
-        
-        function sa1_pt_style(feature) {
-            return {
-                weight: 0.5,
-                color: 'white',
-                fillOpacity: 0.7,
-                fillColor: getColor(feature.properties.f21)
-            };
-        }       
-        
-        function sa1_po_style(feature) {
-            return {
-                weight: 0.5,
-                color: 'white',
-                fillOpacity: 0.7,
-                fillColor: getColor(feature.properties.f22)
-            };
-        }       
-        
-        function sa1_pr_style(feature) {
-            return {
-                weight: 0.5,
-                color: 'white',
-                fillOpacity: 0.7,
-                fillColor: getColor(feature.properties.f23)
-            };
-        }       
-        
-        function sa1_af_style(feature) {
-            return {
-                weight: 0.5,
-                color: 'white',
-                fillOpacity: 0.7,
-                fillColor: getColor(feature.properties.f24)
-            };
-        }       
-        
-        function sa1_lw_style(feature) {
-            return {
                 weight: 0.5,
                 color: 'white',
                 fillOpacity: 0.7,
                 fillColor: getColor(feature.properties.f25)
             };
-        }     
+        }          
         
-        var li_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_li_style, interactive:false}).addTo(map);
-        var li_ssc = L.geoJson(ssc, {id: 'ind', style: li_style, interactive:false}),
-            wa_ssc = L.geoJson(ssc, {id: 'ind', style: wa_style, interactive:false}),
+        // Define layers by indicator and area scale
+        var li_ssc = L.geoJson(ssc, {id: 'ind', style: li_style, interactive:false}).addTo(map);
+        var li_sa1 = L.geoJson(sa1, {id: 'ind', style: li_style, interactive:false}).addTo(map);
+        var wa_ssc = L.geoJson(ssc, {id: 'ind', style: wa_style, interactive:false}),
             dl_ssc = L.geoJson(ssc, {id: 'ind', style: dl_style, interactive:false}),
             dd_ssc = L.geoJson(ssc, {id: 'ind', style: dd_style, interactive:false}),
             sc_ssc = L.geoJson(ssc, {id: 'ind', style: sc_style, interactive:false}),
@@ -363,36 +277,52 @@ block content
             pr_ssc = L.geoJson(ssc, {id: 'ind', style: pr_style, interactive:false}),
             af_ssc = L.geoJson(ssc, {id: 'ind', style: af_style, interactive:false}),
             lw_ssc = L.geoJson(ssc, {id: 'ind', style: lw_style, interactive:false}),
-            wa_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_wa_style, interactive:false}),
-            dl_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_dl_style, interactive:false}),
-            dd_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_dd_style, interactive:false}),
-            sc_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_sc_style, interactive:false}),
-            si_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_si_style, interactive:false}),
-            pt_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_pt_style, interactive:false}),
-            po_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_po_style, interactive:false}),
-            pr_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_pr_style, interactive:false}),
-            af_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_af_style, interactive:false}),
-            lw_sa1 = L.geoJson(sa1, {id: 'ind', style: sa1_lw_style, interactive:false});
+            wa_sa1 = L.geoJson(sa1, {id: 'ind', style: wa_style, interactive:false}),
+            dl_sa1 = L.geoJson(sa1, {id: 'ind', style: dl_style, interactive:false}),
+            dd_sa1 = L.geoJson(sa1, {id: 'ind', style: dd_style, interactive:false}),
+            sc_sa1 = L.geoJson(sa1, {id: 'ind', style: sc_style, interactive:false}),
+            si_sa1 = L.geoJson(sa1, {id: 'ind', style: si_style, interactive:false}),
+            pt_sa1 = L.geoJson(sa1, {id: 'ind', style: pt_style, interactive:false}),
+            po_sa1 = L.geoJson(sa1, {id: 'ind', style: po_style, interactive:false}),
+            pr_sa1 = L.geoJson(sa1, {id: 'ind', style: pr_style, interactive:false}),
+            af_sa1 = L.geoJson(sa1, {id: 'ind', style: af_style, interactive:false}),
+            lw_sa1 = L.geoJson(sa1, {id: 'ind', style: lw_style, interactive:false});
+
+        // column graph indicator scale function
+        function bgWidth(value){
+          return (value/100)*230 +'px'
+        }        
         
+        // initialise info variables (used in functions prior to definition)
+        var ssc_info;
+        var sa1_info;
+            
+        // function to scale a percentile to a quantile (e.g. for quintile, num = 20)
         function requantile(p,num) {
             return Math.floor((p-1)/num)+1;
         }
-   
-
+        
+        // a null style functino for info and search layers
         function null_style(feature) {
             return {
-                weight: 1,
-                color: 'white',
+                weight: 0,
+                color: '#d65454',
                 fillOpacity: 0
             };
         }
-
+        
+        function retrieveUpdate(id,field){
+            if(document.getElementById(id) !== null){
+              document.getElementById(id).innerHTML = field;
+            }
+        }
+        
+        // highlight features function
         function highlightFeature(e) {
             var layer = e.target;
         
             layer.setStyle({
                 weight: 3,
-                color: '#d65454',
                 dashArray: '',
                 fillOpacity: 0.3
             });
@@ -400,24 +330,31 @@ block content
             if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
                 layer.bringToFront();
             }
-            if(document.getElementById("suburb_hover") !== null){
-              document.getElementById("suburb_hover").innerHTML = layer.feature.properties.f2;
-            }
-        }
-        
-        var ssc_info;
-        var sa1_info;
-        
-        function bgWidth(value){
-          return (value/100)*230 +'px'
-        }
-
+            // if(document.getElementById("suburb_hover") !== null){
+              // document.getElementById("suburb_hover").innerHTML = layer.feature.properties.f2;
+            // }
+            retrieveUpdate("sa1_hover",layer.feature.properties.f1)
+            retrieveUpdate("suburb_hover",layer.feature.properties.f2)
+            retrieveUpdate("lga_hover",layer.feature.properties.f3)
+            retrieveUpdate("li_hover",layer.feature.properties.f15);
+            // retrieveUpdate("wa_hover",layer.feature.properties.f16)
+            // retrieveUpdate("dl_hover",layer.feature.properties.f17)
+            // retrieveUpdate("dd_hover",layer.feature.properties.f18)
+            // retrieveUpdate("sc_hover",layer.feature.properties.f19)
+            // retrieveUpdate("si_hover",layer.feature.properties.f20)
+            // retrieveUpdate("pt_hover",layer.feature.properties.f21)
+            // retrieveUpdate("po_hover",layer.feature.properties.f22)
+            // retrieveUpdate("pr_hover",layer.feature.properties.f23)
+            // retrieveUpdate("af_hover",layer.feature.properties.f24)
+            // retrieveUpdate("lw_hover",layer.feature.properties.f25);
+        }                                                       
         
         function resetHighlight(e) {
             sa1_info.resetStyle(e.target);
             ssc_info.resetStyle(e.target);
             if(document.getElementById("suburb_hover") !== null){
               document.getElementById("suburb_hover").innerHTML = '<i>Hover over an area<i>';
+              
             }
         }
         
@@ -431,38 +368,46 @@ block content
                 mouseout: resetHighlight
                 // click: zoomToFeature
             });  
-          layer.bindPopup('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + feature.properties.f1 +'</b></td><td></td><td></td> </tr>	<tr><td></td><td><b>Suburb: </b>' + feature.properties.f2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + feature.properties.f3 +'</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Average</b></td><td align="center"><b>Score (/100)</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:'+  bgWidth(feature.properties.f15) +';"></div></td><td><i><b>Liveability</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + feature.properties.f15 +  '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f16) +';"></div></td><td><i>&emsp;Walkability Index</i></td><td align="center"></td>   <td align="center">' + feature.properties.f16 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f17) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3)</i></td><td align="center">' + feature.properties.f6 + '</td>   <td align="center">' + feature.properties.f17 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f18) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + feature.properties.f7 + '</td>   <td align="center">' + feature.properties.f18 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f19) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per Ha</i></td><td align="center">' + feature.properties.f8 + '</td>   <td align="center">' + feature.properties.f19 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f20) +';"></div></td><td><i>&emsp;Social infrastructure mix (/16)</i></td><td align="center">' + feature.properties.f9 + '</td>  <td align="center">' + feature.properties.f20 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f21) +';"></div></td><td><i>&emsp;PT access meets policy (%)</i></td><td align="center">' + feature.properties.f10 + '</td>   <td align="center">' + feature.properties.f21 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f22) +';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">' + feature.properties.f11 + '</td><td align="center">' + feature.properties.f22 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f23) +';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + feature.properties.f12 + '</td><td align="center">' + feature.properties.f23 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f24) +';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + feature.properties.f13 + '</td><td align="center">' + feature.properties.f24 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f25) +';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + feature.properties.f14 + '</td><td align="center">' + feature.properties.f25 +  '</td></tr></tbody></table>', {
+          layer.bindPopup('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + feature.properties.f1 +'</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + feature.properties.f2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + feature.properties.f3 +'</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Average</b></td><td align="center"><b>Score (/100)</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:'+  bgWidth(feature.properties.f15) +';"></div></td><td><i><b>Liveability</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + feature.properties.f15 +  '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f16) +';"></div></td><td><i>&emsp;Walkability Index</i></td><td align="center"></td>   <td align="center">' + feature.properties.f16 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f17) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3)</i></td><td align="center">' + feature.properties.f6 + '</td>   <td align="center">' + feature.properties.f17 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f18) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + feature.properties.f7 + '</td>   <td align="center">' + feature.properties.f18 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:'+  bgWidth(feature.properties.f19) +'; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per Ha</i></td><td align="center">' + feature.properties.f8 + '</td>   <td align="center">' + feature.properties.f19 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f20) +';"></div></td><td><i>&emsp;Social infrastructure mix (/16)</i></td><td align="center">' + feature.properties.f9 + '</td>  <td align="center">' + feature.properties.f20 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f21) +';"></div></td><td><i>&emsp;PT access meets policy (%)</i></td><td align="center">' + feature.properties.f10 + '</td>   <td align="center">' + feature.properties.f21 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f22) +';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">' + feature.properties.f11 + '</td><td align="center">' + feature.properties.f22 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f23) +';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + feature.properties.f12 + '</td><td align="center">' + feature.properties.f23 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f24) +';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + feature.properties.f13 + '</td><td align="center">' + feature.properties.f24 +  '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:'+  bgWidth(feature.properties.f25) +';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + feature.properties.f14 + '</td><td align="center">' + feature.properties.f25 +  '</td></tr></tbody></table>', {
               maxWidth : 400
           });
         }
 
         
         // add info polygon data
-        ssc_info = L.geoJson(ssc, {
-            id: 'info',
-            style: null_style,
-            onEachFeature: onEachFeature
-        }).addTo(map);     
-        
-        // add info polygon data
         sa1_info = L.geoJson(sa1, {
             id: 'info',
             style: null_style,
             onEachFeature: onEachFeature
-        });
+        }).addTo(map);
+        
+        // add info polygon data
+        ssc_info = L.geoJson(ssc, {
+            id: 'info',
+            style: null_style,
+            onEachFeature: onEachFeature
+        });     
+        
+        // add search polygon data
+        ssc_search = L.geoJson(ssc, {
+            id: 'search',
+            style: null_style,
+            interactive:false
+        });          
         
         function toggle() {
             var ele = document.getElementById("toggleText");
             var text = document.getElementById("displayText");
             if(ele.style.display == "block") {
                     ele.style.display = "none";
-                text.innerHTML = "Map info &#9650;";
+                text.innerHTML = "Detail &#9650;";
             }
             else {
                 ele.style.display = "block";
-                text.innerHTML = "Map info &#9660;";
+                text.innerHTML = "Detail &#9660;";
             }
         }         
+
 
         
         var info = L.control();
@@ -474,14 +419,14 @@ block content
         };
         
         // method that we will use to update the control based on feature properties passed
-        info.update = function (props) {
-        this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4><div id="suburb_hover"></div><a id="displayText" href="javascript:toggle();">Map info &#9650;</a><div id="toggleText" style="display: none"><i><div id="bmap_overlay"></div><div id="sa1_overlay"></div><div id="ssc_overlay"></div><div id="popup_overlay">-</div></i>';
+        info.update = function () {
+        this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4><table class="g-pop-table" width="400" ><col width="80"><col width="160"><col width="160"><tbody><tr><td></td><td><b>Area (on hover)</b></td><td><b>Display setting</b></td></tr><tr><td><i>SA1    </i></td><td><i><div id="sa1_hover"></i></div></td><td><i><div id="sa1_overlay"></div></i></td></tr><tr><td><i>Suburb </i></td><td><i><div id="suburb_hover"></i></div></td><td><i><div id="ssc_overlay"></div></i></td></tr><tr><td><i>LGA    </i></td><td><i><div id="lga_hover"></i></div></td><td>-</td></tr><tr><td><i>Info   </i></td><td>-</td><td><i><div id="info_overlay"></i></td></tr><tr><td><i>Basemap</i></td><td>-</td><td><i><div id="bmap_overlay"></i></td></tr></tbody></table><a id="displayText" href="javascript:toggle("Detail");"><div id="toggleText" style="display: none">Detail &#9650;</a>Liveability: <div id="li_hover">-</div></div>';
         };
         info.addTo(map);
         
         var baseLayers = {
-             "Basic": basic_tiles,
-             "Satellite": sat_tiles
+          "Cartographic": basic_tiles,
+          "Satellite": sat_tiles
         };            
                     
         var null_base = {
@@ -521,51 +466,16 @@ block content
             "Live & work w/in SA3 (SA2 %)"                 : lw_ssc, 
             "-"                                         : null_base.Empty
           },
-          "Popup info": {
+          "Summary info scale": {
             "SA1":sa1_info,
             "Suburb":ssc_info,
             "-": null_base.Empty
           }
         };
         
-        map.on('zoomend', function () {
-            currentZoom = map.getZoom();
-            if (currentZoom > 10) {
-                li_sa1.setStyle({weight: 0.5});
-                wa_sa1.setStyle({weight: 0.5});
-                dl_sa1.setStyle({weight: 0.5});
-                dd_sa1.setStyle({weight: 0.5});
-                sc_sa1.setStyle({weight: 0.5});
-                si_sa1.setStyle({weight: 0.5});
-                pt_sa1.setStyle({weight: 0.5});
-                po_sa1.setStyle({weight: 0.5});
-                pr_sa1.setStyle({weight: 0.5});
-                af_sa1.setStyle({weight: 0.5});
-                lw_sa1.setStyle({weight: 0.5});
-                sa1_info.setStyle({weight: 1});
-                ssc_info.setStyle({weight: 1});
-            }
-            else {
-                li_sa1.setStyle({weight: 0});
-                wa_sa1.setStyle({weight: 0});
-                dl_sa1.setStyle({weight: 0});
-                dd_sa1.setStyle({weight: 0});
-                sc_sa1.setStyle({weight: 0});
-                si_sa1.setStyle({weight: 0});
-                pt_sa1.setStyle({weight: 0});
-                po_sa1.setStyle({weight: 0});
-                pr_sa1.setStyle({weight: 0});
-                af_sa1.setStyle({weight: 0});
-                lw_sa1.setStyle({weight: 0});
-                sa1_info.setStyle({weight: 0.5});
-                ssc_info.setStyle({weight: 0.5});
-            }
-        });
-        
-        
         var options = {
           // Make the "Landmarks" group exclusive (use radio inputs)
-          exclusiveGroups: ["Suburbs","SA1 regions","Popup info"],
+          exclusiveGroups: ["Suburbs","SA1 regions","Summary info scale"],
           // Show a checkbox next to non-exclusive group labels for toggling all
           groupCheckboxes: true
         };
@@ -573,30 +483,22 @@ block content
         L.control.groupedLayers(baseLayers, groupedOverlays, options).addTo(map);
         
 
-        document.getElementById("bmap_overlay").innerHTML   = "Basemap: Satellite" 
-        document.getElementById("sa1_overlay").innerHTML    = "SA1: Liveability Index"  
-        document.getElementById("ssc_overlay").innerHTML    = "Suburb: -"
-        document.getElementById("popup_overlay").innerHTML  = "Hover/click info: Suburb"
+        document.getElementById("bmap_overlay").innerHTML = "Satellite" 
+        document.getElementById("sa1_overlay").innerHTML  = "Liveability Index"  
+        document.getElementById("ssc_overlay").innerHTML  = "Liveability Index"
+        document.getElementById("info_overlay").innerHTML = "SA1"
         
         $("[name='leaflet-base-layers']").change( function () {
-            // sa1_info.bringToFront();
-            // ssc_info.bringToFront();
-            document.getElementById("bmap_overlay").innerHTML = "Basemap: " + $('input[type=radio][name=leaflet-base-layers]:checked').next()["0"].innerHTML
+            document.getElementById("bmap_overlay").innerHTML = $('input[type=radio][name=leaflet-base-layers]:checked').next()["0"].innerHTML
         });         
         $("[name='leaflet-exclusive-group-layer-1']").change( function () {
-            // sa1_info.bringToFront();
-            // ssc_info.bringToFront();
-            document.getElementById("sa1_overlay").innerHTML  = "SA1: " + $('input[type=radio][name=leaflet-exclusive-group-layer-1]:checked').next()["0"].innerHTML
+            document.getElementById("sa1_overlay").innerHTML  = $('input[type=radio][name=leaflet-exclusive-group-layer-1]:checked').next()["0"].innerHTML
         });         
         $("[name='leaflet-exclusive-group-layer-2']").change( function () {
-            // sa1_info.bringToFront();
-            // ssc_info.bringToFront();
-            document.getElementById("ssc_overlay").innerHTML  = "Suburb: " + $('input[type=radio][name=leaflet-exclusive-group-layer-2]:checked').next()["0"].innerHTML
+            document.getElementById("ssc_overlay").innerHTML  = $('input[type=radio][name=leaflet-exclusive-group-layer-2]:checked').next()["0"].innerHTML
         });        
         $("[name='leaflet-exclusive-group-layer-3']").change( function () {
-            // sa1_info.bringToFront();
-            // ssc_info.bringToFront();
-            document.getElementById("popup_overlay").innerHTML  = "Hover/click info: " + $('input[type=radio][name=leaflet-exclusive-group-layer-3]:checked').next()["0"].innerHTML
+            document.getElementById("info_overlay").innerHTML  = $('input[type=radio][name=leaflet-exclusive-group-layer-3]:checked').next()["0"].innerHTML
         });        
 
         // add full screen toggle
@@ -629,4 +531,29 @@ block content
             printer.printMap('CurrentSize', 'LiveabilityIndexExport');
             }
         }
-          
+        
+        var searchControl = new L.Control.Search({
+        layer: ssc_search,
+        propertyName: 'f2',
+        marker: false,
+        moveToLocation: function(latlng, title, map) {
+            //map.fitBounds( latlng.layer.getBounds() );
+            var zoom = map.getBoundsZoom(latlng.layer.getBounds());
+            map.setView(latlng, zoom); // access the zoom
+        }
+        });
+        searchControl.on('search:locationfound', function(e) {
+            
+            //console.log('search:locationfound', );
+            //map.removeLayer(this._markerSearch)
+            e.layer.setStyle({fillColor: '#3f0', color: '#0f0'});
+            if(e.layer._popup)
+                e.layer.openPopup();
+        }).on('search:collapsed', function(e) {
+            ssc_search.eachLayer(function(layer) {    //restore feature color
+                ssc_search.resetStyle(layer);
+            }); 
+        });
+        
+        map.addControl( searchControl );  //inizialize search control
+        

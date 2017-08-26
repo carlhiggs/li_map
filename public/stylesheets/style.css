@@ -32,7 +32,7 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
 .info h4 { margin: 0 0 5px; color: #777; }
 
 .summarybox {
-  width: 440px; 
+  width: 410px; 
 }
 
 .holder-table{width:490px; padding:0px;} 
@@ -170,3 +170,18 @@ input[type=radio] {
 .leaflet-fade-anim .leaflet-popup {
   transition: none;
 }
+
+#suburb_hover, #lga_hover, #sa1_overlay, #ssc_overlay
+ {
+    width: 160px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#sa1_overlay, #ssc_overlay :hover {
+    overflow: visible;
+}
+
+
+
