@@ -6,7 +6,7 @@ block content
         .sidebar-tabs
             ul(role='tablist')
                 li
-                    a(href='#home', role='tab')
+                    a(href='#home', role='tab',data-step='1', data-intro='Welcome to the pilot liveability index.  Read a brief summary of the project and about the indicators used here.')
                         i.fa.fa-home
                   li
                     a(href='#measures', role='tab')
@@ -83,17 +83,17 @@ block content
                 p.
                   For further information and contact details, please visit the #[a(href="http://cur.org.au/project/developing-pilot-victorian-urban-liveability-index/", target="_blank") pilot Liveability Index project] and the #[a(href="http://cur.org.au/research-programs/healthy-liveable-cities-group/", target="_blank") Healthy Liveable Cities Group] at the official #[a(href="http://cur.org.au/", target="_blank") RMIT Centre for Urban Research] web page.
     #map.sidebar-map
-    script.
-        $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
-        $(window).on('load', function(){
-          setTimeout(removeLoader, 500); //wait for page load PLUS two seconds.
-        });
-        function removeLoader(){
-            $( "#loadingDiv" ).fadeOut(500, function() {
-              // fadeOut complete. Remove the loading div
-              $( "#loadingDiv" ).remove(); //makes page more lightweight 
-          });  
-        }
+    // script.
+        // $('body').append('<div style="" id="loadingDiv"><div class="loader">Loading...</div></div>');
+        // $(window).on('load', function(){
+          // setTimeout(removeLoader, 0); //wait for page load PLUS two seconds.
+        // });
+        // function removeLoader(){
+            // $( "#loadingDiv" ).fadeOut(500, function() {
+              // // fadeOut complete. Remove the loading div
+              // $( "#loadingDiv" ).remove(); //makes page more lightweight 
+          // });  
+        // }
     script.
         var sa1 = !{JSON.stringify(json_sa1)};
         var ssc = !{JSON.stringify(json_ssc)};
@@ -774,4 +774,18 @@ block content
         });
         
         map.addControl( searchControl );  //inizialize search control
+        
+        // programmatically add intro attributes to dynamic elements
+        $('input#searchtext9.search-input').attr('data-step',"2")
+        $('input#searchtext9.search-input').attr('data-intro',"Search for a suburb here to locate and display its summary information for all indicators.")
+        $('#sa1_overlay').attr('data-step', '3');
+        $('#sa1_overlay').attr('data-intro', 'The currently selected map is displayed here --- the Liveability Index, for SA1 areas (an ABS definition, like a local neighbourhood.  If you hover over one of the highlighted areas its value for this indicator will displayed here.  Click on an area for more detail.');
+        $('#info_overlay').attr('data-step', '4');
+        $('#info_overlay').attr('data-intro', 'Summary information can be retrieved either at the SA1 or Suburb level');
+        $('#bmap_overlay').attr('data-step', '5');
+        $('#bmap_overlay').attr('data-intro', 'The background map can be toggled between a basic gray scale map, or a satellite view.  The latter may be useful to examine local built environment in light of the displayed indicators.');
+        $('a.leaflet-control-layers-toggle').attr('data-step', '6');
+        $('a.leaflet-control-layers-toggle').attr('data-intro', 'The displayed map elements summarised above can be changed here; hover over this icon to display the options.  For example, you could select to view the "Walkability Index" at the suburb level.');
+        // Run the introductory script
+        introJs().start();
         
