@@ -13,6 +13,7 @@ const client = new pg.Client({
   host: "ligres.postgres.database.azure.com",
   ssl: true
 });
+
 client.connect();
 
 var auth = function (req, res, next) {

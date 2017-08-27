@@ -588,7 +588,7 @@ CREATE TABLE li_map_json_ssc_min_soft AS SELECT row_to_json(fc) FROM
   (SELECT 'FeatureCollection' As type, array_to_json(array_agg(f)) As features  FROM 
     (SELECT 'Feature' As type, ST_AsGeoJSON(ST_Transform(lg.geom,4326))::json As geometry, 
      row_to_json((
-     'suburb-level',suburb,lga,is_li_ci_est,rs_walkability,rs_dl,rs_dd,rs_sc,rs_si_mix,rs_dest_pt,rs_pos15000_access,rs_pred_no2_2011_col_ppb,rs_prop_affordablehousing,rs_prop_live_work,ps_li_ci_est,ps_walkability,ps_dl,ps_dd,ps_sc,ps_si_mix,ps_dest_pt,ps_pos15000_access,ps_pred_no2_2011_col_ppb,ps_prop_affordablehousing,ps_prop_live_work
+     '-',suburb,lga,is_li_ci_est,rs_walkability,rs_dl,rs_dd,rs_sc,rs_si_mix,rs_dest_pt,rs_pos15000_access,rs_pred_no2_2011_col_ppb,rs_prop_affordablehousing,rs_prop_live_work,ps_li_ci_est,ps_walkability,ps_dl,ps_dd,ps_sc,ps_si_mix,ps_dest_pt,ps_pos15000_access,ps_pred_no2_2011_col_ppb,ps_prop_affordablehousing,ps_prop_live_work
      )) As properties FROM 
       (SELECT * FROM li_map_full_ssc_soft) As lg) As f) As fc;
       
