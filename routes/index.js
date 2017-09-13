@@ -36,8 +36,8 @@ var auth = function (req, res, next) {
 };
 
 // Set up your database query to display GeoJSON
-const li_query_sa1 = "SELECT * FROM li_map_json_sa1_min_soft";
-const li_query_ssc = "SELECT * FROM li_map_json_ssc_min_soft";
+const li_query_sa1 = "SELECT * FROM clean_li_map_json_sa1_min_soft";
+const li_query_ssc = "SELECT * FROM clean_li_map_json_ssc_min_soft";
 // var li_query = "SELECT * FROM li_map_json_sa1_min_hard";
 // var li_query = "SELECT * FROM li_map_json_hard";
 // var li_query = "SELECT * FROM li_map_json_h_mini";

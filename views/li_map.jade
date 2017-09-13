@@ -439,6 +439,11 @@ block content
           return (value/100)*230 +'px'
         }        
         
+        //  create graph function --- not implemented, but it should be!
+        function bgGraph(value){
+          return '<div class="g-ind-sub" style="width:'+ (value/100)*230 +'px ;background:' + getColor(value) + ';"></div>'
+        }        
+                
         // initialise info variables (used in functions prior to definition)
         var ssc_info;
         var sa1_info;
