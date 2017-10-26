@@ -6,7 +6,7 @@ block content
         .sidebar-tabs
             ul(role='tablist')
                 li
-                    a(href='#home', role='tab',title='About',data-step='1', data-intro='Welcome to the pilot urban liveability index for Melbourne in 2011.  A brief summary of the project background and aims is provided here.')
+                    a(href='#home', role='tab',title='About',data-step='1', data-intro='Welcome to the Pilot Liveability Index for the Shire of Cardinia, Melbourne 2011.  A brief summary of the project background and aims is provided here.')
                         i.fa.fa-info-circle
                   li
                     a(href='#liveability', role='tab',title='Liveability Index',data-step='2', data-intro='The liveability index is described here, and each of the indicators is summarised in the panes below.')
@@ -159,7 +159,7 @@ block content
         // Create variable to hold map element, give initial settings to map
         // Melb coords: -37.8078244,144.9625175
         // Centered on Black Rock
-        var map = L.map('map',{ center: [-37.966909, 145.023575], zoom: 10,minZoom: 8,maxZoom: 17});    
+        var map = L.map('map',{ center: [-38.081, 145.568], zoom: 11,minZoom: 8,maxZoom: 17});    
         
         // add attribution
         map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>');
@@ -177,8 +177,8 @@ block content
         // var bmap_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">Health Liveable Cities Group, RMIT</a>'
         
         // add tiles to map
-        var sat_tiles = L.tileLayer(bmap_sat, { attribution: bmap_sat_attrib})
-        var basic_tiles = L.tileLayer(bmap_cartodb, { attribution: bmap_cartodb_attrib}).addTo(map);
+        var sat_tiles = L.tileLayer(bmap_sat, { attribution: bmap_sat_attrib}).addTo(map);
+        var basic_tiles = L.tileLayer(bmap_cartodb, { attribution: bmap_cartodb_attrib});
         
         var baseMaps = {
             "Cartographic": basic_tiles,
@@ -619,7 +619,7 @@ block content
         
         // method that we will use to update the control based on feature properties passed
         info.update = function () {
-        this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4><table class="g-pop-table" width="500" ><col width="80"><col width="160"><col width="260"><tbody><tr><td></td><td><b>Area (on hover)</b></td><td><b>Display setting</b></td></tr><tr><td><i>SA1    </i></td><td><i><div id="sa1_hover"></div></i></td><td><i><div id="sa1_overlay"></div></i></td></tr><tr><td><i>Suburb </i></td><td><i><div id="suburb_hover"></div></i></td><td><i><div id="ssc_overlay"></div></i></td></tr><tr><td><i>LGA</i></td><td><i><div id="lga_hover"></div></i></td><td>-</td></tr><tr><td><i>Info   </i></td><td>-</td><td><i><div id="info_overlay"></div></i></td></tr><tr><td><i>Basemap</i></td><td>-</td><td><i><div id="bmap_overlay"></div></i></td></tr></tbody></table><a id="displayText" href="javascript:toggle("Detail");"><div id="toggleText" style="display: none">Detail &#9650;</a>Liveability: <div id="li_hover">-</div></div>';
+        this._div.innerHTML = '<h4>'+document.title+'</h4><table class="g-pop-table" width="500" ><col width="80"><col width="160"><col width="260"><tbody><tr><td></td><td><b>Area (on hover)</b></td><td><b>Display setting</b></td></tr><tr><td><i>SA1    </i></td><td><i><div id="sa1_hover"></div></i></td><td><i><div id="sa1_overlay"></div></i></td></tr><tr><td><i>Suburb </i></td><td><i><div id="suburb_hover"></div></i></td><td><i><div id="ssc_overlay"></div></i></td></tr><tr><td><i>LGA</i></td><td><i><div id="lga_hover"></div></i></td><td>-</td></tr><tr><td><i>Info   </i></td><td>-</td><td><i><div id="info_overlay"></div></i></td></tr><tr><td><i>Basemap</i></td><td>-</td><td><i><div id="bmap_overlay"></div></i></td></tr></tbody></table><a id="displayText" href="javascript:toggle("Detail");"><div id="toggleText" style="display: none">Detail &#9650;</a>Liveability: <div id="li_hover">-</div></div>';
         };
         info.addTo(map);
         
@@ -696,7 +696,7 @@ block content
         
         
         // Set initial text in info box for layer display settings
-        document.getElementById("bmap_overlay").innerHTML = "Cartographic"
+        document.getElementById("bmap_overlay").innerHTML = "Satellite"
         document.getElementById("sa1_overlay").innerHTML  = sa1_info_text  
         document.getElementById("ssc_overlay").innerHTML  = ssc_info_text
         document.getElementById("info_overlay").innerHTML = info_text
@@ -763,26 +763,26 @@ block content
         // to be implemented: histogram of selected indicator
         
         // add save to .png functions
-        var printer = L.easyPrint({
-          title: 'Download snapshot to png (ctr+alt+s): **this may take some time to process!!**',
-            tileLayer: basic_tiles,
-            filename: 'LiveabilityIndexExport',
-            exportOnly: true,
-            hideControlContainer: false
-        }).addTo(map);
+        // var printer = L.easyPrint({
+          // title: 'Download snapshot to png (ctr+alt+s): **this may take some time to process!!**',
+            // tileLayer: basic_tiles,
+            // filename: 'LiveabilityIndexExport',
+            // exportOnly: true,
+            // hideControlContainer: false
+        // }).addTo(map);
         
         
         // function manualPrint () {
             // printer.printMap('CurrentSize', 'MyManualPrint')
         // }
         
-        // keyboard short cut for save image
-        document.onkeyup=function(e){
-          var e = e || window.event; // for IE to cover IEs window event-object
-          if(e.altKey && e.which == 83) {
-            printer.printMap('CurrentSize', 'LiveabilityIndexExport');
-            }
-        }
+        // // keyboard short cut for save image
+        // document.onkeyup=function(e){
+          // var e = e || window.event; // for IE to cover IEs window event-object
+          // if(e.altKey && e.which == 83) {
+            // printer.printMap('CurrentSize', 'LiveabilityIndexExport');
+            // }
+        // }
         
         // Include a search box to jump to suburb
         var searchControl = new L.Control.Search({
@@ -812,9 +812,9 @@ block content
         
         // programmatically add intro attributes to dynamic elements
         $('leaflet-control-search leaflet-control').attr('data-step',"3")
-        $('leaflet-control-search leaflet-control').attr('data-intro',"Search for a suburb here to locate and display its summary information for all indicators.")
+        $('leaflet-control-search leaflet-control').attr('data-intro',"Search for a suburb here to locate and display its summary information for all indicators, with percentile position relative to the rest of Melbourne.")
         $('#sa1_overlay').attr('data-step', '4');
-        $('#sa1_overlay').attr('data-intro', 'The currently selected map is displayed here --- the Liveability Index, for SA1 areas (an ABS definition, like a local neighbourhood).  If you hover over one of the highlighted areas its percentile position relative to the rest of Melbourne for this indicator will displayed here.  Click on an area for more detail.');
+        $('#sa1_overlay').attr('data-intro', 'The currently selected map is displayed here --- the Liveability Index, for SA1 areas (an ABS definition, like a local neighbourhood).  If you hover over one of the highlighted areas the percentile position for this indicator relative to other Melbourne SA1 areas in 2011 will displayed here.  Click on an area for more detail.');
         $('#info_overlay').attr('data-step', '5');
         $('#info_overlay').attr('data-intro', 'Summary information can be retrieved either at the SA1 or Suburb level');
         $('#bmap_overlay').attr('data-step', '6');

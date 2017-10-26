@@ -18,6 +18,7 @@
     "serve-favicon": "~2.4.2",
     "pg": "*",
     "basic-auth":"*",
-    "compression":"*"
+    "compression":"*",
+    "feature-filter-geojson":"~1.0.0"
     }
 }
