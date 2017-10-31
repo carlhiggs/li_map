@@ -17,6 +17,10 @@ const client = new pg.Client({
 
 client.connect();
 
+// Define authorisation keys --- use distinct, and not predictable keys for different LGAs 
+// --- try to include a random component so the pattern isn't the same for each 
+//  e.g. #### + first four letters of name backwards + year of relevance
+// so 2710mirb2011 for Brimbank; the intent of "2710" is that it makes it more difficult for others to guess password if not known
 var auth = function (req, res, next) {
   function unauthorized(res) {
     res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
@@ -36,6 +40,24 @@ var auth = function (req, res, next) {
   };
 };
 
+var auth_brimbank = function (req, res, next) {
+  function unauthorized(res) {
+    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
+    return res.send(401);
+  };
+
+  var user = basicAuth(req);
+
+  if (!user || !user.name || !user.pass) {
+    return unauthorized(res);
+  };
+
+  if (user.name === 'Brimbank' && user.pass === '2710mirb2011') {
+    return next();
+  } else {
+    return unauthorized(res);
+  };
+};
 
 var auth_cardinia = function (req, res, next) {
   function unauthorized(res) {
@@ -56,15 +78,9 @@ var auth_cardinia = function (req, res, next) {
   };
 };
 
-
 // Set up your database query to display GeoJSON
 const li_query_sa1 = "SELECT * FROM clean_li_map_json_sa1_min_soft";
 const li_query_ssc = "SELECT * FROM clean_li_map_json_ssc_min_soft";
-
-// var li_query = "SELECT * FROM li_map_json_sa1_min_hard";
-// var li_query = "SELECT * FROM li_map_json_hard";
-// var li_query = "SELECT * FROM li_map_json_h_mini";
-
 
 /* GET home page. */
 router.get('/', auth, function(req, res, next) {
@@ -72,8 +88,6 @@ router.get('/', auth, function(req, res, next) {
 });
 
 module.exports = router;
-
-
 
 /* GET the map page */
 router.get('/li_map', auth, function(req, res) {
@@ -158,9 +172,44 @@ Array.prototype.where =
       return res ;
    }
 
+   
+// Define web content
+// In future should devise a loop to create unique content for each LGA, with a pre-created list of LGA-specific password keys
+// In the mean time, make sure to:
+//  - update LGA name and title (e.g. 'City of Brimbank') on this page, front page and map page
+//  - update lga_name11 variable value (e.g. 'Brimbank (C)')   
+//  - update site links (e.g. 'li_brimbank' on brimbank front page)
+//  - Remember to center map page on point relevant to map (e.g. Melbourne, or a particular LGA) 
+//     - set manually and check parameter using: map.getCenter();  then place this parameter in map script
+//  - Set zoom as appropriate for map focus (e.g. city, or LGA) 
+//     - set manually and check parameter using: map.getZoom();  then place this parameter in map script
+   
+/* GET the Brimbank front page */
+router.get('/Brimbank', auth_brimbank, function(req, res, next) {
+  res.render('Brimbank', { title: "Pilot Liveability Index: City of Brimbank, Melbourne 2011" });
+});   
+   
 /* GET the Cardinia front page */
 router.get('/Cardinia', auth_cardinia, function(req, res, next) {
   res.render('Cardinia', { title: "Pilot Liveability Index: Shire of Cardinia, Melbourne 2011" });
+});
+
+/* GET the Brimbank map page */
+router.get('/li_brimbank', auth_brimbank, function(req, res) {
+    client.query(li_query_ssc)
+      .then(data => {
+        var ssc_data = data.rows[0].row_to_json.features.where( "( el, i, res, param ) => el.properties.f3 == param", "Brimbank (C)" );
+        client.query(li_query_sa1)
+          .then(data => {
+           var sa1_data =  data.rows[0].row_to_json.features.where( "( el, i, res, param ) => el.properties.f3 == param", "Brimbank (C)" );
+           res.render('li_brimbank', {
+             title: "Pilot Liveability Index: City of Brimbank, Melbourne 2011",
+             json_sa1: sa1_data,
+             json_ssc: ssc_data
+           })
+        })
+      })
+    .catch(e => console.error(e.stack))
 });
    
 /* GET the Cardinia map page */
