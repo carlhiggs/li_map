@@ -763,26 +763,27 @@ block content
         // to be implemented: histogram of selected indicator
         
         // add save to .png functions
-        var printer = L.easyPrint({
-          title: 'Download snapshot to png (ctr+alt+s): **this may take some time to process!!**',
-            tileLayer: basic_tiles,
-            filename: 'LiveabilityIndexExport',
-            exportOnly: true,
-            hideControlContainer: false
-        }).addTo(map);
+        // TO BE IMPLEMENTED: below code ceased to work, and when it did it was painfully slow
+        // var printer = L.easyPrint({
+          // title: 'Download snapshot to png (ctr+alt+s): **this may take some time to process!!**',
+            // tileLayer: basic_tiles,
+            // filename: 'LiveabilityIndexExport',
+            // exportOnly: true,
+            // hideControlContainer: false
+        // }).addTo(map);
         
         
         // function manualPrint () {
             // printer.printMap('CurrentSize', 'MyManualPrint')
         // }
         
-        // keyboard short cut for save image
-        document.onkeyup=function(e){
-          var e = e || window.event; // for IE to cover IEs window event-object
-          if(e.altKey && e.which == 83) {
-            printer.printMap('CurrentSize', 'LiveabilityIndexExport');
-            }
-        }
+        // // keyboard short cut for save image
+        // document.onkeyup=function(e){
+          // var e = e || window.event; // for IE to cover IEs window event-object
+          // if(e.altKey && e.which == 83) {
+            // printer.printMap('CurrentSize', 'LiveabilityIndexExport');
+            // }
+        // }
         
         // Include a search box to jump to suburb
         var searchControl = new L.Control.Search({
