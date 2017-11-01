@@ -172,7 +172,6 @@ Array.prototype.where =
       return res ;
    }
 
-   
 // Define web content
 // In future should devise a loop to create unique content for each LGA, with a pre-created list of LGA-specific password keys
 // In the mean time, make sure to:
@@ -229,4 +228,3 @@ router.get('/li_cardinia', auth_cardinia, function(req, res) {
       })
     .catch(e => console.error(e.stack))
 });
-
