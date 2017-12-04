@@ -349,11 +349,27 @@ select::-ms-expand {
   top: 0px;
 }
 
+.leaflet-top leaflet-right {
+}
+
+.leaflet-panel-layers-list {
+  width: 13em;
+}
+
 .leaflet-panel-layers-title {
   font-size: 1.3em;
+}
+
+.leaflet-panel-layers-overlays {
+  background-color: rgba(255, 0, 0, 0.4);
 }
 
 input[type='radio']{   
     vertical-align: middle;
     margin-top: 0.5em;
+ }
+ 
+input[type='checkbox']{   
+    vertical-align: middle;
+    margin-top: 0.3em;
  }

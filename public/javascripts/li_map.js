@@ -55,7 +55,7 @@ function load_li_map() {
            layer.setStyle({
                fillColor: getColor(layer.feature.properties[ind_value]),
                fillOpacity: 0.8,
-               weight: 0.5,
+               weight: 0,
                color: 'white',
            });
        });
@@ -63,7 +63,7 @@ function load_li_map() {
            layer.setStyle({
                fillColor: getColor(layer.feature.properties[ind_value]),
                fillOpacity: 0.8,
-               weight: 0.5,
+               weight: 0,
                color: 'white',
            });
        });
@@ -135,7 +135,7 @@ function load_li_map() {
     // Define initial style (liveability index)
     function li_style(feature) {
       return {
-        weight: 0.5,
+        weight: 0,
         color: 'white',
         fillOpacity: 0.7,
         fillColor: getColor(feature.properties.f15)
@@ -207,34 +207,48 @@ function load_li_map() {
       });
     }
     
+    // Construct basemaps 
+    // - this is done in an idiosyncratic, piecewise way due to inconsistent grouping behaviour
+    // in the async window functions 
     basemaps = L.control.panelLayers(
     [
-        {
-            group: "Base layers",
-            collapsed: true,
-            layers:[
-                   {
-                       "active": true,
-                       "name": "Satellite",
-                       "layer": L.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png")
-                   },
-                   {
-                       "name": "Basic",
-                       "layer": L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png")
-                   }
-                   ]
-        }
-    ],[],{compact: true}
+    ],[],{}
     ).addTo(map);
 
+    basemaps.addBaseLayer({
+        group: "Base layers", 
+        collapsed: true,
+		    name:  'Satellite basemap',
+	      layer: L.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png").addTo(map)
+        });    
+    
+    basemaps.addBaseLayer({
+        group: "Base layers", 
+        collapsed: true,
+		    name:  'Basic basemap',
+	      layer: L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png")
+        });  
+    
     overlays = L.control.panelLayers(
     [
           {
             group: "Summary scale",
             collapsed: true,
-            layers: []
-          }
-    ],[],{compact: true}
+            layers: [,
+                   ]
+        }
+    ],[],{}
+    ).addTo(map);
+    
+    boundaries = L.control.panelLayers(
+    [
+          {
+            group: "Administrative boundaries",
+            collapsed: true,
+            layers: [,
+                   ]
+        }
+    ],[],{}
     ).addTo(map);
     
 
@@ -247,6 +261,7 @@ function load_li_map() {
         });
       overlays.addBaseLayer({
         group: "Summary scale", //note: this is not working yet
+        collapsed: true,
 		    name:  'SA1 summary',
 	      layer: sa1
         });
@@ -269,11 +284,12 @@ function load_li_map() {
           }).addTo(map);
         overlays.addBaseLayer({
           group: "Summary scale", //note: this is not working yet
+          collapsed: true,
 		      name:  'Suburb summary',
 	        layer: ssc
           });
-        overlays.addOverlay({
-          group: "Summary scale", //note: this is not working yet
+        boundaries.addBaseLayer({
+          group: "Administrative boundaries", //note: this is not working yet
 		      name:  'Suburb borders',
 	        layer: L.geoJson(data, {
                id: 'ind',
