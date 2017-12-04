@@ -17,7 +17,7 @@ function load_li_map() {
                p > 0  ? '#8e0152':
                         '#f7f7f7';
     }
-
+    
     // Create variable to hold map element, give initial settings to map
     // Melb coords: -37.8078244,144.9625175
     // Centered on Black Rock
@@ -42,6 +42,38 @@ function load_li_map() {
 
     // add attribution
     map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>');
+    
+    
+
+
+
+    function UpdateIndicatorList() {
+      var selected_ind = document.getElementById("inddrop");
+      var ind_value = selected_ind.options[selected_ind.selectedIndex].value;
+      window.location.replace("#"+ind_value);
+      sa1.eachLayer(function(layer) {
+           layer.setStyle({
+               fillColor: getColor(layer.feature.properties[ind_value]),
+               fillOpacity: 0.8,
+               weight: 0.5,
+               color: 'white',
+           });
+       });
+      ssc.eachLayer(function(layer) {
+           layer.setStyle({
+               fillColor: getColor(layer.feature.properties[ind_value]),
+               fillOpacity: 0.8,
+               weight: 0.5,
+               color: 'white',
+           });
+       });
+    };
+    
+ 
+    $(document).ready(function() {
+      $("#inddrop").change(UpdateIndicatorList);
+    });
+
 
     // Add tiles, mini-map, scale bar and legend to map
     var sat_tiles,
@@ -51,19 +83,19 @@ function load_li_map() {
         miniMap,
         legend;
 
-    // add tiles to map
-    sat_tiles = L.tileLayer(bmap_sat, {
-        attribution: bmap_sat_attrib
-    });
+    // // add tiles to map
+    // sat_tiles = L.tileLayer(bmap_sat, {
+        // attribution: bmap_sat_attrib
+    // }).addTo(map);
 
-    basic_tiles = L.tileLayer(bmap_cartodb, {
-        attribution: bmap_cartodb_attrib
-    }).addTo(map);
+    // basic_tiles = L.tileLayer(bmap_cartodb, {
+        // attribution: bmap_cartodb_attrib
+    // });
 
-    baseMaps = {
-        "Cartographic": basic_tiles,
-        "Satellite": sat_tiles
-    };
+    // baseMaps = {
+        // "Cartographic": basic_tiles,
+        // "Satellite": sat_tiles
+    // };
 
     bmap2 = new L.TileLayer(bmap_cartodb, {
         minZoom: 0,
@@ -100,7 +132,7 @@ function load_li_map() {
     legend.addTo(map);
 
 
-    // Define indicator specific styles
+    // Define initial style (liveability index)
     function li_style(feature) {
       return {
         weight: 0.5,
@@ -109,124 +141,30 @@ function load_li_map() {
         fillColor: getColor(feature.properties.f15)
       };
     }
-
-    function wa_style(feature) {
+    
+    // Define initial style (liveability index)
+    function border_style(feature) {
       return {
-        weight: 0.5,
-        color: 'white',
-        fillOpacity: 0.7,
-        fillColor: getColor(feature.properties.f16)
+        weight: 1.5,
+        color: '#46abbe',
+        fillOpacity: 0
       };
     }
 
-    function dl_style(feature) {
-      return {
-        weight: 0.5,
-        color: 'white',
-        fillOpacity: 0.7,
-        fillColor: getColor(feature.properties.f17)
-      };
-    }
-
-    function dd_style(feature) {
-      return {
-        weight: 0.5,
-        color: 'white',
-        fillOpacity: 0.7,
-        fillColor: getColor(feature.properties.f18)
-      };
-    }
-
-    function sc_style(feature) {
-      return {
-        weight: 0.5,
-        color: 'white',
-        fillOpacity: 0.7,
-        fillColor: getColor(feature.properties.f19)
-      };
-    }
-
-    function si_style(feature) {
-      return {
-        weight: 0.5,
-        color: 'white',
-        fillOpacity: 0.7,
-        fillColor: getColor(feature.properties.f20)
-      };
-    }
-
-    function pt_style(feature) {
-      return {
-        weight: 0.5,
-        color: 'white',
-        fillOpacity: 0.7,
-        fillColor: getColor(feature.properties.f21)
-      };
-    }
-
-    function po_style(feature) {
-      return {
-        weight: 0.5,
-        color: 'white',
-        fillOpacity: 0.7,
-        fillColor: getColor(feature.properties.f22)
-      };
-    }
-
-    function pr_style(feature) {
-      return {
-        weight: 0.5,
-        color: 'white',
-        fillOpacity: 0.7,
-        fillColor: getColor(feature.properties.f23)
-      };
-    }
-
-    function af_style(feature) {
-      return {
-        weight: 0.5,
-        color: 'white',
-        fillOpacity: 0.7,
-        fillColor: getColor(feature.properties.f24)
-      };
-    }
-
-    function lw_style(feature) {
-      return {
-        weight: 0.5,
-        color: 'white',
-        fillOpacity: 0.7,
-        fillColor: getColor(feature.properties.f25)
-      };
-    }
-
-
+    // WFS data
     var li_sa1_url = "http://bilbo.australiasoutheast.cloudapp.azure.com/geoserver/geonode/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_json_sa1_min_soft&outputFormat=text%2Fjavascript";
     var li_ssc_url = "http://bilbo.australiasoutheast.cloudapp.azure.com/geoserver/geonode/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_json_ssc_min_soft&outputFormat=text%2Fjavascript";
 
-    // column graph indicator scale function
-    function bgWidth(value) {
-      return (value / 100) * 230 + 'px'
-    }
-
-    //  create graph function --- not implemented, but it should be!
-    function bgGraph(value) {
-      return '<div class="g-ind-sub" style="width:' + (value / 100) * 230 + 'px ;background:' + getColor(value) + ';"></div>'
-    }
-
-    // initialise info variables (used in functions prior to definition)
-    var ssc_info;
-    var sa1_info;
-
-    // store initial state which will be referenced before actually assigned
-    var info_text = " SA1"
-    var sa1_info_text = " Liveability Index"
-    var ssc_info_text = " -"
 
     // function to scale a percentile to a quantile (e.g. for quintile, num = 20)
     function requantile(p, num) {
       return Math.floor((p - 1) / num) + 1;
     }
+    
+    // column graph indicator scale function
+    function bgWidth(value){
+      return (value/100)*230 +'px'
+    }        
 
     // a null style functino for info and search layers
     function null_style(feature) {
@@ -235,18 +173,6 @@ function load_li_map() {
             color: '#d65454',
             fillOpacity: 0,
         };
-    }
-        
-    function retrieveUpdate(id, field) {
-      if (document.getElementById(id) !== null) {
-        document.getElementById(id).innerHTML = field;
-      }
-    }
-
-    function resetUpdate(id, field) {
-      if (document.getElementById(id) !== null) {
-        document.getElementById(id).innerHTML = '-';
-      }
     }
 
     // highlight features function
@@ -263,7 +189,6 @@ function load_li_map() {
       }
     }
 
-
     function resetHighlight(e) {
        var layer = e.target;
          layer.setStyle({
@@ -271,7 +196,6 @@ function load_li_map() {
            color: 'white',
          });
     }
-
 
     function onEachFeature(feature, layer) {
       layer.on({
@@ -282,74 +206,50 @@ function load_li_map() {
         maxWidth: 400
       });
     }
+    
+    basemaps = L.control.panelLayers(
+    [
+        {
+            group: "Base layers",
+            collapsed: true,
+            layers:[
+                   {
+                       "active": true,
+                       "name": "Satellite",
+                       "layer": L.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png")
+                   },
+                   {
+                       "name": "Basic",
+                       "layer": L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png")
+                   }
+                   ]
+        }
+    ],[],{compact: true}
+    ).addTo(map);
 
-    var sa1_group,
-        ssc_group,
-        li_sa1 = L.geoJson(),
-        wa_sa1 = L.geoJson(),
-        dl_sa1 = L.geoJson(),
-        dd_sa1 = L.geoJson(),
-        sc_sa1 = L.geoJson(),
-        si_sa1 = L.geoJson(),
-        pt_sa1 = L.geoJson(),
-        po_sa1 = L.geoJson(),
-        pr_sa1 = L.geoJson(),
-        af_sa1 = L.geoJson(),
-        lw_sa1 = L.geoJson(),
-        li_ssc = L.geoJson(),
-        wa_ssc = L.geoJson(),
-        dl_ssc = L.geoJson(),
-        dd_ssc = L.geoJson(),
-        sc_ssc = L.geoJson(),
-        si_ssc = L.geoJson(),
-        pt_ssc = L.geoJson(),
-        po_ssc = L.geoJson(),
-        pr_ssc = L.geoJson(),
-        af_ssc = L.geoJson(),
-        lw_ssc = L.geoJson();
-    
-    
-    panel = L.control.panelLayers(
-        [
-            {
-                group: "Base layers",
-                collapsed: true,
-                layers:[
-                       {
-                           "active": true,
-                           "name": "Satellite",
-                           "layer": L.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png")
-                       },
-                       {
-                           "name": "Basic",
-                           "layer": L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png")
-                       }
-                       ]
-            },
-            {
-                group: "SA1 regions",
-                layers:[]
-            },
-            {
-                group: "Suburbs",
-                layers:[]
-            }
-        ],[],{collapsed:true,collapsibleGroups:true}
+    overlays = L.control.panelLayers(
+    [
+          {
+            group: "Summary scale",
+            collapsed: true,
+            layers: []
+          }
+    ],[],{compact: true}
     ).addTo(map);
     
-    
+
+    // Parse geojson data, adding to map
     window.parseResponseSA1 = function(data) {
-      sa1 = data;
-      panel.addBaseLayer({
-        group: "SA1 regions", //note: this is not working yet
-		name:  'Liveability Index (SA1)',
-        icon: '<i style="color:&quot;#d65454&quot;" class="fa fa-bar-chart-o"></i>',
-		layer: L.geoJson(sa1, {
+      sa1 = L.geoJson(data, {
           id: 'ind',
           style: li_style,
           onEachFeature: onEachFeature
-        }).addTo(map)
-    });
+        }).addTo(map);
+      overlays.addBaseLayer({
+        group: "Summary scale", //note: this is not working yet
+		    name:  'SA1 summary',
+	      layer: sa1
+        });
     }
 
     $.ajax({
@@ -362,79 +262,28 @@ function load_li_map() {
     });
 
     window.parseResponseSSC = function(data) {
-        ssc = data;
-        panel.addOverlay({
-        group: "Suburbs",
-        name:  '<div title="The Liveability Index is based on a score where the average is 100 with most values occurring in a range of between 80 and 120; however, this is presented as a percentile ranking out of 100 in the present visualisation. The Index is based on composite scores of the following domains: Walkability; access to Social Infrastructure; access to Public Transport; access to Public Open Space; Air Quality; Affordable Housing; and Live and Work in local area. A general description of each of these domains is provided below and additional information on how the domain scores were calculated can be found in the indicator glossary">Liveability Index (Suburb)</div>',
-        icon: '<i style="color:&quot;#d65454&quot;" class="fa fa-bar-chart-o"></i>',
-	    layer: L.geoJson(ssc, {
+        ssc = L.geoJson(data, {
                id: 'ind',
                style: li_style,
                onEachFeature: onEachFeature
-             }).addTo(map)
-        });
-        panel.addOverlay({
-        group: "Suburbs",
-        name:  '<div title="Includes standardised measures of dwelling density, street connectivity and daily living score. The daily living score is an indicator of land use mix developed by access to a Public transport stop, convenience destinations and a supermarket.">Walkability Index (Suburb)</div>',
-        icon: '<i style="color:&quot;#d65454&quot;" class="fa fa-street-view"></i>',
-	    layer: L.geoJson(ssc, {
-               id: 'ind',
-               style: wa_style,
-               onEachFeature: onEachFeature
              })
-        });
-        // panel.addOverlay( 
-        // [
-                // {
-                    // name:  '<i style="color:&quot;#d65454&quot;" class="fa fa-bar-chart-o"></i>  Liveability Index',
-                    // layer: L.geoJson(ssc, { id: 'ind', style: li_style, interactive: false })
-                // },
-                // {
-                    // name:  '<i style="color:&quot;#d65454&quot;" class="fa-street-view.png"></i> Walkability Index',
-                    // layer: L.geoJson(ssc, { id: 'ind', style: wa_style, interactive: false })
-                // },
-                // {
-                    // name:  '  - Daily Living (/3)',
-                    // layer: L.geoJson(ssc, { id: 'ind', style: dl_style, interactive: false })
-                // },
-                // {
-                    // name:  '  - Dwellings per Ha',
-                    // layer: L.geoJson(ssc, { id: 'ind', style: dd_style, interactive: false })
-                // },
-                // {
-                    // name:  '  - 3+ way street connections per Ha',
-                    // layer: L.geoJson(ssc, { id: 'ind', style: sc_style, interactive: false })
-                // },
-                // {
-                    // name:  '<i style="color:&quot;#d65454&quot;" class="fa-hospital-o.png"></i> Social infrastructure mix (/16)',
-                    // layer: L.geoJson(ssc, { id: 'ind', style: si_style, interactive: false })
-                // },
-                // {
-                    // name:  '<i style="color:&quot;#d65454&quot;" class="fa-subway.png"></i> PT access meets policy (%)',
-                    // layer: L.geoJson(ssc, { id: 'ind', style: pt_style, interactive: false })
-                // },
-                // {
-                    // name:  '<i style="color:&quot;#d65454&quot;" class="fa-tree.png"></i> POS ≥ 1.5Ha within 400m (%)',
-                    // layer: L.geoJson(ssc, { id: 'ind', style: po_style, interactive: false })
-                // },
-                // {
-                    // name:  '<i style="color:&quot;#d65454&quot;" class="fa-tachometer.png"></i> Air quality (rev. Mesh Block NO&#x2082; ppb.)',
-                    // layer: L.geoJson(ssc, { id: 'ind', style: pr_style, interactive: false })
-                // },
-                // {
-                    // name:  '<i style="color:&quot;#d65454&quot;" class="fa-home.png"></i> Affordable housing (30/40 rule, SA1 %)',
-                    // layer: L.geoJson(ssc, { id: 'ind', style: af_style, interactive: false })
-                // },
-                // {
-                    // name:  '<i style="color:&quot;#d65454&quot;" class="fa-group.png"></i> Live & work w/in SA3 (SA2 %)',
-                    // layer: L.geoJson(ssc, { id: 'ind', style: lw_style, interactive: false })
-                // }
-            // ],{collapsibleGroups: true});        
-      
-        // ssc_info = L.geoJson(ssc, { id: 'info', style: null_style, onEachFeature: onEachFeature });
-        // add search polygon data
-
-        ssc_search = L.geoJson(ssc, {
+        overlays.addBaseLayer({
+          group: "Summary scale", //note: this is not working yet
+		      name:  'Suburb summary',
+	        layer: ssc
+          });
+        overlays.addOverlay({
+          group: "Summary scale", //note: this is not working yet
+		      name:  'Suburb borders',
+	        layer: L.geoJson(data, {
+               id: 'ind',
+               style: border_style,
+               interactive: false
+             }).addTo(map)
+          });
+        
+       
+        ssc_search = L.geoJson(data, {
           id: 'search',
           style: null_style,
           interactive: false,
@@ -445,7 +294,7 @@ function load_li_map() {
             }
         });
     
-            // Include a search box to jump to suburb
+        // Include a search box to jump to suburb
         var searchControl = new L.Control.Search({
           layer: ssc_search,
           propertyName: 'f2',
@@ -486,91 +335,79 @@ function load_li_map() {
       jsonpCallback: 'callback:parseResponseSSC'
     });
     
-    map.addControl(panel);
-
-
-    // Function to hide and display text (not currentle implemented -- e.g. in info box)
-    function toggle() {
-      var ele = document.getElementById("toggleText");
-      var text = document.getElementById("displayText");
-      if (ele.style.display == "block") {
-        ele.style.display = "none";
-        text.innerHTML = "Detail &#9650;";
-      } else {
-        ele.style.display = "block";
-        text.innerHTML = "Detail &#9660;";
-      }
-    }
-
-    // // initiate custom info box variable
-    // var info = L.control();
-
-    // info.onAdd = function(map) {
-      // this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-      // this.update();
-      // return this._div;
+    // // set up map layers
+    // var conf = {
+      // base: {
+        // title: 'Settings',
+        // layers: [
+          // {
+            // group: "Base layers",
+            // collapsed: true,
+            // layers:[
+              // {
+                // "active": true,
+                // "name": "Satellite",
+                // "layer": L.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png")
+              // },
+                // {
+                 // "name": "Basic",
+                 // "layer": L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png")
+                // }
+                // ]
+              // },
+          // {
+            // group: "Summary scale",
+            // layers: [
+              // {
+                // name: "Statistical Area 1 (SA1)",
+                // layer: sa1
+              // }, 
+              // {
+                // name: "Suburb",
+                // layer: ssc
+              // }
+                  // ]
+          // }
+        // ]
+      // }
     // };
-
-    // // method that we will use to update the control based on feature properties passed
-    // info.update = function() {
-      // this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4><table class="g-pop-table" width="500" ><col width="80"><col width="160"><col width="260"><tbody><tr><td></td><td><b>Area (on hover)</b></td><td><b>Display setting</b></td></tr><tr><td><i>SA1    </i></td><td><i><div id="sa1_hover"></div></i></td><td><i><div id="sa1_overlay"></div></i></td></tr><tr><td><i>Suburb </i></td><td><i><div id="suburb_hover"></div></i></td><td><i><div id="ssc_overlay"></div></i></td></tr><tr><td><i>LGA</i></td><td><i><div id="lga_hover"></div></i></td><td>-</td></tr><tr><td><i>Info   </i></td><td>-</td><td><i><div id="info_overlay"></div></i></td></tr><tr><td><i>Basemap</i></td><td>-</td><td><i><div id="bmap_overlay"></div></i></td></tr></tbody></table><a id="displayText" href="javascript:toggle("Detail");"><div id="toggleText" style="display: none">Detail &#9650;</a>Liveability: <div id="li_hover">-</div></div>';
-    // };
-    // info.addTo(map);
-
-    // Define elements for layer selection panel
-    var baseLayers = {
-      "Cartographic": basic_tiles,
-      "Satellite": sat_tiles
-    };
-
-    var null_base = {
-      'Empty': L.tileLayer(''),
-      'OpenStreetMap': L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        'attribution': 'Map data &copy; OpenStreetMap contributors'
-      })
-    };
-
+    // var base1 = L.control.panelLayers(conf.base.layers, null,  {
+      // title: conf.base.title,
+    	// position: 'topright',
+    	// compact: true
+    // }).addTo(map);
     
+    // // Alternate approach to layer grouping
+
+    // // Define elements for layer selection panel
+    // var baseLayers = {
+      // "Cartographic": basic_tiles,
+      // "Satellite": sat_tiles
+    // };
+
+    // var null_base = {
+      // 'Empty': L.tileLayer(''),
+      // 'OpenStreetMap': L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        // 'attribution': 'Map data &copy; OpenStreetMap contributors'
+      // })
+    // };
 
     // var groupedOverlays = {
-      // "SA1 regions": {
-        // "Liveability Index": li_sa1,
-        // "Walkability Index": wa_sa1,
-        // " - Daily Living (/3)": dl_sa1,
-        // " - Dwellings per Ha": dd_sa1,
-        // " - 3+ way street connections per Ha": sc_sa1,
-        // "Social infrastructure mix (/16)    ": si_sa1,
-        // "PT access meets policy (%)": pt_sa1,
-        // "POS ≥ 1.5Ha within 400m (%)    ": po_sa1,
-        // "Air quality (rev. Mesh Block NO&#x2082; ppb.)": pr_sa1,
-        // "Affordable housing (30/40 rule, SA1 %)": af_sa1,
-        // "Live & work w/in SA3 (SA2 %)": lw_sa1,
+      // "Area scale": {
+        // "Statistical Area 1": sa1,
+        // "Suburb": ssc,
         // "-": null_base.Empty
       // },
-      // "Suburbs": {
-        // "Liveability Index": li_ssc,
-        // "Walkability Index": wa_ssc,
-        // " - Daily Living (/3)": dl_ssc,
-        // " - Dwellings per Ha": dd_ssc,
-        // " - 3+ way street connections per Ha": sc_ssc,
-        // "Social infrastructure mix (/16)    ": si_ssc,
-        // "PT access meets policy (%)": pt_ssc,
-        // "POS ≥ 1.5Ha within 400m (%)    ": po_ssc,
-        // "Air quality (rev. Mesh Block NO&#x2082; ppb.)": pr_ssc,
-        // "Affordable housing (30/40 rule, SA1 %)": af_ssc,
-        // "Live & work w/in SA3 (SA2 %)": lw_ssc,
-        // "-": null_base.Empty
-      // },
-      // "Summary info scale": {
-        // "SA1": sa1_info,
-        // "Suburb": ssc_info,
+      // "Boundaries": {
+        // "Statistical Area 1": sa1_border,
+        // "Suburb": ssc_border,
         // "-": null_base.Empty
       // }
     // };
 
     // var options = {
       // // Make the "Landmarks" group exclusive (use radio inputs)
-      // exclusiveGroups: ["Suburbs", "SA1 regions", "Summary info scale"],
+      // exclusiveGroups: ["Area scale", "Boundaries"],
       // // Show a checkbox next to non-exclusive group labels for toggling all
       // groupCheckboxes: true
     // };
@@ -589,114 +426,10 @@ function load_li_map() {
       // map.scrollWheelZoom.enable();
     // });
 
-    // // Set initial text in info box for layer display settings
-    // document.getElementById("bmap_overlay").innerHTML = "Cartographic"
-    // document.getElementById("sa1_overlay").innerHTML = sa1_info_text
-    // document.getElementById("ssc_overlay").innerHTML = ssc_info_text
-    // document.getElementById("info_overlay").innerHTML = info_text
-
-    // // Update text in info box for layer display settings when changed
-    // $("[name='leaflet-base-layers']").change(function() {
-      // document.getElementById("bmap_overlay").innerHTML = $('input[type=radio][name=leaflet-base-layers]:checked').next()["0"].innerHTML
-    // });
-    // $("[name='leaflet-exclusive-group-layer-1']").change(function() {
-      // sa1_info_text = $('input[type=radio][name=leaflet-exclusive-group-layer-1]:checked').next()["0"].innerHTML
-      // document.getElementById("sa1_overlay").innerHTML = sa1_info_text
-    // });
-    // $("[name='leaflet-exclusive-group-layer-2']").change(function() {
-      // ssc_info_text = $('input[type=radio][name=leaflet-exclusive-group-layer-2]:checked').next()["0"].innerHTML
-      // document.getElementById("ssc_overlay").innerHTML = ssc_info_text
-      // // return(ssc_info_text)
-    // });
-    // $("[name='leaflet-exclusive-group-layer-3']").change(function() {
-      // info_text = $('input[type=radio][name=leaflet-exclusive-group-layer-3]:checked').next()["0"].innerHTML
-      // document.getElementById("info_overlay").innerHTML = info_text
-      // // return(info_text)
-    // });
-
-    // // redefine outline width based on zoom level
-    // map.on('zoomend', function() {
-      // currentZoom = map.getZoom();
-      // if (currentZoom > 9) {
-        // li_sa1.setStyle({
-          // weight: 0.5
-        // });
-        // wa_sa1.setStyle({
-          // weight: 0.5
-        // });
-        // dl_sa1.setStyle({
-          // weight: 0.5
-        // });
-        // dd_sa1.setStyle({
-          // weight: 0.5
-        // });
-        // sc_sa1.setStyle({
-          // weight: 0.5
-        // });
-        // si_sa1.setStyle({
-          // weight: 0.5
-        // });
-        // pt_sa1.setStyle({
-          // weight: 0.5
-        // });
-        // po_sa1.setStyle({
-          // weight: 0.5
-        // });
-        // pr_sa1.setStyle({
-          // weight: 0.5
-        // });
-        // af_sa1.setStyle({
-          // weight: 0.5
-        // });
-        // lw_sa1.setStyle({
-          // weight: 0.5
-        // });
-      // } else {
-        // li_sa1.setStyle({
-          // weight: 0
-        // });
-        // wa_sa1.setStyle({
-          // weight: 0
-        // });
-        // dl_sa1.setStyle({
-          // weight: 0
-        // });
-        // dd_sa1.setStyle({
-          // weight: 0
-        // });
-        // sc_sa1.setStyle({
-          // weight: 0
-        // });
-        // si_sa1.setStyle({
-          // weight: 0
-        // });
-        // pt_sa1.setStyle({
-          // weight: 0
-        // });
-        // po_sa1.setStyle({
-          // weight: 0
-        // });
-        // pr_sa1.setStyle({
-          // weight: 0
-        // });
-        // af_sa1.setStyle({
-          // weight: 0
-        // });
-        // lw_sa1.setStyle({
-          // weight: 0
-        // });
-      // }
-    // });
-
 
     // add full screen toggle
     map.addControl(new L.Control.Fullscreen());
 
-    // add sidebar
-    var sidebar = L.control.sidebar('sidebar').addTo(map);
-
-    // D3 plot
-    // to be implemented: histogram of selected indicator
 
     // // add save to .png functions
     // var printer = L.easyPrint({

@@ -1,120 +1,131 @@
-extends layout
+extends layout_map
+
 block content
     img.center(src='/images/loading_spinner.gif')
-    #sidebar.sidebar.collapsed
-        // Nav tabs
-        .sidebar-tabs
-            ul(role='tablist')
-                li
-                  a(href='#home', role='tab',title='About',data-step='1', data-intro='Welcome to the pilot liveability index.  A brief summary of the project background and aims is provided here.')
-                    i.fa.fa-info-circle
-                li
-                  a(href='#liveability', role='tab',title='Liveability Index',data-step='2', data-intro='The liveability index is described here, and each of the indicators is summarised in the panes below.')
-                    i.fa.fa-bar-chart-o(style='color:"#d65454"')
-                li
-                  a(href='#walkability', role='tab',title='Walkability Index')
-                    i.fa.fa-street-view
-                li
-                  a(href='#socialinfrastructure', role='tab',title='Social Infrastructure Mix')
-                    i.fa.fa-hospital-o
-                li
-                  a(href='#pt', role='tab',title='Public Transport access Meets Policy')
-                    i.fa.fa-subway
-                li
-                  a(href='#pos', role='tab',title='Public Open Space')
-                    i.fa.fa-tree
-                li
-                  a(href='#airquality', role='tab',title='Air Quality')
-                    i.fa.fa-tachometer
-                li
-                  a(href='#affordablehousing', role='tab',title='Affordable Housing')
-                    i.fa.fa-home
-                li
-                  a(href='#livework', role='tab',title='Live and Work in Area')
-                    i.fa.fa-group
-            ul(role='tablist')
-                li
-                  a(href='#messages', role='tab')
-                    i.fa.fa-envelope
-        // Tab panes
-        .sidebar-content
-            #home.sidebar-pane
-                h1.sidebar-header Pilot Melbourne Liveability Index
-                  span.sidebar-close
-                    i.fa.fa-caret-left
-                    span(style='font-style:italic') A policy relevant composite indicator of urban liveability, based on a socio-ecological model of health and wellbeing.
-                  p.
-                    The pilot composite index of urban liveability in Victoria is an extension of the above research undertaken as part of the NHMRC Centre for Research Excellence in Healthy Liveable Communities, conceptualising the social determinants of health through seven domains of liveability using a socio-ecological framework: employment, food, housing, public open space, social infrastructure, transport, and walkability.  
-                  p.
-                    The liveability index was developed to measure the distribution of accessibility and availability of the seven liveability domains hypothesized to support health and wellbeing, combining these into a policy-relevant and evidence-informed composite index which may be summarised and visualised spatially. The index will allow integrated urban planning policies for liveable neighbourhoods to be evaluated, in terms of how well they are being delivered across the Melbourne metropolitan region, the health impact of the integration of those policies and to whom. Policies which are (and are not) being delivered may be identified through dis-aggregation of the liveability index into sub-domains, enabling identification of opportunities for future investment.  Inequities in liveability across the metropolitan expanse can be interrogated through visualisation and used as exposure covariates in statistical modelling.
-                  p.
-                    The project was initially conceived with a view to mapping spatial variation in access to built environment attributes identified as important for health and wellbeing at the ABS Statistical Area 1 (SA1) level. This is a population balanced geographic expanse ranging from 200 to 800 persons, which may loosely be considered as representative of a local neighbourhood and readily linked to both census and population health survey data. It is an artificial, administrative designation however which does not describe variation in access to amenities within the SA1 area. It therefore offers limited options for aggregation to other geographical scales such as local government areas (LGAs) or meshblocks (the smallest area unit used by the ABS, in general containing either 30-60 households, or none) which can have important implications when considering spatial exposure. Hence, instead of using population weighted centroids at the SA1 level as our unit of analysis, the pilot study was used as an opportunity to test the feasibility of parcel level analysis in the first instance.
-                  p. 
-                    The two important benefits of a parcel-based approach to indicator construction are: 1) the ability to flexibly aggregate to any sized administrative extent as required; and 2) being able to estimate the within area variation and relate this to the between area variation, allowing for estimation of the heterogeneity that area-level aggregation occludes. 
-                  p.
-                    #[a(href="/..") Return to the pilove Liveability Index visualisation entry page.]
-            #liveability.sidebar-pane
-                h1.sidebar-header Liveability Index
-                    span.sidebar-close
-                        i.fa.fa-caret-left
-                p.
-                  The Liveability Index is based on a score where the average is 100 with most values occurring in a range of between 80 and 120; however, this is presented as a percentile ranking out of 100 in the present visualisation.   
-                  
-                  The Index is based on composite scores of the following domains: <a href='javascript:sidebar.open("walkability")'>Walkability</a>; <a href='javascript:sidebar.open("socialinfrastructure")'>access to Social Infrastructure</a>; <a href='javascript:sidebar.open("pt")'>access to Public Transport</a>; <a href='javascript:sidebar.open("pos")'>access to Public Open Space</a>; <a href='javascript:sidebar.open("airquality")'>Air Quality; <a href='javascript:sidebar.open("affordablehousing")'>Affordable Housing</a>; and <a href='javascript:sidebar.open("livework")'>Live and Work in local area</a>. 
-                  
-                  A general description of each of these domains is provided below and additional information on how the domain scores were calculated can be found in the <a href='#'>indicator glossary</a>.
-            #walkability.sidebar-pane
-                h1.sidebar-header Walkability Index
-                    span.sidebar-close
-                        i.fa.fa-caret-left
-                p.
-                  Includes standardised measures of dwelling density, street connectivity and daily living score. The daily living score is an indicator of land use mix developed by access to a Public transport stop, convenience destinations and a supermarket. 
-            #socialinfrastructure.sidebar-pane
-                h1.sidebar-header Social Infrastructure mix
-                    span.sidebar-close
-                        i.fa.fa-caret-left
-                p.
-                  A social infrastructure mix score was created by assessing access to 15 different types of destinations including community centres, neighbourhood houses, museums and art galleries, cinemas and theatres, libraries, childcare, childcare (out of school hours), maternal child health,  government primary and secondary schools, aged care, community health centres, dentists, General Practitioner clinics, pharmacies, swimming pools and sport and recreation facilities.
-            #pt.sidebar-pane
-                h1.sidebar-header Public Transport
-                    span.sidebar-close
-                        i.fa.fa-caret-left
-                p.
-                  A policy-informed access to public transport measure was developed based on Victorian planning guidelines stipulating access to a either a bus stop within 400m, a tram stop within 600m or a train station within 800m.
-            #pos.sidebar-pane
-                h1.sidebar-header Public Open Space
-                    span.sidebar-close
-                        i.fa.fa-caret-left
-                p.
-                  Access to Public Open Space is based on a policy recommendation that large public open space should be available within 400m of a residence. Access to large Public Open Space is defined as areas greater than > 1.5 hectares within 400m of households and is associated with greater health benefits than smaller Public Open Space areas. 
-            #airquality.sidebar-pane
-                h1.sidebar-header Air quality
-                    span.sidebar-close
-                        i.fa.fa-caret-left
-                p.
-                   Very small area (Mesh Block) <a href="http://www.sciencedirect.com/science/article/pii/S0013935114003156">prediction of the annual average nitrogen dioxide (NO&#x2082;) levels for 2011</a> are included in the Liveability Index as a reverse scaled measure to indicate air quality.  NO&#x2082; is an important indicator of air pollution, in particular road traffic emissions.  The Victorian Environmental Protection Authority recommend an annual average exposure to NO2 not exceed a threshold of 30 ppb.
-            #affordablehousing.sidebar-pane
-                h1.sidebar-header  Affordable housing
-                    span.sidebar-close
-                        i.fa.fa-caret-left
-                p.
-                  The Australian Bureau of Statistics (ABS) defines an area as having affordable housing if the lowest 40% of household incomes in a given area spend < 30% of their gross incomes on mortgage/rental payments. This is more commonly referred to as the 30/40 rule. 
-            #livework.sidebar-pane
-                h1.sidebar-header Live and Work in area
-                    span.sidebar-close
-                        i.fa.fa-caret-left
-                p.
-                  This describes the proportion of employed people who live and work in same Statistical Area Level 3 (SA3) when measured at the smaller area of Statistical Area Level 2 (SA2). The area of SA3 generally refers to clusters of related suburbs around commercial and transport hubs in major urban areas.  
-                  
-            #messages.sidebar-pane
-                h1.sidebar-header Contact
-                    span.sidebar-close
-                        i.fa.fa-caret-left
-                p.
-                  For further information and contact details, please visit the #[a(href="http://cur.org.au/project/developing-pilot-victorian-urban-liveability-index/", target="_blank") pilot Liveability Index project] and the #[a(href="http://cur.org.au/research-programs/healthy-liveable-cities-group/", target="_blank") Healthy Liveable Cities Group] at the official #[a(href="http://cur.org.au/", target="_blank") RMIT Centre for Urban Research] web page.
-    #map.sidebar-map
+    select#inddrop
+      option(value='f15') &#xf1d1; Liveability
+      | 
+      option(value='f16') &#xf21d; Walkability  
+      |   
+      option(value='f17')        - Dwelling Density  
+      |   
+      option(value='f18')        - Street Connectivity  
+      |                          
+      option(value='f19')        - Daily Living  
+      |   
+      option(value='f20') &#xf0f8; Social Infrastructure  
+      |   
+      option(value='f21') &#xf239; Transportation
+      |   
+      option(value='f22') &#xf1bb; Public Open Space  
+      |   
+      option(value='f23') &#xf0e4; Environmental Sustainability 
+      |   
+      option(value='f24') &#xf015; Housing
+      |   
+      option(value='f25') &#xf0c0; Employment
+    #holder
+      #map
     
     script.
       load_li_map()
       // introJs().start();
-        
+    <div id='variables' class='menu-ui'></div>
+    #popup_satellite.overlay
+      .popup
+        h2 Satellite basemap
+        |     &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | The satellite base map layer is useful for evaluating the geographic context of a region.
+    #popup_basic.overlay
+      .popup
+        h2 Basic topology basemap
+        |     &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | The basic map layer provides a simplified view of the region's topology.
+    #puli.overlay
+      .popup
+        h2 Liveability Index
+        |     &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | Pilot Urban Liveability Index (PULI) has been developed by the Healthy Liveable Cities group in the Centre for Urban Research at RMIT University as a policy relevant composite indicator of urban liveability, based on a socio-ecological model of health and wellbeing.  It focuses on the state of Liveability for Melbourne in 2011.
+          p.
+            The liveability index is comprised of a selection of indicators from each of these domains which our research has identified as supporting health and wellbeing: <a href="#f16">Walkability</a>, <a href="#f20">Social Infrastructure</a>, <a href="#f21">Transportation</a>, <a href="#f22">Public Open Space</a>, <a href="#f23">Environmental Sustainability</a>, <a href="#f24">Housing</a> and <a href="#f25">Employment</a>.   It can be used to iterrogate and visualise spatial variation in in liveability across a range of spatial scales, and may be linked to other data such as the Australian Bureau of Statistics community profiles for greater insight into local area contexts.
+          p.
+            It is envisaged as a useful tool for planners, policy makers, researchers and the broader public for evaluating the current state of our urban environment.
+    #f15.overlay
+      .popup
+        h2 Liveability Index
+        |     &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | The Liveability Index provides a percentile ranking of an area's liveability out of 100, where a rating of 50 may be considered average relative to all other such areas across the city. The Index is based on a composite score derived from indicators of the following domains: <a href="#f16">Walkability</a>, <a href="#f20">Social Infrastructure</a>, <a href="#f21">Transportation</a>, <a href="#f22">Public Open Space</a>, <a href="#f23">Environmental Sustainability</a>, <a href="#f24">Housing and </a>, <a href="#f25">Employment</a>.  
+    #f16.overlay
+      .popup
+        h2 &#xf21d; Walkability
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | Walkability is calculated using standardised measures of dwelling density, street connectivity and daily living score. The daily living score is an indicator of land use mix, based on access to at least one public transport stop, a convenience destination (such as a newsagency, or convenience store) and a supermarket.  
+    #f20.overlay
+      .popup
+        h2 &#xf0f8; Social Infrastructure 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | A social infrastructure mix score was created by assessing access to 15 different types of destinations including community centres, neighbourhood houses, museums and art galleries, cinemas and theatres, libraries, childcare, childcare (out of school hours), maternal child health,  government primary and secondary schools, aged care, community health centres, dentists, General Practitioner clinics, pharmacies, swimming pools and sport and recreation facilities. 
+    #f21.overlay
+      .popup
+        h2 &#xf239; Transportation
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | A policy-informed access to public transport measure was developed based on Victorian planning guidelines stipulating access to a either a bus stop within 400m, a tram stop within 600m or a train station within 800m. 
+    #f22.overlay
+      .popup
+        h2 &#xf1bb; Public Open Space
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | Access to Public Open Space is based on a policy recommendation that large public open space should be available within 400m of a residence. Access to large Public Open Space is defined as areas greater than > 1.5 hectares within 400m of households and is associated with greater health benefits than smaller Public Open Space areas. 
+    #f23.overlay
+      .popup
+        h2 &#xf0e4; Environmental Sustainability
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | An indicator of air quality was calculated using a reverse scale of small area (Mesh Block) <a href="http://www.sciencedirect.com/science/article/pii/S0013935114003156">prediction of the annual average nitrogen dioxide (NO&#x2082;) levels for 2011</a>.  NO&#x2082; is an important indicator of air pollution, in particular road traffic emissions.  The Victorian Environmental Protection Authority recommend an annual average exposure to NO2 not exceed a threshold of 30 ppb.
+    #f24.overlay
+      .popup
+        h2 &#xf015; Housing
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | The Australian Bureau of Statistics (ABS) defines an area as having affordable housing if the lowest 40% of household incomes in a given area spend < 30% of their gross incomes on mortgage/rental payments. This is commonly referred to as the 30/40 rule, and is included in the PULI as an indicator of affordable housing.
+    #f25.overlay
+      .popup
+        h2 &#xf0c0; Employment
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | An indicator of local opportunities for employment was calculated as the proportion of employed people who live and work in same Statistical Area Level 3 (SA3) when measured at the smaller area of Statistical Area Level 2 (SA2). The area of SA3 generally refers to clusters of related suburbs around commercial and transport hubs in major urban areas.   
+    #f16.overlay
+                
+
+      
+      
+      

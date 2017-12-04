@@ -1,14 +1,22 @@
 body {
   padding: 0;
   margin: 0;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 1em "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
 }
 
-html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
+html, body { position:absolute; top:0; bottom:0; width:100%; }
+
+ #map { 
+  position:absolute; 
+  /* 50 px for  header; or 0 without */
+  /* top: 50px; */ 
+  top: 0px;
+  bottom:0; 
+  width:100%; }
 
 .info { 
   padding: 6px 8px; 
@@ -70,14 +78,29 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
   background: url("../images/aerial_image_of_christchurch_suburbs_-_flickr_-_nz_defence_force-1800x1012.jpg");
   background-position: center top;
 }
+
 .header .page-title {
   font-weight: 100;
   font-size: 40px;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
   text-align: center;
   padding: 15px;
   text-transform: capitalize;
   color: #fff;
   position: relative;
+  margin: 0;
+}
+
+.header .page-title2 {
+  font-size: 1.4em;
+  text-align: left;
+  padding: 0.6em;
+  text-transform: capitalize;
+  color: #fff;
+  position: relative;
+  opacity: .8;
+  left:0;
+  top: 0;
   margin: 0;
 }
 
@@ -119,7 +142,7 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
 }
 .footer p {
   color: #444;
-  font-size: 12px;
+  font-size: 1em;
 }
 
 .g-ind-main {
@@ -191,7 +214,7 @@ input[type=radio] {
 }
 .loader {            
     margin: 60px auto;
-    font-size: 10px;
+    font-size: 1em;
     position: relative;
     text-indent: -9999em;
     border-top: 1.1em solid rgba(255, 255, 255, 0.2);
@@ -233,16 +256,99 @@ input[type=radio] {
     background-color:#000;
 }
 
-#overlay {
-    position: fixed;
-    display: none;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 2;
-    cursor: pointer;
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 100ms;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 9999;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 30%;
+  position: relative;
+  transition: all 1s ease-in-out;
+}
+
+.popup h2 {
+  margin-top: 0;
+  color: #46abbe;
+  font-family: 'FontAwesome', 'Lucida Grande'
+}
+.popup .close {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #333;
+}
+.popup .close:hover {
+  color: #46abbe;
+}
+.popup .content {
+  max-height: 30%;
+  overflow: auto;
+}
+
+@media screen and (max-width: 700px){
+  .box{
+    width: 70%;
+  }
+  .popup{
+    width: 70%;
+  }
+}
+
+select {
+  margin: 0px;
+  background: transparent;
+  width: 16em;
+  padding: 5px 5px 5px 5px;
+  font-size: 1.3em;
+  color: #46abbe;
+  border: 1px solid #ccc;
+  height: 50px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url(../favicon.ico) 96% / 15% no-repeat #eee;
+  position: absolute; 
+  top: 0px;
+  left: 50px;
+  opacity: 0.8;
+  z-index: 998;
+  font-family: 'FontAwesome', 'Lucida Grande'
+}
+
+/* CAUTION: IE hackery ahead */
+select::-ms-expand { 
+    display: none; /* remove default arrow on ie10 and ie11 */
+}
+  
+.holder {
+  position: absolute;
+  /* 50 px for  header; or 0 without */
+  /* top: 50px; */ 
+  top: 0px;
+}
+
+.leaflet-panel-layers-title {
+  font-size: 1.3em;
 }
