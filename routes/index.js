@@ -73,7 +73,7 @@ router.get('/li_map', auth, function(req, res) {
   //        .then(data => {
   //         var sa1_data = data.rows[0].row_to_json
            res.render('li_map', {
-             title: "Pilot Liveability Index" //,
+             title: "Pilot Urban Liveability Index" //,
              //json_sa1: sa1_data,
              //json_ssc: ssc_data
            });
@@ -81,3 +81,10 @@ router.get('/li_map', auth, function(req, res) {
     //  })
   //  .catch(e => console.error(e.stack))
 });
+
+// /* GET the map page */
+// router.get('/radar', auth, function(req, res) {
+           // res.render('radar', {
+             // title: "test_radar" //,
+           // });
+// });
