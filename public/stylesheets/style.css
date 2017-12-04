@@ -330,9 +330,9 @@ select {
   appearance: none;
   background: url(../favicon.ico) 96% / 15% no-repeat #eee;
   position: absolute; 
-  top: 0px;
+  top: 12px;
   left: 50px;
-  opacity: 0.8;
+  opacity: 1;
   z-index: 998;
   font-family: 'FontAwesome', 'Lucida Grande'
 }
@@ -352,3 +352,8 @@ select::-ms-expand {
 .leaflet-panel-layers-title {
   font-size: 1.3em;
 }
+
+input[type='radio']{   
+    vertical-align: middle;
+    margin-top: 0.5em;
+ }

@@ -244,7 +244,7 @@ function load_li_map() {
           id: 'ind',
           style: li_style,
           onEachFeature: onEachFeature
-        }).addTo(map);
+        });
       overlays.addBaseLayer({
         group: "Summary scale", //note: this is not working yet
 		    name:  'SA1 summary',
@@ -266,7 +266,7 @@ function load_li_map() {
                id: 'ind',
                style: li_style,
                onEachFeature: onEachFeature
-             })
+          }).addTo(map);
         overlays.addBaseLayer({
           group: "Summary scale", //note: this is not working yet
 		      name:  'Suburb summary',
@@ -279,8 +279,8 @@ function load_li_map() {
                id: 'ind',
                style: border_style,
                interactive: false
-             }).addTo(map)
-          });
+          }).addTo(map)
+        });
         
        
         ssc_search = L.geoJson(data, {
