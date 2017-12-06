@@ -103,13 +103,13 @@ function load_li_map() {
         attribution: bmap_cartodb_attrib
     });
 
-    // add scale bar
-    L.control.scale().addTo(map);
-
     // add mini-map
     miniMap = new L.Control.MiniMap(bmap2, {
         position: 'bottomleft'
     }).addTo(map);
+
+    // add scale bar
+    L.control.scale().addTo(map);
 
     // Style and add legend
     legend = L.control({
@@ -192,7 +192,7 @@ function load_li_map() {
     function resetHighlight(e) {
        var layer = e.target;
          layer.setStyle({
-           weight: 0.5,
+           weight: 0,
            color: 'white',
          });
     }
@@ -210,47 +210,67 @@ function load_li_map() {
     // Construct basemaps 
     // - this is done in an idiosyncratic, piecewise way due to inconsistent grouping behaviour
     // in the async window functions 
-    basemaps = L.control.panelLayers(
-    [
-    ],[],{}
-    ).addTo(map);
-
-    basemaps.addBaseLayer({
-        group: "Base layers", 
-        collapsed: true,
-		    name:  'Satellite basemap',
-	      layer: L.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png").addTo(map)
-        });    
-    
-    basemaps.addBaseLayer({
-        group: "Base layers", 
-        collapsed: true,
-		    name:  'Basic basemap',
-	      layer: L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png")
-        });  
-    
+    // basemaps = L.control.panelLayers(
+    // [
+    // ],[],{}
+    // ).addTo(map);
+   
     overlays = L.control.panelLayers(
     [
           {
             group: "Summary scale",
             collapsed: true,
-            layers: [,
+            layers:[
+                   {
+                       "name": "Off",
+                       "layer": L.tileLayer('')
+                   }
                    ]
         }
-    ],[],{}
+    ],[],{compact: true}
     ).addTo(map);
     
     boundaries = L.control.panelLayers(
     [
           {
-            group: "Administrative boundaries",
+            group: "Boundary lines",
             collapsed: true,
-            layers: [,
-                   ]
+            layers: [{
+                       "name": "Off",
+                       "layer": L.tileLayer('')
+                   }]
         }
-    ],[],{}
+    ],[],{compact: true}
     ).addTo(map);
     
+        basemaps = L.control.panelLayers(
+    [
+        {
+            group: "Base layer",
+            collapsed: true,
+            layers:[
+                   {
+                       "name": "Off",
+                       "layer": L.tileLayer('')
+                   }
+                   ]
+        }
+    ],[],{compact: true}
+    ).addTo(map);
+    
+    basemaps.addBaseLayer({
+    group: "Base layer", 
+    collapsed: true,
+	   name:  'Satellite',
+	  layer: L.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png").addTo(map)
+    });    
+    
+    basemaps.addBaseLayer({
+        group: "Base layer", 
+        collapsed: true,
+		    name:  'Basic',
+	      layer: L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png")
+        });    
 
     // Parse geojson data, adding to map
     window.parseResponseSA1 = function(data) {
@@ -262,7 +282,7 @@ function load_li_map() {
       overlays.addBaseLayer({
         group: "Summary scale", //note: this is not working yet
         collapsed: true,
-		    name:  'SA1 summary',
+		    name:  'SA1',
 	      layer: sa1
         });
     }
@@ -285,12 +305,12 @@ function load_li_map() {
         overlays.addBaseLayer({
           group: "Summary scale", //note: this is not working yet
           collapsed: true,
-		      name:  'Suburb summary',
+		      name:  'Suburb',
 	        layer: ssc
           });
         boundaries.addBaseLayer({
-          group: "Administrative boundaries", //note: this is not working yet
-		      name:  'Suburb borders',
+          group: "Boundary lines", //note: this is not working yet
+		      name:  'Suburb',
 	        layer: L.geoJson(data, {
                id: 'ind',
                style: border_style,
