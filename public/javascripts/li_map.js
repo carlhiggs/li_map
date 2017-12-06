@@ -1,32 +1,7 @@
 function load_li_map() {
-    //"use strict";
-
-    // get color depending on population density value
-    function getColor(p) {
-      // Decile colours
-      // pgrn colour scheme - diverging
-        return p > 90 ? '#276419':
-               p > 80 ? '#4d9221':
-               p > 70 ? '#7fbc41':
-               p > 60 ? '#b8e186':
-               p > 50 ? '#e6f5d0':
-               p > 40 ? '#fde0ef':
-               p > 30 ? '#f1b6da':
-               p > 20 ? '#de77ae':
-               p > 10 ? '#c51b7d':
-               p > 0  ? '#8e0152':
-                        '#f7f7f7';
-    }
-    
     // Create variable to hold map element, give initial settings to map
     // Melb coords: -37.8078244,144.9625175
     // Centered on Black Rock
-    // define ESRI satellite layer
-    // define CartoDB.Positron tile layer to map element
-
-    var map, bmap_sat, bmap_sat_attrib, bmap_cartodb, bmap_cartodb_attrib;
-
-    //var map = L.map('map',{ center: [-37.966909, 145.023575], zoom: 10,minZoom: 8,maxZoom: 17});
 
     map = L.map('map', {
        center: [-37.966909, 145.023575],
@@ -34,19 +9,17 @@ function load_li_map() {
        minZoom: 8,
        maxZoom: 17,
     });
-
-    bmap_sat = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-    bmap_sat_attrib = '&copy; <a href="http://www.esri.com/" title="Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community">Esri</a>';
-    bmap_cartodb = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
-    bmap_cartodb_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
+    
+    // Define basemaps
+    bmap_satellite = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+    bmap_satellite_attrib = '&copy; <a href="http://www.esri.com/" title="Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community">Esri</a>';
+    bmap_basic = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+    bmap_basic_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
 
     // add attribution
-    map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>');
-    
-    
+    map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>'+' | '+bmap_basic_attrib+' | '+bmap_satellite_attrib);
 
-
-
+    // Indicator selection menu: restyle map and present summary overlay
     function UpdateIndicatorList() {
       var selected_ind = document.getElementById("inddrop");
       var ind_value = selected_ind.options[selected_ind.selectedIndex].value;
@@ -69,6 +42,12 @@ function load_li_map() {
        });
     };
     
+    // If popup is open and user clicks outside, close popup
+    $(document).click(function(event) {
+    if ( $(event.target).closest(".popup").get(0) == null ) {         
+        window.location.replace("#");       
+        }
+    });
  
     $(document).ready(function() {
       $("#inddrop").change(UpdateIndicatorList);
@@ -76,46 +55,56 @@ function load_li_map() {
 
 
     // Add tiles, mini-map, scale bar and legend to map
-    var sat_tiles,
-        basic_tiles,
-        baseMaps,
-        bmap2,
+    var bmap2,
         miniMap,
         legend;
 
-    // // add tiles to map
-    // sat_tiles = L.tileLayer(bmap_sat, {
-        // attribution: bmap_sat_attrib
-    // }).addTo(map);
-
-    // basic_tiles = L.tileLayer(bmap_cartodb, {
-        // attribution: bmap_cartodb_attrib
-    // });
-
-    // baseMaps = {
-        // "Cartographic": basic_tiles,
-        // "Satellite": sat_tiles
-    // };
-
-    bmap2 = new L.TileLayer(bmap_cartodb, {
+    // add mini-map
+    bmap2 = new L.TileLayer(bmap_basic, {
         minZoom: 0,
         maxZoom: 13,
-        attribution: bmap_cartodb_attrib
+        attribution: bmap_basic_attrib
     });
 
-    // add mini-map
     miniMap = new L.Control.MiniMap(bmap2, {
         position: 'bottomleft'
     }).addTo(map);
 
     // add scale bar
     L.control.scale().addTo(map);
+ 
+    // Colour based on percentile
+    function getColor(p) {
+      // Decile colours
+      // pgrn colour scheme - diverging
+        return p > 90 ? '#276419':
+               p > 80 ? '#4d9221':
+               p > 70 ? '#7fbc41':
+               p > 60 ? '#b8e186':
+               p > 50 ? '#e6f5d0':
+               p > 40 ? '#fde0ef':
+               p > 30 ? '#f1b6da':
+               p > 20 ? '#de77ae':
+               p > 10 ? '#c51b7d':
+               p > 0  ? '#8e0152':
+                        '#f7f7f7';
+    }
+    
+    // function to scale a percentile to a quantile (e.g. for quintile, num = 20)
+    function requantile(p, num) {
+      return Math.floor((p - 1) / num) + 1;
+    }
+    
+    // column graph indicator scale function
+    function bgWidth(value){
+      return (value/100)*230 +'px'
+    }     
 
     // Style and add legend
     legend = L.control({
         position: 'bottomright'
     });
-
+    
     legend.onAdd = function(map) {
         var div = L.DomUtil.create('div', 'info legend'),
         quantiles = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10],
@@ -153,18 +142,7 @@ function load_li_map() {
 
     // WFS data
     var li_sa1_url = "http://bilbo.australiasoutheast.cloudapp.azure.com/geoserver/geonode/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_json_sa1_min_soft&outputFormat=text%2Fjavascript";
-    var li_ssc_url = "http://bilbo.australiasoutheast.cloudapp.azure.com/geoserver/geonode/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_json_ssc_min_soft&outputFormat=text%2Fjavascript";
-
-
-    // function to scale a percentile to a quantile (e.g. for quintile, num = 20)
-    function requantile(p, num) {
-      return Math.floor((p - 1) / num) + 1;
-    }
-    
-    // column graph indicator scale function
-    function bgWidth(value){
-      return (value/100)*230 +'px'
-    }        
+    var li_ssc_url = "http://bilbo.australiasoutheast.cloudapp.azure.com/geoserver/geonode/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_json_ssc_min_soft&outputFormat=text%2Fjavascript";   
 
     // a null style functino for info and search layers
     function null_style(feature) {
@@ -207,14 +185,7 @@ function load_li_map() {
       });
     }
     
-    // Construct basemaps 
-    // - this is done in an idiosyncratic, piecewise way due to inconsistent grouping behaviour
-    // in the async window functions 
-    // basemaps = L.control.panelLayers(
-    // [
-    // ],[],{}
-    // ).addTo(map);
-   
+    // Construct layer control   
     overlays = L.control.panelLayers(
     [
           {
@@ -243,7 +214,7 @@ function load_li_map() {
     ],[],{compact: true}
     ).addTo(map);
     
-        basemaps = L.control.panelLayers(
+    basemaps = L.control.panelLayers(
     [
         {
             group: "Base layer",
@@ -258,18 +229,19 @@ function load_li_map() {
     ],[],{compact: true}
     ).addTo(map);
     
+    // add base map layers to layer control
     basemaps.addBaseLayer({
-    group: "Base layer", 
-    collapsed: true,
-	   name:  'Satellite',
-	  layer: L.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png").addTo(map)
-    });    
+        group: "Base layer", 
+        collapsed: true,
+	       name:  'Satellite',
+	      layer: L.tileLayer(bmap_satellite).addTo(map)
+        });    
     
     basemaps.addBaseLayer({
         group: "Base layer", 
         collapsed: true,
 		    name:  'Basic',
-	      layer: L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png")
+	      layer: L.tileLayer(bmap_basic)
         });    
 
     // Parse geojson data, adding to map
