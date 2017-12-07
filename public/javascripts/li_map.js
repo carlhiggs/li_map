@@ -36,7 +36,7 @@ function load_li_map() {
            layer.setStyle({
                fillColor: getColor(layer.feature.properties[ind_value]),
                fillOpacity: 0.8,
-               weight: 0,
+               weight: 0.2,
                color: 'white',
            });
        });
@@ -44,7 +44,7 @@ function load_li_map() {
            layer.setStyle({
                fillColor: getColor(layer.feature.properties[ind_value]),
                fillOpacity: 0.8,
-               weight: 0,
+               weight: 0.2,
                color: 'white',
            });
        });
