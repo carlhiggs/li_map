@@ -18,7 +18,15 @@ function load_li_map() {
 
     // add attribution
     map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>'+' | '+bmap_basic_attrib+' | '+bmap_satellite_attrib);
-
+    
+    // // create boundary pane; to be kept on top, in general
+    // map.createPane('boundaries');
+    // map.getPane('boundaries').style.zIndex = 650;
+    // map.getPane('boundaries').style.pointerEvents = 'none';
+    map.createPane('underlay');
+    map.getPane('underlay').style.zIndex = 0;
+    map.getPane('underlay').style.pointerEvents = 'none';
+    
     // Indicator selection menu: restyle map and present summary overlay
     function UpdateIndicatorList() {
       var selected_ind = document.getElementById("inddrop");
@@ -42,12 +50,14 @@ function load_li_map() {
        });
     };
     
-    // If popup is open and user clicks outside, close popup
-    $(document).click(function(event) {
-    if ( $(event.target).closest(".popup").get(0) == null ) {         
-        window.location.replace("#");       
-        }
-    });
+    // // If popup is open and user clicks outside, close popup
+    // $(document).click(function(event) {
+        // if (window.location.hash.substring(0,2)=='#f') {
+            // if ( $(event.target).closest(".popup").get(0) == null ) {         
+                // window.location.replace("#");       
+                // }
+        // }
+    // });
  
     $(document).ready(function() {
       $("#inddrop").change(UpdateIndicatorList);
@@ -124,7 +134,7 @@ function load_li_map() {
     // Define initial style (liveability index)
     function li_style(feature) {
       return {
-        weight: 0,
+        weight: 0.2,
         color: 'white',
         fillOpacity: 0.7,
         fillColor: getColor(feature.properties.f15)
@@ -170,9 +180,13 @@ function load_li_map() {
     function resetHighlight(e) {
        var layer = e.target;
          layer.setStyle({
-           weight: 0,
+           weight: 0.2,
            color: 'white',
          });
+       
+      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToBack();
+      }
     }
 
     function onEachFeature(feature, layer) {
@@ -234,16 +248,27 @@ function load_li_map() {
         group: "Base layer", 
         collapsed: true,
 	       name:  'Satellite',
-	      layer: L.tileLayer(bmap_satellite).addTo(map)
+	      layer: L.tileLayer(bmap_satellite).addTo(map),
+          pane: 'underlay',
         });    
     
     basemaps.addBaseLayer({
         group: "Base layer", 
         collapsed: true,
 		    name:  'Basic',
-	      layer: L.tileLayer(bmap_basic)
+	      layer: L.tileLayer(bmap_basic),
+          pane: 'underlay',
         });    
 
+    //  Ensure that active boundary lines are foregrounded when overlay changes
+    overlays._form.onchange = function() {
+     boundaries._layers.forEach(function (obj) {
+       if (obj.name!="Off" && obj.layer._map!=null){
+         obj.layer.bringToFront();
+         }
+    });   
+    };    
+        
     // Parse geojson data, adding to map
     window.parseResponseSA1 = function(data) {
       sa1 = L.geoJson(data, {
@@ -290,7 +315,7 @@ function load_li_map() {
           }).addTo(map)
         });
         
-       
+        // include layer for suburb search
         ssc_search = L.geoJson(data, {
           id: 'search',
           style: null_style,
@@ -342,98 +367,6 @@ function load_li_map() {
       jsonp: 'format_options',
       jsonpCallback: 'callback:parseResponseSSC'
     });
-    
-    // // set up map layers
-    // var conf = {
-      // base: {
-        // title: 'Settings',
-        // layers: [
-          // {
-            // group: "Base layers",
-            // collapsed: true,
-            // layers:[
-              // {
-                // "active": true,
-                // "name": "Satellite",
-                // "layer": L.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.png")
-              // },
-                // {
-                 // "name": "Basic",
-                 // "layer": L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png")
-                // }
-                // ]
-              // },
-          // {
-            // group: "Summary scale",
-            // layers: [
-              // {
-                // name: "Statistical Area 1 (SA1)",
-                // layer: sa1
-              // }, 
-              // {
-                // name: "Suburb",
-                // layer: ssc
-              // }
-                  // ]
-          // }
-        // ]
-      // }
-    // };
-    // var base1 = L.control.panelLayers(conf.base.layers, null,  {
-      // title: conf.base.title,
-    	// position: 'topright',
-    	// compact: true
-    // }).addTo(map);
-    
-    // // Alternate approach to layer grouping
-
-    // // Define elements for layer selection panel
-    // var baseLayers = {
-      // "Cartographic": basic_tiles,
-      // "Satellite": sat_tiles
-    // };
-
-    // var null_base = {
-      // 'Empty': L.tileLayer(''),
-      // 'OpenStreetMap': L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        // 'attribution': 'Map data &copy; OpenStreetMap contributors'
-      // })
-    // };
-
-    // var groupedOverlays = {
-      // "Area scale": {
-        // "Statistical Area 1": sa1,
-        // "Suburb": ssc,
-        // "-": null_base.Empty
-      // },
-      // "Boundaries": {
-        // "Statistical Area 1": sa1_border,
-        // "Suburb": ssc_border,
-        // "-": null_base.Empty
-      // }
-    // };
-
-    // var options = {
-      // // Make the "Landmarks" group exclusive (use radio inputs)
-      // exclusiveGroups: ["Area scale", "Boundaries"],
-      // // Show a checkbox next to non-exclusive group labels for toggling all
-      // groupCheckboxes: true
-    // };
-
-
-    // layers_list = L.control.groupedLayers(baseLayers, groupedOverlays, options).addTo(map);
-
-
-    // // Disable dragging when user's cursor enters the element
-    // layers_list.getContainer().addEventListener('mouseover', function() {
-      // map.scrollWheelZoom.disable();
-    // });
-
-    // // Re-enable dragging when user's cursor leaves the element
-    // layers_list.getContainer().addEventListener('mouseout', function() {
-      // map.scrollWheelZoom.enable();
-    // });
-
 
     // add full screen toggle
     map.addControl(new L.Control.Fullscreen());
@@ -447,16 +380,6 @@ function load_li_map() {
       // exportOnly: true,
       // hideControlContainer: false
     // }).addTo(map);
-
-    // // keyboard short cut for save image
-    // document.onkeyup = function(e) {
-      // var e = e || window.event; // for IE to cover IEs window event-object
-      // if (e.altKey && e.which == 83) {
-        // printer.printMap('CurrentSize', 'LiveabilityIndexExport');
-      // }
-    // }
-
-
 
     // programmatically add intro attributes to dynamic elements
     // $('leaflet-control-search leaflet-control').attr('data-step', "3")
