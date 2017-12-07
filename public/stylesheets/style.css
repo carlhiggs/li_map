@@ -307,14 +307,7 @@ input[type=radio] {
   overflow: auto;
 }
 
-@media screen and (max-width: 700px){
-  .box{
-    width: 70%;
-  }
-  .popup{
-    width: 70%;
-  }
-}
+
 
 select {
   margin: 0px;
@@ -334,8 +327,10 @@ select {
   left: 50px;
   opacity: 1;
   z-index: 998;
-  font-family: 'FontAwesome', 'Lucida Grande'
+  font-family: 'FontAwesome', 'Lucida Grande';
 }
+
+
 
 /* CAUTION: IE hackery ahead */
 select::-ms-expand { 
@@ -373,3 +368,32 @@ input[type='checkbox']{
     vertical-align: middle;
     margin-top: 0.3em;
  }
+ 
+@media screen and (max-width: 480px){
+  .box{
+    width: 70%;
+  }
+  .popup{
+    width: 70%;
+  }
+  select {
+      margin: 0px;
+      background: transparent;
+      padding: 5px 5px 5px 5px;
+      font-size: 1.3em;
+      color: #46abbe;
+      border: 1px solid #ccc;
+      height: 50px;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background: url(../favicon.ico) 96% / 15% no-repeat #eee;
+      position: absolute; 
+      top: 12px;
+      left: 50px;
+      opacity: 1;
+      z-index: 998;
+      font-family: 'FontAwesome', 'Lucida Grande';
+      -webkit-appearance: none;
+  }
+}

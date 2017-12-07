@@ -3,34 +3,43 @@ extends layout_map
 block content
     img.center(src='/images/loading_spinner.gif')
     select#inddrop
-      option(value='f15') &#xf1d1; Liveability
+      optgroup(label='Liveability')
+        option(value='f15') &#xf1d1; Liveability index
       | 
-      option(value='f16') &#xf21d; Walkability  
+      optgroup(label='Walkability')
+        option(value='f16') &#xf21d; Walkability index  
+        |   
+        option(value='f17')        - Dwelling density  
+        |   
+        option(value='f18')        - Street connectivity  
+        |                          
+        option(value='f19')        - Daily living score  
       |   
-      option(value='f17')        - Dwelling Density  
+      optgroup(label="Social Infrastructure")
+        option(value='f20') &#xf0f8; Social infrastructure mix 
       |   
-      option(value='f18')        - Street Connectivity  
-      |                          
-      option(value='f19')        - Daily Living  
-      |   
-      option(value='f20') &#xf0f8; Social Infrastructure  
-      |   
-      option(value='f21') &#xf239; Transportation
-      |   
-      option(value='f22') &#xf1bb; Public Open Space  
-      |   
-      option(value='f23') &#xf0e4; Environmental Sustainability 
-      |   
-      option(value='f24') &#xf015; Housing
-      |   
-      option(value='f25') &#xf0c0; Employment
+      optgroup(label="Transportation")
+        option(value='f21') &#xf239; PT access meets policy
+        |   
+      optgroup(label="Green Infrastructure")   
+        option(value='f22') &#xf1bb; POS ≥ 1.5Ha within 400m (%)  
+        |      
+      optgroup(label="Ambient Environment")
+        option(value='f23') &#xf0e4; Air quality 
+        |      
+      optgroup(label="Housing")
+        option(value='f24') &#xf015; Affordable housing
+        |      
+      optgroup(label="Employment")
+        option(value='f25') &#xf0c0; Live & work in local area
     #holder
       #map
     
     script.
       load_li_map()
       // introJs().start();
-    <div id='variables' class='menu-ui'></div>
+      
+    // Define popup info boxes  
     #popup_satellite.overlay
       .popup
         h2 Satellite basemap
@@ -49,19 +58,19 @@ block content
           | The basic map layer provides a simplified view of the region's topology.
     #puli.overlay
       .popup
-        h2 Liveability Index
+        h2 Pilot Urban Liveability Index
         |     &#x9;&#x9;
         a.close(href='#') &times;
         |     &#x9;&#x9;
         .content
           | Pilot Urban Liveability Index (PULI) has been developed by the Healthy Liveable Cities group in the Centre for Urban Research at RMIT University as a policy relevant composite indicator of urban liveability, based on a socio-ecological model of health and wellbeing.  It focuses on the state of Liveability for Melbourne in 2011.
           p.
-            The liveability index is comprised of a selection of indicators from each of these domains which our research has identified as supporting health and wellbeing: <a href="#f16">Walkability</a>, <a href="#f20">Social Infrastructure</a>, <a href="#f21">Transportation</a>, <a href="#f22">Public Open Space</a>, <a href="#f23">Environmental Sustainability</a>, <a href="#f24">Housing</a> and <a href="#f25">Employment</a>.   It can be used to iterrogate and visualise spatial variation in in liveability across a range of spatial scales, and may be linked to other data such as the Australian Bureau of Statistics community profiles for greater insight into local area contexts.
+            The liveability index is comprised of a selection of indicators from each of these domains which our research has identified as supporting health and wellbeing: <a href="#f16">Walkability index</a>, <a href="#f20">Social Infrastructure mix</a>, <a href="#f21">PT access meets policy</a>, <a href="#f22">	 POS ≥ 1.5Ha within 400m</a>, <a href="#f23">Air quality</a>, <a href="#f24">Affordable housing</a> and <a href="#f25">Live and work in local area</a>.   It can be used to interogate and visualise spatial variation in liveability across a range of spatial scales, and may be linked to other data such as the Australian Bureau of Statistics community profiles for greater insight into local area contexts.
           p.
             It is envisaged as a useful tool for planners, policy makers, researchers and the broader public for evaluating the current state of our urban environment.
     #f15.overlay
       .popup
-        h2 &#xf1d1; Liveability
+        h2 &#xf1d1; Liveability index
         |     &#x9;&#x9;
         a.close(href='#') &times;
         |     &#x9;&#x9;
@@ -69,7 +78,7 @@ block content
           | The Liveability Index provides a percentile ranking of an area's liveability out of 100, where a rating of 50 may be considered average relative to all other such areas across the city. The Index is based on a composite score derived from indicators of the following domains: <a href="#f16">Walkability</a>, <a href="#f20">Social Infrastructure</a>, <a href="#f21">Transportation</a>, <a href="#f22">Public Open Space</a>, <a href="#f23">Environmental Sustainability</a>, <a href="#f24">Housing</a> and, <a href="#f25">Employment</a>.  
     #f16.overlay
       .popup
-        h2 &#xf21d; Walkability
+        h2 &#xf21d; Walkability index
         |    &#x9;&#x9;
         a.close(href='#') &times;
         |     &#x9;&#x9;
@@ -77,7 +86,7 @@ block content
           | Walkability is calculated using standardised measures of dwelling density, street connectivity and daily living score. The daily living score is an indicator of land use mix, based on access to at least one public transport stop, a convenience destination (such as a newsagency, or convenience store) and a supermarket.  
     #f20.overlay
       .popup
-        h2 &#xf0f8; Social Infrastructure 
+        h2 &#xf0f8; Social infrastructure mix
         |    &#x9;&#x9;
         a.close(href='#') &times;
         |     &#x9;&#x9;
@@ -85,7 +94,7 @@ block content
           | A social infrastructure mix score was created by assessing access to 15 different types of destinations including community centres, neighbourhood houses, museums and art galleries, cinemas and theatres, libraries, childcare, childcare (out of school hours), maternal child health,  government primary and secondary schools, aged care, community health centres, dentists, General Practitioner clinics, pharmacies, swimming pools and sport and recreation facilities. 
     #f21.overlay
       .popup
-        h2 &#xf239; Transportation
+        h2 &#xf239; PT access meets policy
         |    &#x9;&#x9;
         a.close(href='#') &times;
         |     &#x9;&#x9;
@@ -93,7 +102,7 @@ block content
           | A policy-informed access to public transport measure was developed based on Victorian planning guidelines stipulating access to a either a bus stop within 400m, a tram stop within 600m or a train station within 800m. 
     #f22.overlay
       .popup
-        h2 &#xf1bb; Public Open Space
+        h2 &#xf1bb; POS ≥ 1.5Ha within 400m
         |    &#x9;&#x9;
         a.close(href='#') &times;
         |     &#x9;&#x9;
@@ -101,7 +110,7 @@ block content
           | Access to Public Open Space is based on a policy recommendation that large public open space should be available within 400m of a residence. Access to large Public Open Space is defined as areas greater than > 1.5 hectares within 400m of households and is associated with greater health benefits than smaller Public Open Space areas. 
     #f23.overlay
       .popup
-        h2 &#xf0e4; Environmental Sustainability
+        h2 &#xf0e4; Air quality
         |    &#x9;&#x9;
         a.close(href='#') &times;
         |     &#x9;&#x9;
@@ -117,7 +126,7 @@ block content
           | The Australian Bureau of Statistics (ABS) defines an area as having affordable housing if the lowest 40% of household incomes in a given area spend < 30% of their gross incomes on mortgage/rental payments. This is commonly referred to as the 30/40 rule, and is included in the PULI as an indicator of affordable housing.
     #f25.overlay
       .popup
-        h2 &#xf0c0; Employment
+        h2 &#xf0c0; Live and work in local area
         |    &#x9;&#x9;
         a.close(href='#') &times;
         |     &#x9;&#x9;

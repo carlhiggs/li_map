@@ -19,13 +19,54 @@ function load_li_map() {
     // add attribution
     map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>'+' | '+bmap_basic_attrib+' | '+bmap_satellite_attrib);
     
-    // // create boundary pane; to be kept on top, in general
-    // map.createPane('boundaries');
-    // map.getPane('boundaries').style.zIndex = 650;
-    // map.getPane('boundaries').style.pointerEvents = 'none';
+    // create underlay basemaps pane; to be kept underneath otherlayers
     map.createPane('underlay');
     map.getPane('underlay').style.zIndex = 0;
     map.getPane('underlay').style.pointerEvents = 'none';
+    
+    // // indicator selection menu splitter - NOT WORKING
+    // // based on  http://jsfiddle.net/fgdxcgx3/3/
+    // $(function () { // wait for page to load
+        // var domainDropdown = $("#inddrop"),
+            // indicatorDropdown = $('<select></select>'), // create a indicator dropdown
+            // indicators = []; // ordered list of indicators
+        
+        // // parse the nested dropdown
+        // domainDropdown.children().each(function () {
+            // var group = $(this),
+                // indicatorName = group.attr('label'),
+                // option;
+            
+            // // create an option for the indicator
+            // option = $('<option></option>').text(indicatorName);
+            
+            // // store the associated domain options
+            // option.data('inddrop', group.children());
+            
+            // // check if the indicator should be selected
+            // if( group.find(':selected').length > 0 ) {
+                // option.prop('selected', true);
+            // }
+            
+            // // add the indicator to the dropdown
+            // indicatorDropdown.append(option);
+        // });
+        
+        // // add the indicator dropdown to the page
+        // domainDropdown.before(indicatorDropdown);
+        
+        // // this function updates the domain dropdown based on the selected indicator
+        // function updateDomains() {
+            // var indicator = indicatorDropdown.find(':selected');
+            // domainDropdown.empty().append(indicator.data('Domains'));
+        // }
+        
+        // // call the function to set the initial Domains
+        // updateDomains();
+        
+        // // and add the change handler
+        // indicatorDropdown.on('change', updateDomains);
+    // });
     
     // Indicator selection menu: restyle map and present summary overlay
     function UpdateIndicatorList() {
@@ -82,22 +123,32 @@ function load_li_map() {
 
     // add scale bar
     L.control.scale().addTo(map);
- 
+
+    // define colour schemes
+    coloursets = {
+        'pgrn': ['#276419','#4d9221','#7fbc41','#b8e186','#e6f5d0','#fde0ef','#f1b6da','#de77ae','#c51b7d','#8e0152','#f7f7f7'],
+        'BrBG':['#003c30','#01665e','#35978f','#80cdc1','#c7eae5','#f5f5f5','#f6e8c3','#dfc27d','#bf812d','#8c510a','#543005'],
+         'RdYlBu':['#313695','#4575b4','#74add1','#abd9e9','#e0f3f8','#ffffbf','#fee090','#fdae61','#f46d43','#d73027','#a50026']
+    }
+    
+    // initialise colourscheme
+    colourscheme = 'RdYlBu'
+    
     // Colour based on percentile
     function getColor(p) {
       // Decile colours
       // pgrn colour scheme - diverging
-        return p > 90 ? '#276419':
-               p > 80 ? '#4d9221':
-               p > 70 ? '#7fbc41':
-               p > 60 ? '#b8e186':
-               p > 50 ? '#e6f5d0':
-               p > 40 ? '#fde0ef':
-               p > 30 ? '#f1b6da':
-               p > 20 ? '#de77ae':
-               p > 10 ? '#c51b7d':
-               p > 0  ? '#8e0152':
-                        '#f7f7f7';
+        return p > 90 ? coloursets[colourscheme][0]:
+               p > 80 ? coloursets[colourscheme][1]:
+               p > 70 ? coloursets[colourscheme][2]:
+               p > 60 ? coloursets[colourscheme][3]:
+               p > 50 ? coloursets[colourscheme][4]:
+               p > 40 ? coloursets[colourscheme][5]:
+               p > 30 ? coloursets[colourscheme][6]:
+               p > 20 ? coloursets[colourscheme][7]:
+               p > 10 ? coloursets[colourscheme][8]:
+               p > 0  ? coloursets[colourscheme][9]:
+                        coloursets[colourscheme][10];
     }
     
     // function to scale a percentile to a quantile (e.g. for quintile, num = 20)
@@ -129,6 +180,15 @@ function load_li_map() {
     };
 
     legend.addTo(map);
+
+    // change colour scheme function
+    // - NOT FUNCTIONAL YET
+    function set_scheme(x) {
+        colourscheme = x;
+        UpdateIndicatorList()
+        map._controlCorners.bottomright.remove()
+        legend.addTo(map);
+    };
 
 
     // Define initial style (liveability index)
@@ -222,7 +282,7 @@ function load_li_map() {
             collapsed: true,
             layers: [{
                        "name": "Off",
-                       "layer": L.tileLayer('')
+                       "layer": L.tileLayer('').addTo(map)
                    }]
         }
     ],[],{compact: true}
@@ -312,7 +372,7 @@ function load_li_map() {
                id: 'ind',
                style: border_style,
                interactive: false
-          }).addTo(map)
+          })
         });
         
         // include layer for suburb search
@@ -368,8 +428,9 @@ function load_li_map() {
       jsonpCallback: 'callback:parseResponseSSC'
     });
 
-    // add full screen toggle
-    map.addControl(new L.Control.Fullscreen());
+    // // add full screen toggle
+    // // NOT CURRENTLY WORKING WITH INDICATOR DROP MENU
+    // map.addControl(new L.Control.Fullscreen());
 
 
     // // add save to .png functions
