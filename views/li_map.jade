@@ -4,34 +4,46 @@ block content
     img.center(src='/images/loading_spinner.gif')
     select#inddrop
       optgroup(label='Liveability')
-        option(value='f15') &#xf1d1; Liveability index
-      | 
+        option(value='F15') &#xf1d1; Liveability index
+        | 
+        option(value='F45') &#xf1d1; Liveability index (soft)
+        | 
       optgroup(label='Walkability')
-        option(value='f16') &#xf21d; Walkability index  
+        option(value='F16') &#xf21d; Walkability index  
         |   
-        option(value='f17')        - Dwelling density  
-        |   
-        option(value='f18')        - Street connectivity  
+        option(value='F46') &#xf21d; Walkability index (soft)
         |                          
-        option(value='f19')        - Daily living score  
-      |   
-      optgroup(label="Social Infrastructure")
-        option(value='f20') &#xf0f8; Social infrastructure mix 
-      |   
-      optgroup(label="Transportation")
-        option(value='f21') &#xf239; PT access meets policy
+        option(value='F17')        - Daily living score  
+        |                          
+        option(value='F47')        - Daily living score (soft)  
         |   
+        option(value='F18')        - Dwelling density  
+        |   
+        option(value='F19')        - Street connectivity  
+        |   
+      optgroup(label="Social Infrastructure")
+        option(value='F20') &#xf0f8; Social infrastructure mix 
+        |   
+        option(value='F20') &#xf0f8; Social infrastructure mix (soft)
+        |   
+      optgroup(label="Transportation")
+        option(value='F21') &#xf239; PT access meets policy (%)
+        |  
+        option(value='F51') &#xf239; PT access meets policy (soft %)
+        |    
       optgroup(label="Green Infrastructure")   
-        option(value='f22') &#xf1bb; POS ≥ 1.5Ha within 400m (%)  
+        option(value='F22') &#xf1bb; POS ≥ 1.5Ha within 400m (%)  
+        |      
+        option(value='F52') &#xf1bb; POS ≥ 1.5Ha within 400m (soft %)  
         |      
       optgroup(label="Ambient Environment")
-        option(value='f23') &#xf0e4; Air quality 
+        option(value='F23') &#xf0e4; Air quality 
         |      
       optgroup(label="Housing")
-        option(value='f24') &#xf015; Affordable housing
+        option(value='F24') &#xf015; Affordable housing
         |      
       optgroup(label="Employment")
-        option(value='f25') &#xf0c0; Live & work in local area
+        option(value='F25') &#xf0c0; Live & work in local area
     #holder
       #map
     
@@ -65,18 +77,26 @@ block content
         .content
           | Pilot Urban Liveability Index (PULI) has been developed by the Healthy Liveable Cities group in the Centre for Urban Research at RMIT University as a policy relevant composite indicator of urban liveability, based on a socio-ecological model of health and wellbeing.  It focuses on the state of Liveability for Melbourne in 2011.
           p.
-            The liveability index is comprised of a selection of indicators from each of these domains which our research has identified as supporting health and wellbeing: <a href="#f16">Walkability index</a>, <a href="#f20">Social Infrastructure mix</a>, <a href="#f21">PT access meets policy</a>, <a href="#f22">	 POS ≥ 1.5Ha within 400m</a>, <a href="#f23">Air quality</a>, <a href="#f24">Affordable housing</a> and <a href="#f25">Live and work in local area</a>.   It can be used to interogate and visualise spatial variation in liveability across a range of spatial scales, and may be linked to other data such as the Australian Bureau of Statistics community profiles for greater insight into local area contexts.
+            The liveability index is comprised of a selection of indicators from each of these domains which our research has identified as supporting health and wellbeing: <a href="#F16">Walkability index</a>, <a href="#F20">Social Infrastructure mix</a>, <a href="#F21">PT access meets policy</a>, <a href="#F22">	 POS ≥ 1.5Ha within 400m</a>, <a href="#F23">Air quality</a>, <a href="#F24">Affordable housing</a> and <a href="#F25">Live and work in local area</a>.   It can be used to interogate and visualise spatial variation in liveability across a range of spatial scales, and may be linked to other data such as the Australian Bureau of Statistics community profiles for greater insight into local area contexts.
           p.
             It is envisaged as a useful tool for planners, policy makers, researchers and the broader public for evaluating the current state of our urban environment.
-    #f15.overlay
+    #F15.overlay
       .popup
         h2 &#xf1d1; Liveability index
         |     &#x9;&#x9;
         a.close(href='#') &times;
         |     &#x9;&#x9;
         .content
-          | The Liveability Index provides a percentile ranking of an area's liveability out of 100, where a rating of 50 may be considered average relative to all other such areas across the city. The Index is based on a composite score derived from indicators of the following domains: <a href="#f16">Walkability</a>, <a href="#f20">Social Infrastructure</a>, <a href="#f21">Transportation</a>, <a href="#f22">Public Open Space</a>, <a href="#f23">Environmental Sustainability</a>, <a href="#f24">Housing</a> and, <a href="#f25">Employment</a>.  
-    #f16.overlay
+          | The Liveability Index provides a percentile ranking of an area's liveability out of 100, where a rating of 50 may be considered average relative to all other such areas across the city. The Index is based on a composite score derived from indicators of the following domains: <a href="#F16">Walkability</a>, <a href="#F20">Social Infrastructure</a>, <a href="#F21">Transportation</a>, <a href="#F22">Public Open Space</a>, <a href="#F23">Environmental Sustainability</a>, <a href="#F24">Housing</a> and, <a href="#F25">Employment</a>.  
+    #F45.overlay
+      .popup
+        h2 &#xf1d1; Liveability index (soft)
+        |     &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | The Liveability Index provides a percentile ranking of an area's liveability out of 100, where a rating of 50 may be considered average relative to all other such areas across the city. The Index is based on a composite score derived from indicators of the following domains: <a href="#F16">Walkability</a>, <a href="#F20">Social Infrastructure</a>, <a href="#F21">Transportation</a>, <a href="#F22">Public Open Space</a>, <a href="#F23">Environmental Sustainability</a>, <a href="#F24">Housing</a> and, <a href="#F25">Employment</a>.  This version of the liveability index is calculated based on soft-threshold indicators of destination access.
+    #F16.overlay
       .popup
         h2 &#xf21d; Walkability index
         |    &#x9;&#x9;
@@ -84,7 +104,15 @@ block content
         |     &#x9;&#x9;
         .content
           | Walkability is calculated using standardised measures of dwelling density, street connectivity and daily living score. The daily living score is an indicator of land use mix, based on access to at least one public transport stop, a convenience destination (such as a newsagency, or convenience store) and a supermarket.  
-    #f20.overlay
+    #F46.overlay
+      .popup
+        h2 &#xf21d; Walkability index (soft)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | Walkability is calculated using standardised measures of dwelling density, street connectivity and daily living score. The daily living score is an indicator of land use mix, based on access to at least one public transport stop, a convenience destination (such as a newsagency, or convenience store) and a supermarket.   This version of the walkability index is calculated based on soft-threshold indicators of destination access.
+    #F20.overlay
       .popup
         h2 &#xf0f8; Social infrastructure mix
         |    &#x9;&#x9;
@@ -92,7 +120,15 @@ block content
         |     &#x9;&#x9;
         .content
           | A social infrastructure mix score was created by assessing access to 15 different types of destinations including community centres, neighbourhood houses, museums and art galleries, cinemas and theatres, libraries, childcare, childcare (out of school hours), maternal child health,  government primary and secondary schools, aged care, community health centres, dentists, General Practitioner clinics, pharmacies, swimming pools and sport and recreation facilities. 
-    #f21.overlay
+    #F50.overlay
+      .popup
+        h2 &#xf0f8; Social infrastructure mix (soft)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | A social infrastructure mix score was created by assessing access to 15 different types of destinations including community centres, neighbourhood houses, museums and art galleries, cinemas and theatres, libraries, childcare, childcare (out of school hours), maternal child health,  government primary and secondary schools, aged care, community health centres, dentists, General Practitioner clinics, pharmacies, swimming pools and sport and recreation facilities.   This version of the social infrastructure mix indicator is calculated using soft-thresholds to measure destination access.
+    #F21.overlay
       .popup
         h2 &#xf239; PT access meets policy
         |    &#x9;&#x9;
@@ -100,7 +136,15 @@ block content
         |     &#x9;&#x9;
         .content
           | A policy-informed access to public transport measure was developed based on Victorian planning guidelines stipulating access to a either a bus stop within 400m, a tram stop within 600m or a train station within 800m. 
-    #f22.overlay
+    #F51.overlay
+      .popup
+        h2 &#xf239; PT access meets policy (soft)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | A policy-informed access to public transport measure was developed based on Victorian planning guidelines stipulating access to a either a bus stop within 400m, a tram stop within 600m or a train station within 800m.   This version of the public transport access indicator is calculated using soft-thresholds to measure destination access.
+    #F22.overlay
       .popup
         h2 &#xf1bb; POS ≥ 1.5Ha within 400m
         |    &#x9;&#x9;
@@ -108,7 +152,15 @@ block content
         |     &#x9;&#x9;
         .content
           | Access to Public Open Space is based on a policy recommendation that large public open space should be available within 400m of a residence. Access to large Public Open Space is defined as areas greater than > 1.5 hectares within 400m of households and is associated with greater health benefits than smaller Public Open Space areas. 
-    #f23.overlay
+    #F52.overlay
+      .popup
+        h2 &#xf1bb; POS ≥ 1.5Ha within 400m (soft)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | Access to Public Open Space is based on a policy recommendation that large public open space should be available within 400m of a residence. Access to large Public Open Space is defined as areas greater than > 1.5 hectares within 400m of households and is associated with greater health benefits than smaller Public Open Space areas.  This version of the public open space access indicator is calculated using soft-thresholds.
+    #F23.overlay
       .popup
         h2 &#xf0e4; Air quality
         |    &#x9;&#x9;
@@ -116,7 +168,7 @@ block content
         |     &#x9;&#x9;
         .content
           | An indicator of air quality was calculated using a reverse scale of small area (Mesh Block) <a href="http://www.sciencedirect.com/science/article/pii/S0013935114003156">prediction of the annual average nitrogen dioxide (NO&#x2082;) levels for 2011</a>.  NO&#x2082; is an important indicator of air pollution, in particular road traffic emissions.  The Victorian Environmental Protection Authority recommend an annual average exposure to NO2 not exceed a threshold of 30 ppb.
-    #f24.overlay
+    #F24.overlay
       .popup
         h2 &#xf015; Housing
         |    &#x9;&#x9;
@@ -124,7 +176,7 @@ block content
         |     &#x9;&#x9;
         .content
           | The Australian Bureau of Statistics (ABS) defines an area as having affordable housing if the lowest 40% of household incomes in a given area spend < 30% of their gross incomes on mortgage/rental payments. This is commonly referred to as the 30/40 rule, and is included in the PULI as an indicator of affordable housing.
-    #f25.overlay
+    #F25.overlay
       .popup
         h2 &#xf0c0; Live and work in local area
         |    &#x9;&#x9;
@@ -132,4 +184,4 @@ block content
         |     &#x9;&#x9;
         .content
           | An indicator of local opportunities for employment was calculated as the proportion of employed people who live and work in same Statistical Area Level 3 (SA3) when measured at the smaller area of Statistical Area Level 2 (SA2). The area of SA3 generally refers to clusters of related suburbs around commercial and transport hubs in major urban areas.   
-    #f16.overlay
+    #F16.overlay
