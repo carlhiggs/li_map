@@ -180,6 +180,10 @@ html, body { position:absolute; top:0; bottom:0; width:100%; }
   width: 220px;
 }
 
+.g-pop-table{
+  font-size: 1em;
+}
+
 input[type=radio] {
     border: 0px;
     width:  10px;
@@ -311,7 +315,8 @@ input[type=radio] {
 
 select {
   margin: 0px;
-  background: transparent;
+  background: rgb(255, 255, 255);     /* For browsers that don't support rgba */
+  background-color: rgba(255, 255, 255, 0.8);   /* Transparent background color */
   width: 16em;
   padding: 5px 5px 5px 5px;
   font-size: 1.3em;
@@ -321,28 +326,47 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: url(../favicon.ico) 96% / 15% no-repeat #eee;
   position: absolute; 
   top: 12px;
-  left: 50px;
+  left: 85px;
   opacity: 1;
-  z-index: 998;
+  z-index: 999;
   font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
 }
 
 
 
 /* CAUTION: IE hackery ahead */
 select::-ms-expand { 
+    background: FFFFFF;
+    opacity: 0.2;
+    
+}
+
+select: hover { 
     display: none; /* remove default arrow on ie10 and ie11 */
 }
-  
-.holder {
-  position: absolute;
-  /* 50 px for  header; or 0 without */
-  /* top: 50px; */ 
-  top: 0px;
+
+#about {
+  margin: 0px;
+  background: transparent;
+  padding: 0px 0px 0px 0px;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 1.3em;
+  color: #46abbe;
+  position: fixed; 
+  top: 12px;
+  left: 40px;
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
 }
+
 
 .leaflet-top leaflet-right {
 }
