@@ -67,7 +67,146 @@ function load_li_map() {
         // // and add the change handler
         // indicatorDropdown.on('change', updateDomains);
     // });
-    
+    ind_desc = [
+ {
+   "F4":  ", hard threshold",
+   "F5":  ", hard threshold",
+   "F6":  ", hard threshold",
+   "F7":  "",
+   "F8":  "",
+   "F9":  ", hard threshold",
+   "F10": ", hard threshold",
+   "F11": ", hard threshold",
+   "F12": "",
+   "F13": "",
+   "F14": "",
+   "F15": ", hard threshold",
+   "F16": ", hard threshold",
+   "F17": ", hard threshold",
+   "F18": "",
+   "F19": "",
+   "F20": ", hard threshold",
+   "F21": ", hard threshold",
+   "F22": ", hard threshold",
+   "F23": "",
+   "F24": "",
+   "F25": "",
+   "F34": ", soft threshold",
+   "F35": ", soft threshold",
+   "F36": ", soft threshold",
+   "F37": "",
+   "F38": "",
+   "F39": ", soft threshold",
+   "F40": ", soft threshold",
+   "F41": ", soft threshold",
+   "F42": "",
+   "F43": "",
+   "F44": "",
+   "F45": ", soft threshold",
+   "F46": ", soft threshold",
+   "F47": ", soft threshold",
+   "F48": "",
+   "F49": "",
+   "F50": ", soft threshold",
+   "F51": ", soft threshold",
+   "F52": ", soft threshold",
+   "F53": "",
+   "F54": "",
+   "F55": ""
+ },
+ {
+   "F4": "raw",
+   "F5": "raw",
+   "F6": "raw",
+   "F7": "raw",
+   "F8": "raw",
+   "F9": "raw",
+   "F10": "raw",
+   "F11": "raw",
+   "F12": "raw",
+   "F13": "raw",
+   "F14": "raw",
+   "F15": "percentile",
+   "F16": "percentile",
+   "F17": "percentile",
+   "F18": "percentile",
+   "F19": "percentile",
+   "F20": "percentile",
+   "F21": "percentile",
+   "F22": "percentile",
+   "F23": "percentile",
+   "F24": "percentile",
+   "F25": "percentile",
+   "F34": "raw",
+   "F35": "raw",
+   "F36": "raw",
+   "F37": "raw",
+   "F38": "raw",
+   "F39": "raw",
+   "F40": "raw",
+   "F41": "raw",
+   "F42": "raw",
+   "F43": "raw",
+   "F44": "raw",
+   "F45": "percentile",
+   "F46": "percentile",
+   "F47": "percentile",
+   "F48": "percentile",
+   "F49": "percentile",
+   "F50": "percentile",
+   "F51": "percentile",
+   "F52": "percentile",
+   "F53": "percentile",
+   "F54": "percentile",
+   "F55": "percentile"
+ },
+ {
+   "F4": "Liveability",
+   "F5": "Walkability Index",
+   "F6": "Daily Living (/3)",
+   "F7": "Dwellings per Ha",
+   "F8": "3+ way street connections per km2",
+   "F9": "Social infrastructure mix (/16)",
+   "F10": "PT access meets policy (%)",
+   "F11": "POS ? 1.5Ha within 400m (%)",
+   "F12": "Air quality (rev. Mesh Block NO? ppb.)",
+   "F13": "Affordable housing (30/40 rule, SA1 %)",
+   "F14": "Live & work w/in SA3 (SA2 %)",
+   "F15": "Liveability",
+   "F16": "Walkability Index",
+   "F17": "Daily Living (/3)",
+   "F18": "Dwellings per Ha",
+   "F19": "3+ way street connections per km2",
+   "F20": "Social infrastructure mix (/16)",
+   "F21": "PT access meets policy (%)",
+   "F22": "POS ? 1.5Ha within 400m (%)",
+   "F23": "Air quality (rev. Mesh Block NO? ppb.)",
+   "F24": "Affordable housing (30/40 rule, SA1 %)",
+   "F25": "Live & work w/in SA3 (SA2 %)",
+   "F34": "Liveability",
+   "F35": "Walkability Index",
+   "F36": "Daily Living (/3)",
+   "F37": "Dwellings per Ha",
+   "F38": "3+ way street connections per km2",
+   "F39": "Social infrastructure mix (/16)",
+   "F40": "PT access meets policy (%)",
+   "F41": "POS ? 1.5Ha within 400m (%)",
+   "F42": "Air quality (rev. Mesh Block NO? ppb.)",
+   "F43": "Affordable housing (30/40 rule, SA1 %)",
+   "F44": "Live & work w/in SA3 (SA2 %)",
+   "F45": "Liveability",
+   "F46": "Walkability Index",
+   "F47": "Daily Living (/3)",
+   "F48": "Dwellings per Ha",
+   "F49": "3+ way street connections per km2",
+   "F50": "Social infrastructure mix (/16)",
+   "F51": "PT access meets policy (%)",
+   "F52": "POS ? 1.5Ha within 400m (%)",
+   "F53": "Air quality (rev. Mesh Block NO? ppb.)",
+   "F54": "Affordable housing (30/40 rule, SA1 %)",
+   "F55": "Live & work w/in SA3 (SA2 %)"
+ }
+]
     // Indicator selection menu: restyle map and present summary overlay
     function UpdateIndicatorList() {
       var selected_ind = document.getElementById("inddrop");
@@ -80,7 +219,11 @@ function load_li_map() {
                weight: 0.2,
                color: 'white',
            });
+           layer.setTooltipContent('SA1: ' + layer.feature.properties.F1 +'<br>Suburb: ' + layer.feature.properties.F2 +'<br>LGA: ' + layer.feature.properties.F3 + '<br><br><b>'+ind_desc[2][ind_value]+ind_desc[0][ind_value]+'</b><br>Average:'+layer.feature.properties[ind_value]+'<br>Range: <i>'+layer.feature.properties[ind_value]+' to '+layer.feature.properties[ind_value]+'</i><br>75% of residential lots: <i>'+layer.feature.properties[ind_value]+' to '+layer.feature.properties[ind_value]+'</i>');
        });
+
+
+     
       ssc.eachLayer(function(layer) {
            layer.setStyle({
                fillColor: getColor(layer.feature.properties[ind_value]),
@@ -88,7 +231,19 @@ function load_li_map() {
                weight: 0.2,
                color: 'white',
            });
+           layer.setTooltipContent('SA1: ' + layer.feature.properties.F1 +'<br>Suburb: ' + layer.feature.properties.F2 +'<br>LGA: ' + layer.feature.properties.F3 + '<br><br><b>'+ind_desc[2][ind_value]+ind_desc[0][ind_value]+'</b><br>Average:'+layer.feature.properties[ind_value]+'<br>Range: <i>'+layer.feature.properties[ind_value]+' to '+layer.feature.properties[ind_value]+'</i><br>75% of residential lots: <i>'+layer.feature.properties[ind_value]+' to '+layer.feature.properties[ind_value]+'</i>');
        });
+    
+      lga.eachLayer(function(layer) {
+           layer.setStyle({
+               fillColor: getColor(layer.feature.properties[ind_value]),
+               fillOpacity: 0.8,
+               weight: 0.2,
+               color: 'white',
+           });
+           layer.setTooltipContent('SA1: ' + layer.feature.properties.F1 +'<br>Suburb: ' + layer.feature.properties.F2 +'<br>LGA: ' + layer.feature.properties.F3 + '<br><br><b>'+ind_desc[2][ind_value]+ind_desc[0][ind_value]+'</b><br>Average:'+layer.feature.properties[ind_value]+'<br>Range: <i>'+layer.feature.properties[ind_value]+' to '+layer.feature.properties[ind_value]+'</i><br>75% of residential lots: <i>'+layer.feature.properties[ind_value]+' to '+layer.feature.properties[ind_value]+'</i>');
+       });   
+
     };
     
     // // If popup is open and user clicks outside, close popup
@@ -259,7 +414,9 @@ function load_li_map() {
     }
 
     function onEachFeature(feature, layer) {
-      layer.bindTooltip('SA1: ' + feature.properties.F1 +'<br>Suburb: ' + feature.properties.F2 +'<br>LGA: ' + feature.properties.F3);
+      var selected_ind = document.getElementById("inddrop");
+      var ind_value = selected_ind.options[selected_ind.selectedIndex].value;
+      layer.bindTooltip('SA1: ' + feature.properties.F1 +'<br>Suburb: ' + feature.properties.F2 +'<br>LGA: ' + feature.properties.F3 + '<br><br><b>'+ind_desc[2][ind_value]+': '+ind_desc[1][ind_value]+'</b><br>Average:'+feature.properties[ind_value]+'<br>Range: <i>'+feature.properties[ind_value]+' to '+feature.properties[ind_value]+'</i><br>75% of residential lots: <i>'+feature.properties[ind_value]+' to '+feature.properties[ind_value]+'</i>');
       layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight
