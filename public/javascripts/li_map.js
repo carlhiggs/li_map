@@ -222,7 +222,7 @@ function load_li_map() {
     };
 
 
-    // Define initial style (liveability index)
+    // Define initial style
     function li_style(feature) {
       return {
         weight: 0.2,
@@ -232,11 +232,11 @@ function load_li_map() {
       };
     }
     
-    // Define initial style (liveability index)
+    // Define border style
     function border_style(feature) {
       return {
         weight: 1.5,
-        color: '#46abbe',
+        color: '#ffff33',
         fillOpacity: 0
       };
     }
