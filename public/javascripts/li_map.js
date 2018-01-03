@@ -242,9 +242,12 @@ function load_li_map() {
     }
 
     // WFS data        
-    var li_sa1_url = "http://bilbo.australiasoutheast.cloudapp.azure.com/geoserver/geonode/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_sa1&outputFormat=text%2Fjavascript";
-    var li_ssc_url = "http://bilbo.australiasoutheast.cloudapp.azure.com/geoserver/geonode/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_ssc&outputFormat=text%2Fjavascript";   
-    var li_lga_url = "http://bilbo.australiasoutheast.cloudapp.azure.com/geoserver/geonode/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_lga&outputFormat=text%2Fjavascript";
+    // var li_sa1_url = "http://bilbo.australiasoutheast.cloudapp.azure.com/geoserver/geonode/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_sa1&outputFormat=text%2Fjavascript";
+    // var li_ssc_url = "http://bilbo.australiasoutheast.cloudapp.azure.com/geoserver/geonode/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_ssc&outputFormat=text%2Fjavascript";   
+    // var li_lga_url = "http://bilbo.australiasoutheast.cloudapp.azure.com/geoserver/geonode/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_lga&outputFormat=text%2Fjavascript";
+    var li_sa1_url = "http://localhost:8080/geoserver/liveability/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=liveability:clean_li_map_sa1&outputFormat=text/javascript";
+    var li_ssc_url = "http://localhost:8080/geoserver/liveability/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=liveability:clean_li_map_ssc&outputFormat=text/javascript";   
+    var li_lga_url = "http://localhost:8080/geoserver/liveability/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=liveability:clean_li_map_lga&outputFormat=text/javascript";
     
     // a null style functino for info and search layers
     function null_style(feature) {
