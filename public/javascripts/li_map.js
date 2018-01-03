@@ -436,7 +436,7 @@ function load_li_map() {
         // Include a search box to jump to suburb
         var searchControl = new L.Control.Search({
           layer: ssc_search,
-          propertyName: 'f2',
+          propertyName: 'F2',
           marker: false,
           moveToLocation: function(latlng, title, map) {
             //map.fitBounds( latlng.layer.getBounds() );
