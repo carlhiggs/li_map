@@ -269,6 +269,7 @@ function load_li_map() {
     var li_sa1_url = "http://localhost:8080/geoserver/liveability/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=liveability:clean_li_map_sa1&outputFormat=text/javascript";
     var li_ssc_url = "http://localhost:8080/geoserver/liveability/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=liveability:clean_li_map_ssc&outputFormat=text/javascript";   
     var li_lga_url = "http://localhost:8080/geoserver/liveability/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=liveability:clean_li_map_lga&outputFormat=text/javascript";
+    var vic_ugb    = "http://localhost:8080/geoserver/landuse_vic/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=landuse_vic:vic_plan_ugb_dissolved&outputFormat=text%2Fjavascript";
     
     // a null style functino for info and search layers
     function null_style(feature) {
@@ -400,9 +401,10 @@ function load_li_map() {
          obj.layer.bringToFront();
          }
     });   
-    };    
+    };  
+    
         
-    // Parse geojson data, adding to map
+    // Parse SA1 geojson data, adding to map
     window.parseResponseSA1 = function(data) {
       sa1 = L.geoJson(data, {
           id: 'ind',
@@ -426,6 +428,7 @@ function load_li_map() {
       jsonpCallback: 'callback:parseResponseSA1'
     });
 
+    // Parse Suburb geojson data, adding to map    
     window.parseResponseSSC = function(data) {
         ssc = L.geoJson(data, {
                id: 'ind',
@@ -512,7 +515,7 @@ function load_li_map() {
       jsonpCallback: 'callback:parseResponseSSC'
     });
 
-    // Parse geojson data, adding to map
+    // Parse LGA geojson data, adding to map
     window.parseResponseLGA = function(data) {
       lga = L.geoJson(data, {
           id: 'ind',
@@ -543,6 +546,29 @@ function load_li_map() {
       outputFormat: 'text/javascript',
       jsonp: 'format_options',
       jsonpCallback: 'callback:parseResponseLGA'
+    });    
+
+          
+    // add in Urban Growth Boundary (2018)    
+    window.parseResponseUGB = function(data) {
+      boundaries.addBaseLayer({
+          group: "Boundary lines", //note: this is not working yet
+		       name:  'UGB (2018)',
+	           layer: L.geoJson(data, {
+               id: 'ind',
+               style: border_style,
+               interactive: false
+          })
+        });
+    }
+
+    $.ajax({
+      url: vic_ugb,
+      maxFeatures: 31,
+      dataType: 'jsonp',
+      outputFormat: 'text/javascript',
+      jsonp: 'format_options',
+      jsonpCallback: 'callback:parseResponseUGB'
     });    
     
     // // add full screen toggle

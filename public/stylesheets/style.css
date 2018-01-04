@@ -311,6 +311,10 @@ input[type=radio] {
   overflow: auto;
 }
 
+.popimg {
+    max-width: 100%
+}
+
 
 
 select {
