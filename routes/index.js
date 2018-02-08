@@ -1,15 +1,13 @@
 'use strict';
-const express = require('express'); // require Express
 const basicAuth = require('basic-auth');
 const router = express.Router(); // setup usage of the Express router engine
-const pg = require('pg');  // PostgreSQL / PostGIS module
 
 // Setup connection
 
 var auth = function (req, res, next) {
   function unauthorized(res) {
     res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-    return res.send(401);
+    return res.sendStatus(401);
   };
 
   var user = basicAuth(req);
