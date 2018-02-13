@@ -1,5 +1,6 @@
 'use strict';
 const basicAuth = require('basic-auth');
+const express = require('express'); // require Express
 const router = express.Router(); // setup usage of the Express router engine
 
 // Setup connection
