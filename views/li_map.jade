@@ -8,6 +8,10 @@ block content
         | 
         option(value='PS0') &#xf1d1; Liveability index (soft)
         | 
+        option(value='PH11') &#xf1d1; Liveability index (hard; excl. air qual.)
+        | 
+        option(value='PS11') &#xf1d1; Liveability index (soft; excl. air qual.)
+        | 
       optgroup(label='Walkability')
         option(value='PH1') &#xf21d; Walkability index (hard)
         |   
@@ -98,6 +102,22 @@ block content
         |     &#x9;&#x9;
         .content
           | The Liveability Index provides a percentile ranking of an area's liveability out of 100, where a rating of 50 may be considered average relative to all other such areas across the city. The Index is based on a composite score derived from indicators of the following domains: <a href="#PH1">Walkability</a>, <a href="#PH5">Social Infrastructure</a>, <a href="#PH6">Transportation</a>, <a href="#PH7">Public Open Space</a>, <a href="#PH10">Environmental Sustainability</a>, <a href="#PH8">Housing</a> and, <a href="#PH9">Employment</a>.  This version of the liveability index is calculated using soft-threshold indicators of <a href="#destination_access">destination access</a>.
+    #PH11.overlay
+      .popup
+        h2 &#xf1d1; Liveability index (hard; excl. air qual.)
+        |     &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | The Liveability Index provides a percentile ranking of an area's liveability out of 100, where a rating of 50 may be considered average relative to all other such areas across the city. The Index is based on a composite score derived from indicators of the following domains: <a href="#PH1">Walkability</a>, <a href="#PH5">Social Infrastructure</a>, <a href="#PH6">Transportation</a>, <a href="#PH7">Public Open Space</a>, <a href="#PH8">Housing</a> and, <a href="#PH9">Employment</a>.  This version of the liveability index is calculated using hard-threshold indicators of <a href="#destination_access">destination access</a> and does not include the air quality measure which has a strong negative correlation with walkability; a reflection of the trend that built up city regions tend to have improved street connectivity and destination accessibility, with higher walkability and car traffic while out areas have fewer destinations hence lower traffic and improved air quality (lower NO2, an indicator of traffic emissions).  Air quality was not included in the original conception of the ULI, being considered a distal determinant of liveability (impacted by walking choice behaviours through shift in mode of transport tendencies away from car usage).
+    #PS11.overlay
+      .popup
+        h2 &#xf1d1; Liveability index (soft; excl. air qual.)
+        |     &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | The Liveability Index provides a percentile ranking of an area's liveability out of 100, where a rating of 50 may be considered average relative to all other such areas across the city. The Index is based on a composite score derived from indicators of the following domains: <a href="#PH1">Walkability</a>, <a href="#PH5">Social Infrastructure</a>, <a href="#PH6">Transportation</a>, <a href="#PH7">Public Open Space</a>, and <a href="#PH8">Housing</a> and, <a href="#PH9">Employment</a>.  This version of the liveability index is calculated using soft-threshold indicators of <a href="#destination_access">destination access</a> and does not include the air quality measure which has a strong negative correlation with walkability; a reflection of the trend that built up city regions tend to have improved street connectivity and destination accessibility, with higher walkability and car traffic while out areas have fewer destinations hence lower traffic and improved air quality (lower NO2, an indicator of traffic emissions).  Air quality was not included in the original conception of the ULI, being considered a distal determinant of liveability (impacted by walking choice behaviours through shift in mode of transport tendencies away from car usage).
     #PH1.overlay
       .popup
         h2 &#xf21d; Walkability index (hard)
