@@ -587,15 +587,16 @@ function load_li_map() {
     // }).addTo(map);
 
     // programmatically add intro attributes to dynamic elements
-    // $('leaflet-control-search leaflet-control').attr('data-step', "3")
-    // $('leaflet-control-search leaflet-control').attr('data-intro', "Search for a suburb here to locate and display its summary information for all indicators.")
-    // $('#sa1_overlay').attr('data-step', '4');
-    // $('#sa1_overlay').attr('data-intro', 'The currently selected map is displayed here --- the Liveability Index, for SA1 areas (an ABS definition, like a local neighbourhood).  If you hover over one of the highlighted areas its value for this indicator will displayed here.  Click on an area for more detail.');
+    $('leaflet-control-search leaflet-control').attr('data-step', "3")
+    $('leaflet-control-search leaflet-control').attr('data-intro', "Search for a suburb here to locate and display its summary information for all indicators.")
+    $('#sa1_overlay').attr('data-step', '4');
+    $('#sa1_overlay').attr('data-intro', 'The currently selected map is displayed here --- the Liveability Index, for SA1 areas (an ABS definition, like a local neighbourhood).  If you hover over one of the highlighted areas its value for this indicator will displayed here.  Click on an area for more detail.');
     // $('#info_overlay').attr('data-step', '5');
     // $('#info_overlay').attr('data-intro', 'Summary information can be retrieved either at the SA1 or Suburb level');
     // $('#bmap_overlay').attr('data-step', '6');
     // $('#bmap_overlay').attr('data-intro', 'The background map can be toggled between a basic gray scale map, or a satellite view.  The latter may be useful to examine local built environment in light of the displayed indicators.');
     // $('a.leaflet-control-layers-toggle').attr('data-step', '7');
     // $('a.leaflet-control-layers-toggle').attr('data-intro', 'The displayed map elements summarised above can be changed here; hover over this icon to display the options.  For example, you could select to view the "Walkability Index" at the suburb level.');
-
+    // Run the introductory script
+    // introJs().start();
   }

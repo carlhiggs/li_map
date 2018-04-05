@@ -2,7 +2,7 @@ extends layout_map
 
 block content
     img.center(src='/images/loading_spinner.gif')
-    select#inddrop
+    select#inddrop(data-step='1', data-intro='Select indicator or composite index of interest from this list.  Indicators are grouped according to liveability domain.')
       optgroup(label='Liveability')
         option(value='PH0') &#xf1d1; Liveability index (hard)
         | 
@@ -49,7 +49,7 @@ block content
       optgroup(label="Ambient Environment")
         option(value='PH10') &#xf0e4; Air quality 
         
-    #about &#xf05a;
+    #about(data-step='2', data-intro='Click here for more information about an indicator and its interpretation.') &#xf05a;
         
     #map
     
@@ -78,7 +78,7 @@ block content
       .popup
         h2 Pilot Urban Liveability Index
         |     &#x9;&#x9;
-        a.close(href='#') &times;
+        a.close(href='#' onclick='introJs().start()') &times;
         |     &#x9;&#x9;
         .content
           | Pilot Urban Liveability Index (PULI) has been developed by the Healthy Liveable Cities group in the Centre for Urban Research at RMIT University as a policy relevant composite indicator of urban liveability, based on a socio-ecological model of health and wellbeing.  It focuses on the state of Liveability for Melbourne in 2011.
@@ -247,11 +247,3 @@ block content
         .content
           | Binary indicators of destination access were based on current urban policies or the literature if urban planning policies did not exist. While binary indicators are a natural way to express whether a policy has been achieved (or not), it is not intuitive that, for example, living within 390m from a bus stop gives a person full benefit of this proximity while living at 410m the resident receives zero benefit. This binary threshold can be referred to as a ‘hard threshold’, in contrast to ‘soft threshold’ indicators calculated using a logistic decay function yielding for each destination type a continuous access score ranging from 0 to 1.  
           img.popimg(src='/images/cutoffs_access_diagram.png')
-    #communityprofile.overlay
-      .popup
-        h2 &#xf0c0; Community profiles: under development
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | Community specific data and comparisons will be displayed on request here, with inclusion pending a future update.  
