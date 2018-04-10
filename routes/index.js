@@ -97,6 +97,25 @@ var auth_maroondah = function (req, res, next) {
   };
 };
 
+var auth_lilydale = function (req, res, next) {
+  function unauthorized(res) {
+    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
+    return res.send(401);
+  };
+
+  var user = basicAuth(req);
+
+  if (!user || !user.name || !user.pass) {
+    return unauthorized(res);
+  };
+
+
+  if (user.name === 'Lilydale' && user.pass === 'ideallly2011') {
+    return next();
+  } else {
+    return unauthorized(res);
+  };
+};
 
 // Set up your database query to display GeoJSON
 const li_query_sa1 = "SELECT * FROM clean_li_map_json_sa1_min_soft";
@@ -213,6 +232,16 @@ router.get('/Cardinia', auth_cardinia, function(req, res, next) {
   res.render('Cardinia', { title: "Pilot Liveability Index: Shire of Cardinia, Melbourne 2011" });
 });
 
+/* GET the Maroondah front page */
+router.get('/Maroondah', auth_maroondah, function(req, res, next) {
+  res.render('Maroondah', { title: "Pilot Liveability Index: City of Maroondah, Melbourne 2011" });
+});
+
+/* GET the Lilydale / Yarra Ranges front page */
+router.get('/lilydale', auth_lilydale, function(req, res, next) {
+  res.render('Lilydale', { title: "Pilot Liveability Index: Shire of Yarra Ranges, Melbourne 2011" });
+});
+
 /* GET the Brimbank map page */
 router.get('/li_brimbank', auth_brimbank, function(req, res) {
     client.query(li_query_ssc)
@@ -259,6 +288,24 @@ router.get('/li_maroondah', auth_maroondah, function(req, res) {
            var sa1_data =  data.rows[0].row_to_json.features.where( "( el, i, res, param ) => el.properties.f3 == param", "Maroondah (C)" );
            res.render('li_maroondah', {
              title: "Pilot Liveability Index: City of Maroondah, Melbourne 2011",
+             json_sa1: sa1_data,
+             json_ssc: ssc_data
+           })
+        })
+      })
+    .catch(e => console.error(e.stack))
+});
+
+/* GET the Lilydale map page */
+router.get('/li_lilydale', auth_lilydale, function(req, res) {
+    client.query(li_query_ssc)
+      .then(data => {
+        var ssc_data = data.rows[0].row_to_json.features.where( "( el, i, res, param ) => el.properties.f3 == param", "Yarra Ranges (S)" );
+        client.query(li_query_sa1)
+          .then(data => {
+           var sa1_data =  data.rows[0].row_to_json.features.where( "( el, i, res, param ) => el.properties.f3 == param", "Yarra Ranges (S)" );
+           res.render('li_lilydale', {
+             title: "Pilot Liveability Index: Shire of Yarra Ranges, Melbourne 2011",
              json_sa1: sa1_data,
              json_ssc: ssc_data
            })
