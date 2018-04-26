@@ -117,6 +117,26 @@ var auth_lilydale = function (req, res, next) {
   };
 };
 
+var auth_wyndham = function (req, res, next) {
+  function unauthorized(res) {
+    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
+    return res.send(401);
+  };
+
+  var user = basicAuth(req);
+
+  if (!user || !user.name || !user.pass) {
+    return unauthorized(res);
+  };
+
+
+  if (user.name === 'Wyndham' && user.pass === 'mwahndy2011') {
+    return next();
+  } else {
+    return unauthorized(res);
+  };
+};
+
 // Set up your database query to display GeoJSON
 const li_query_sa1 = "SELECT * FROM clean_li_map_json_sa1_min_soft";
 const li_query_ssc = "SELECT * FROM clean_li_map_json_ssc_min_soft";
@@ -306,6 +326,25 @@ router.get('/li_lilydale', auth_lilydale, function(req, res) {
            var sa1_data =  data.rows[0].row_to_json.features.where( "( el, i, res, param ) => el.properties.f3 == param", "Yarra Ranges (S)" );
            res.render('li_lilydale', {
              title: "Pilot Liveability Index: Shire of Yarra Ranges, Melbourne 2011",
+             json_sa1: sa1_data,
+             json_ssc: ssc_data
+           })
+        })
+      })
+    .catch(e => console.error(e.stack))
+});
+
+
+/* GET the Wyndham map page */
+router.get('/li_wyndham', auth_wyndham, function(req, res) {
+    client.query(li_query_ssc)
+      .then(data => {
+        var ssc_data = data.rows[0].row_to_json.features.where( "( el, i, res, param ) => el.properties.f3 == param", "Wyndham (C)" );
+        client.query(li_query_sa1)
+          .then(data => {
+           var sa1_data =  data.rows[0].row_to_json.features.where( "( el, i, res, param ) => el.properties.f3 == param", "Wyndham (C)" );
+           res.render('li_wyndham', {
+             title: "Pilot Liveability Index: City of Wyndham, Melbourne 2011",
              json_sa1: sa1_data,
              json_ssc: ssc_data
            })
