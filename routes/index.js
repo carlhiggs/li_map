@@ -263,7 +263,7 @@ router.get('/lilydale', auth_lilydale, function(req, res, next) {
 });
 
 /* GET the Wyndham front page */
-router.get('/Wyndham', auth_maroondah, function(req, res, next) {
+router.get('/Wyndham', auth_wyndham, function(req, res, next) {
   res.render('Wyndham', { title: "Pilot Liveability Index: City of Wyndham, Melbourne 2011" });
 });
 
