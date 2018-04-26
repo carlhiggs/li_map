@@ -262,6 +262,12 @@ router.get('/lilydale', auth_lilydale, function(req, res, next) {
   res.render('Lilydale', { title: "Pilot Liveability Index: Shire of Yarra Ranges, Melbourne 2011" });
 });
 
+/* GET the Wyndham front page */
+router.get('/Wyndham', auth_maroondah, function(req, res, next) {
+  res.render('Wyndham', { title: "Pilot Liveability Index: City of Wyndham, Melbourne 2011" });
+});
+
+
 /* GET the Brimbank map page */
 router.get('/li_brimbank', auth_brimbank, function(req, res) {
     client.query(li_query_ssc)
