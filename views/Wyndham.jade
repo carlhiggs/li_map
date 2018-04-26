@@ -1,0 +1,49 @@
+doctype html
+html
+  head
+    title= title
+    // using leaflet 1.1.0 (current 27 June 2017)
+    link(rel='stylesheet', href='/stylesheets/leaflet.css')
+    link(rel='stylesheet', href='/stylesheets/leaflet.groupedlayercontrol.min.css')
+    link(rel='stylesheet', href='/stylesheets/Control.MiniMap.min.css')
+    link(rel='stylesheet', href='/stylesheets/leaflet.fullscreen.css')
+    link(rel='stylesheet', href='/stylesheets/leaflet-sidebar.css')
+    link(rel='stylesheet', href='/stylesheets/leaflet-search.min.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',type='text/css')
+    link(rel='stylesheet', href='/stylesheets/introjs.min.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='javascripts/leaflet.js')
+    script(src='/javascripts/leaflet.groupedlayercontrol.min.js')
+    script(src='/javascripts/Control.MiniMap.min.js')
+    script(src='/javascripts/Leaflet.fullscreen.min.js')
+    script(src='/javascripts/leaflet-sidebar.js')
+    script(src='/javascripts/leaflet-search.min.js')
+    script(src='/javascripts/bundle.js')
+    script(src='https://d3js.org/d3.v4.min.js')
+    script(src='https://code.jquery.com/jquery-2.1.1.min.js')
+    script(src='/javascripts/intro.min.js')
+  body
+    .header
+      h1.page-title Pilot Liveability Index: City of Wyndham, Melbourne 2011
+    block content 
+      .main-content
+        p.
+          This website serves as an entry point to the liveability indicators and liveability index specific to residential areas of the City of Wyndham, based on data targetting 2011.  Indicator percentiles describe the performance of areas  &mdash; e.g. Statistical Area 1 (SA1), or Suburb  &mdash; relative to the rest of Melbourne.  The decision to focus on 2011 for the pilot project was based on availability of reliable data at the commencement of this project.  For example, ABS census data for 2016 had not been released during the pilot project's development.  An update of the indicators and index based on 2016 data is planned to be completed by late 2017.
+        
+        p.
+          The liveability index was developed to measure the distribution of accessibility and availability of the seven liveability domains hypothesized to support health and wellbeing: employment, food, housing, public open space, social infrastructure, transport, and walkability. It combines these into a policy-relevant and evidence-informed composite index for residential address points which may be summarised at various area level aggregations and visualised spatially.  The current visualisation allows for summaries at the SA1 level, and the larger suburb level.  However, due to the restriction to the City of Wyndham, suburbs which include residences in other local government areas may not be included.  It is anticipated that the SA1 level estimates may prove more useful for planning purposes: this is a smaller population balanced administrative area, of around 200 to 800 persons, which could be considered more like a local neighbourhood.  Read more about the ABS 2011 definition of an SA1 area <a  target="_blank" href="http://www.abs.gov.au/AUSSTATS/abs@.nsf/Previousproducts/7CAFD05E79EB6F81CA257801000C64CD">here</a>.
+        
+        p.
+          The index will allow integrated urban planning policies for liveable neighbourhoods to be evaluated in terms of how well they are being delivered across the Melbourne metropolitan region, the health impact of the integration of those policies, and to whom. Policies which are (and are not) being delivered may be identified through dis-aggregation of the liveability index into sub-domains, enabling identification of opportunities for future investment.  Inequities in liveability across the metropolitan expanse can be interrogated through visualisation and used as exposure covariates in statistical modelling.
+        
+        h2. 
+          Visualisation example
+        
+        p.
+          A preliminary choropleth visualisation of liveability across the ABS Statistical Area 1 (SA1) regions of Melbourne has been developed.  The interactive map displays summary statistics for areas in two ways: 1) by clicking on an area, its liveability indicator values and associated percentile position relative to the rest of Melbourne in 2011 will be summarised in a popup; 2) by hovering over areas their attributes will likewise be summarised in a summary window.  In this way, direct comparisons may be made between liveability and other indicator scores across different areas.
+          
+        p.
+          #[a(href="../li_wyndham") View liveability indicators for City of Wyndham, Melbourne in 2011]
+    
+      .footer
+        p &copy; Health Liveable Cities Group, RMIT 2017
