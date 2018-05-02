@@ -1,6 +1,6 @@
 {
   "name": "li-map",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -10,17 +10,20 @@
   },
   "dependencies": {
     "basic-auth": "*",
-    "body-parser": "~1.17.1",
+    "body-parser": "^1.17.2",
     "compression": "*",
-    "cookie-parser": "~1.4.3",
+    "cookie-parser": "^1.4.3",
     "debug": "^2.6.9",
     "express": "~4.15.2",
     "jade": "~1.11.0",
     "jade-lint": "^2.1.0",
+    "js-cookie": "^2.2.0",
+    "jsdom": "^11.6.2",
     "jslint": "^0.11.0",
     "leaflet-wfst": "^2.0.1-beta.10",
     "morgan": "~1.8.1",
     "pg": "*",
+    "request": "^2.85.0",
     "serve-favicon": "~2.4.2"
   }
 }

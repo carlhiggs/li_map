@@ -1,5 +1,9 @@
 extends layout
 
+block header
+  .header
+      h1.page-title Pilot Victorian Liveability Index
+
 block content
   .main-content
     p.
@@ -18,4 +22,9 @@ block content
       A preliminary choropleth visualisation of liveability across the ABS Statistical Area 1 (SA1) regions of Melbourne has been developed.  The interactive map displays summary statistics for areas in two ways: 1) by clicking on an area, its liveability and associated indicator deciles will be summarised in a popup; 2) by hovering over areas their attributes will likewise be summarised in a summary window.  In this way, direct comparisons may be made between liveability and other indicator scores across different areas.
       
     p.
-      #[a(href="../li_map") Load the pilot Liveability Index map visualisation.]
+      #[a(href="../li_map#authenticate") Login or sign-up to load the pilot Liveability Index map visualisation.]
+
+      
+block footer
+  .footer
+      p &copy; Health Liveable Cities Group, RMIT 2017

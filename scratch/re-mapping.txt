@@ -1,0 +1,41 @@
+   old new
+-- f1  f1  sa1_7dig11            
+-- f2  f2  suburb
+-- f3  f3  lga
+-- f4  f4  ih_li_ci_est                
+-- f13 f5  rh_walkability           
+-- f68 f6  r_daily_living                               
+-- f76 f7  r_dd                                
+-- f84 f8  r_sc                                      
+-- f14 f9  rh_si_mix                
+-- f15 f10 rh_dest_pt               
+-- f16 f11 rh_pos15000_access       
+-- f17 f12 rh_pred_no2_2011_col_ppb 
+-- f18 f13 rh_prop_affordablehousing
+-- f19 f14 rh_prop_live_work        
+-- f20 f15 ph_li_ci_est             
+-- f21 f16 ph_walkability  
+-- f75 f17 ph_dl         
+-- f82 f18 ph_dd                    
+-- f91 f19 ph_sc  
+-- f22 f20 ph_si_mix                
+-- f23 f21 ph_dest_pt               
+-- f24 f22 ph_pos15000_access       
+-- f25 f23 ph_pred_no2_2011_col_ppb 
+-- f26 f24 ph_prop_affordablehousing
+-- f27 f25 ph_prop_live_work
+
+
+
+
+                        
+                   
+                  
+                 
+  
+ 
+            
+      
+	
+	
+         
