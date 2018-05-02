@@ -1,83 +1,122 @@
 'use strict';
 const express = require('express'); // require Express
-const basicAuth = require('basic-auth');
 const router = express.Router(); // setup usage of the Express router engine
-const pg = require('pg');  // PostgreSQL / PostGIS module
+
+const jsdom = require('jsdom'); // jsdom to allow manipulation of html
+const { JSDOM } = jsdom;
+
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var request = require("request");
+
+router.use(cookieParser());
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: true }));
 
 // Setup connection
-//const client = new pg.Client({
-//  user: "spatial@ligres",
-//  password: "sp$nUggy",
-//  database: "li_soft",
-//  port: 5432,
-//  host: "ligres.postgres.database.azure.com",
-//  ssl: true
-//});
-//
-
-// const client = new pg.Client({
-// 	user: "postgres",
-// 	password: "postgres",
-// 	database: "li_dev",
-// 	port: 5432,
-// 	host: "postgres"
-// });
-
-
-//client.connect();
-
-var auth = function (req, res, next) {
-  function unauthorized(res) {
-    res.set('WWW-Authenticate', 'Basic realm=Authorization Required');
-    return res.send(401);
-  };
-
-  var user = basicAuth(req);
-
-  if (!user || !user.name || !user.pass) {
-    return unauthorized(res);
-  };
-
-  if (user.name === 'gus' && user.pass === 'blahcheese') {
-    return next();
-  } else {
-    return unauthorized(res);
-  };
-};
-
-// Set up your database query to display GeoJSON
-//const li_query_sa1 = "SELECT * FROM clean_li_map_json_sa1_min_soft";
-//const li_query_ssc = "SELECT * FROM clean_li_map_json_ssc_min_soft";
-
-// var li_query = "SELECT * FROM li_map_json_sa1_min_hard";
-// var li_query = "SELECT * FROM li_map_json_hard";
-// var li_query = "SELECT * FROM li_map_json_h_mini";
-
-
-
 /* GET home page. */
-router.get('/', auth, function(req, res, next) {
-  res.render('index', { title: 'Pilot Liveability Index' });
+//router.get('/', auth, function(req, res, next) {
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Pilot liveability Index' });
 });
 
 module.exports = router;
 
+/* ******************* TESTING *********************** */
+/* GET Login response page (server side only)- for development purposes only */
 
+
+router.get('/login_response', function(req, res) {
+    res.render('login_response', {
+      title: 'Login'
+    });
+});
+
+/* POST Login response page to handle username & password */
+router.post('/login_response', function(req, res) {
+    var username = req.body.id_username;
+    var password = req.body.id_password;
+    var csrf_token; // this one for testing pulling one from the durin html
+
+    // Request entire durin page in order to get csrf token.
+    request("http://durin.australiasoutheast.cloudapp.azure.com/", async function(error, response, body) {
+      // We have to get the DOM asynchronously, otherwise getElementsByName often returns
+      // an error as it the DOM has not yet loaded for it to parse.
+      var x = await getbody(body);
+
+      function getbody(b){
+        var dom = new JSDOM(b);
+        return dom;
+      };
+
+      var csrf_token = x.window.document.getElementsByName('csrfmiddlewaretoken')[0].value;
+
+      console.log("******************************????????????********************* ");
+      console.log("csrf token value: ")
+      console.log(csrf_token);
+      console.log("******************************????????????********************* ");
+    });
+
+    var csrf_cookie_value = req.cookies['csrftoken'];     // Collect csrf value from cookie
+
+
+    if (username === password) {
+      res.redirect('/li_map#puli')  // correct login details
+    } else {
+      res.redirect('/')             // incorrect login details
+    }
+})
+/* ************************************************************* */
 
 /* GET the map page */
-router.get('/li_map', auth, function(req, res) {
-    //client.query(li_query_ssc)
-    //  .then(data => {
-    //    var ssc_data = data.rows[0].row_to_json
-  //      client.query(li_query_sa1)
-  //        .then(data => {
-  //         var sa1_data = data.rows[0].row_to_json
-           res.render('li_map', {
-             title: "Pilot Liveability Index" //,
-             //json_sa1: sa1_data,
-             //json_ssc: ssc_data
-           });
-    //    })
-    //  })
-  //  .catch(e => console.error(e.stack))
+//router.get('/li_map', auth, function(req, res) {
+router.get('/li_map', function(req, res) {
+    // get csrf token value here and then insert into li_map.jade
+    // before it has loaded...
+    // which will then post that value when user logs in to Geonode.
+    var csrf_html_value;
+
+    // // attempt 1 - get csrf token value from cookie
+    // var csrf_cookie_value = req.cookies['csrftoken'];     // value from cookie
+    //
+    // // attempt 2 - get csrf token value from durin html
+    // request("http://durin.australiasoutheast.cloudapp.azure.com/", async function(error, response, body) {
+    //   var csrf_html_value=12345;
+    //   var csrf_token; // this one for testing pulling one from the durin html
+    //
+    //   //We have to get the DOM asynchronously, otherwise getElementsByName often returns
+    //   //an error as it the DOM has not yet loaded for it to parse.
+    //   var x = await getbody(body);
+    //
+    //   function getbody(b){
+    //    var dom = new JSDOM(b);
+    //    return dom;
+    //   };
+    //
+    //   var csrf_token = x.window.document.getElementsByName('csrfmiddlewaretoken')[0].value;
+    //
+    //   console.log("******************************????????????********************* ");
+    //   console.log("csrf token value: ")
+    //   console.log(csrf_token);
+    //   console.log("******************************????????????********************* ");
+
+      var csrf_token = req.cookies['csrftoken'];     // Collect csrf value from cookie
+
+      res.render('li_map', {
+        title: "Pilot Urban Liveability Index",
+        csrf_value: csrf_token
+      });
+    //});
+
+    // res.render('li_map', {
+    //   title: "Pilot Urban Liveability Index",
+    //   csrf_value: csrf_cookie_value
+    // });
 });
+
+// /* GET the map page */
+// router.get('/radar', auth, function(req, res) {
+           // res.render('radar', {
+             // title: "test_radar" //,
+           // });
+// });

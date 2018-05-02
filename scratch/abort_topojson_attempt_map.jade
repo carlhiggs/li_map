@@ -1,0 +1,357 @@
+extends layout
+block content
+    img.center(src='/images/loading_spinner.gif')
+    #sidebar.sidebar.collapsed
+        // Nav tabs
+        .sidebar-tabs
+            ul(role='tablist')
+                li
+                    a(href='#home', role='tab')
+                        i.fa.fa-home
+                  li
+                    a(href='#measures', role='tab')
+                        i.fa.fa-bar-chart-o
+            ul(role='tablist')
+                li
+                    a(href='#messages', role='tab')
+                        i.fa.fa-envelope
+        // Tab panes
+        .sidebar-content
+            #home.sidebar-pane
+                h1.sidebar-header Pilot Melbourne Liveability Index
+                    span.sidebar-close
+                        i.fa.fa-caret-left
+                span(style='font-style:italic') A policy relevant composite indicator of urban liveability, based on a socio-ecological model of health and wellbeing.
+                p.
+                  The pilot composite index of urban liveability in Victoria is an extension of the above research undertaken as part of the NHMRC Centre for Research Excellence in Healthy Liveable Communities, conceptualising the social determinants of health through seven domains of liveability using a socio-ecological framework: employment, food, housing, public open space, social infrastructure, transport, and walkability.  
+                p.
+                  The liveability index was developed to measure the distribution of accessibility and availability of the seven liveability domains hypothesized to support health and wellbeing, combining these into a policy-relevant and evidence-informed composite index which may be summarised and visualised spatially. The index will allow integrated urban planning policies for liveable neighbourhoods to be evaluated, in terms of how well they are being delivered across the Melbourne metropolitan region, the health impact of the integration of those policies and to whom. Policies which are (and are not) being delivered may be identified through dis-aggregation of the liveability index into sub-domains, enabling identification of opportunities for future investment.  Inequities in liveability across the metropolitan expanse can be interrogated through visualisation and used as exposure covariates in statistical modelling.
+                p.
+                  The project was initially conceived with a view to mapping spatial variation in access to built environment attributes identified as important for health and wellbeing at the ABS Statistical Area 1 (SA1) level. This is a population balanced geographic expanse ranging from 200 to 800 persons, which may loosely be considered as representative of a local neighbourhood and readily linked to both census and population health survey data. It is an artificial, administrative designation however which does not describe variation in access to amenities within the SA1 area. It therefore offers limited options for aggregation to other geographical scales such as local government areas (LGAs) or meshblocks (the smallest area unit used by the ABS, in general containing either 30-60 households, or none) which can have important implications when considering spatial exposure. Hence, instead of using population weighted centroids at the SA1 level as our unit of analysis, the pilot study was used as an opportunity to test the feasibility of parcel level analysis in the first instance.
+                p. 
+                  The two important benefits of a parcel-based approach to indicator construction are: 1) the ability to flexibly aggregate to any sized administrative extent as required; and 2) being able to estimate the within area variation and relate this to the between area variation, allowing for estimation of the heterogeneity that area-level aggregation occludes. 
+                p.
+                  #[a(href="/..") Return to the pilove Liveability Index visualisation entry page.]
+            #measures.sidebar-pane
+                h1.sidebar-header Indicators
+                    span.sidebar-close
+                        i.fa.fa-caret-left
+                h3.
+                  Liveability
+                p.
+                  Hard- or soft- cutoff version of the pilot Liveability Index; a score of 100 is average, with usual expected range of about 80 to 120.  Composite indicator construction is based on:
+                span(style='font-style:italic') De Muro, P., et al. (2011). "Composite Indices of Development and Poverty: An Application to MDGs." Social Indicators Research 104(1): 1-18.
+                h3.
+                  Walkability Index
+                p.
+                  A sum of z-scores (standardised measures) of dwelling density, street connectivity and daily living score.  The daily living score is an indicator of land use mix, formed through the sum of within-buffer access to a Public transport stop, a convenience destinations, and a supermarket.  See: 
+                span(style='font-style:italic') Badland, H., et al. (2016). "Identifying, creating, and testing urban planning measures for transport walking: Findings from the Australian national liveability study." Journal of Transport & Health 5: 151-162.
+                h3.
+                  Social Infrastructure mix
+                p.
+                  A social infrastructure mix score was calculated as the sum of destination access to 15 types of destination, resulting in a score from 0 to 15:   Community Centre; Museum / Art Gallery; Cinema/Theatre; Libraries; Childcare; Childcare (Out Of School; State Primary Schools; State Secondary Schools; Aged Care; Community Health Centres; Dentists; GP Clinics; Maternal Child Health; Pharmacy; Swimming Pools; and Sport.
+                h3.
+                  PT access meets policy
+                p.
+                  A policy-based public transport indicator based on Victorian government planning guidelines stipulating access to a stop on the public transport network within mode-specific cut-off distances: either a bus stop within 400m, a tram stop within 600m or a train station within 800m.  See clause 56.03-1 in:
+                span(style='font-style:italic') Department of Environment, Land, Water and Planning. 2006. "Victorian Planning Provisions, Clause 56.03: Liveable and Sustainable Communities." Report. Victorian Government. 
+                h3.
+                  Access to public open space > 1.5 Ha in size within 400m 
+                p.
+                  The public open space (POS) access indicator is based on a policy recommendation that access to large public open space should be available within 400m of a residence.  The public open space indicator was only calculated in soft form, which provides more nuance as an indicator of access, given the high-POS access setting of the Melbourne metropolitan region.
+                span(style='font-style:italic') Sugiyama, T., et al. (2010). "Associations Between Recreational Walking and Attractiveness, Size, and Proximity of Neighborhood Open Spaces." American Journal of Public Health 100(9): 1752-1757.
+                span(style='font-style:italic') Sugiyama, T., et al. (2014). "Public open spaces and walking for recreation: Moderation by attributes of pedestrian environments." Preventive Medicine 62: 25-29.
+                h3.
+                  Air pollution
+                p.
+                   As indicated by Mesh Block level predicted nitrogen dioxide (NO2); included in the liveability index as a reverse-scaled measure (air quality). See: 
+                span(style='font-style:italic') Knibbs, L. D., et al. (2014). "A national satellite-based land-use regression model for air pollution exposure assessment in Australia." Environ Res 135: 204-211. 
+                h3.
+                  Affordable housing
+                p.
+                  30-40 measure of housing affordability at the SA1-level:
+                span(style='font-style:italic') "The ABS defines an area as having 'affordable' housing if the lowest 40% of household incomes in a given area spend < 30% of gross income on mortgage / rental payments [35]. This measure is commonly referred to as the 30/40 rule [36]. Accordingly, the ABS generated this customised measure as a proportion for each local area, which was collapsed into quartiles." -- Badland, H., et al. (2017). "Examining associations between area-level spatial measures of housing with selected health and wellbeing behaviours and outcomes in an urban context." Health & Place 43: 17-24.
+                h3.
+                  Proportion live/work in same SA3
+                p.
+                  Proportion of employed persons living and working in the same SA3 (measured at SA2 level).  See: 
+                span(style='font-style:italic') Badland, H., et al. (2015). "Conceptualising and Measuring Spatial Indicators of Employment Through a Liveability Lens." Social Indicators Research: 1-12.
+            #messages.sidebar-pane
+                h1.sidebar-header Contact
+                    span.sidebar-close
+                        i.fa.fa-caret-left
+                p.
+                  For further information and contact details, please visit the #[a(href="http://cur.org.au/project/developing-pilot-victorian-urban-liveability-index/", target="_blank") pilot Liveability Index project] and the #[a(href="http://cur.org.au/research-programs/healthy-liveable-cities-group/", target="_blank") Healthy Liveable Cities Group] at the official #[a(href="http://cur.org.au/", target="_blank") RMIT Centre for Urban Research] web page.
+    script.
+        // enable topojson support
+        // from https://blog.webkid.io/maps-with-leaflet-and-topojson/
+        L.TopoJSON = L.GeoJSON.extend({  
+          addData: function(jsonData) {    
+            if (jsonData.type === "Topology") {
+              for (key in jsonData.objects) {
+                geojson = topojson.feature(jsonData, jsonData.objects[key]);
+                L.GeoJSON.prototype.addData.call(this, geojson);
+              }
+            }    
+            else {
+              L.GeoJSON.prototype.addData.call(this, jsonData);
+            }
+          }  
+        });
+        // Copyright (c) 2013 Ryan Clark
+    #map.sidebar-map
+    script.
+        (function(){
+            
+        var map = L.map('map',{ center: [-37.8078244,144.9625175], zoom: 12}),
+            topoLayer = new L.TopoJSON(),
+            $countryName = $('.area-name'),
+            colorScale = chroma
+              .scale(['#D5E3FF', '#003171'])
+              .domain([0,1]);
+        
+        'use strict'
+        var topoLayer = new L.TopoJSON();
+        $.getJSON('/li_map_hard_test.json')
+          .done(addTopoData);
+        function addTopoData(topoData){  
+          topoLayer.addData(topoData);
+          topoLayer.addTo(map);
+        }
+        
+                
+        function handleLayer(layer){  
+          var randomValue = Math.random(),
+            fillColor = colorScale(randomValue).hex();
+                layer.setStyle({
+            fillColor : fillColor,
+            fillOpacity: 1,
+            color:'#555',
+            weight:1,
+            opacity:0.5
+          });
+                layer.on({
+            mouseover: enterLayer,
+            mouseout: leaveLayer
+          });
+        }
+                
+        var $tooltip = $('.area-name');
+        function enterLayer(){  
+        var countryName = this.feature.properties.f1;
+          $tooltip.text(countryName).show();
+                this.bringToFront();
+          this.setStyle({
+            weight:2,
+            opacity: 1
+          });
+        }
+        function leaveLayer(){  
+          $tooltip.hide();
+                this.bringToBack();
+          this.setStyle({
+            weight:1,
+            opacity:.5
+          });
+        }
+        }());
+
+
+
+        // var myData = !{JSON.stringify(jsonData)};
+        // // Create variable to hold map element, give initial settings to map
+        // var map = L.map('map',{ center: [-37.8078244,144.9625175], zoom: 12});
+        
+        // // Add CartoDB.Positron tile layer to map element
+        // var bmap = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+        // var bmap_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+        // // var bmap = 'https://api.mapbox.com/styles/v1/gorgonspeaks/cj6aik97139zb2snsdqkdfi4d/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiZ29yZ29uc3BlYWtzIiwiYSI6ImNqNW9qM2t0OTAwZ2Qyd28wMGswNjZ0NWwifQ.Sp_o2zYX_JUZNkcIyXIdMw'
+        // // var bmap_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">Health Liveable Cities Group, RMIT</a>'
+        // tiles = L.tileLayer(bmap, { attribution: bmap_attrib}).addTo(map);
+        
+        // function formatProp(p) {
+            // return p >= 0.01 ? p:
+                   // p >  0    ? '< 0.01':
+                // 0;
+        // }
+        
+        // // control that shows state info on hover
+        // var info = L.control();
+        
+        // info.onAdd = function (map) {
+            // this._div = L.DomUtil.create('div', 'info summarybox');
+            // this.update();
+            // return this._div;
+        // };
+        
+        
+        // info.update = function (props) {
+            // this._div.innerHTML = '<h4>Pilot Liveability Index (Melbourne, 2011)</h4>' + (props ? '<div id="ind"><table class="ind-table"><col width="0"><col width="225"><col width="125"><col width="50"><col width="90"><tbody><tr><td></td><td><b><font color="#d65454">SA1: ' + props.f1 +'</font></b></td><td></td><td></td><td></td></tr><tr><td></td><td><b>Suburb: </b>' + props.f2 + '</td><td></td><td></td><td></td></tr><tr><td></td><td><b>LGA: </b>' + props.f3 +'</td><td></td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>SA mean (95% int.)</b></td><td align="center"><b>Score (/100)</b></td><td align="center"><div title="Ratio of Within- to Between- area variation"><b>Heterogeneity</b></div></td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f20/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i><a href=# id="21">Liveability</a> (zero-centered average)</i></td><td align="center">' + props.f4 + ' (' + props.f28 + ',' + props.f29 + ')</td><td align="center">' + props.f20 +  '</td><td align="center">' + formatProp(props.f32) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f21/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i><a href=# id="22">Walkability Index</a></i></td><td align="center">' + props.f13 + ' (' + props.f33 + ',' + props.f34 + ')</td><td align="center">' + props.f21 +  '</td><td align="center">' + formatProp(props.f37) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f75/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;- <a href=# id="75">Daily Living (/3)</a></i></td><td align="center">' + props.f68 + ' (' + props.f69 + ',' + props.f70 + ')</td><td align="center">' + props.f75 +  '</td><td align="center">' + formatProp(props.f73) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f82/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;- <a href=# id="82">Dwellings per Ha</a></i></td><td align="center">' + props.f76 + ' (' + props.f77 + ',' + props.f78 + ')</td><td align="center">' + props.f82 +  '</td><td align="center">' + formatProp(props.f81) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f91/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;- <a href=# id="91">3+ way street connections per Ha</a></i></td><td align="center">' + props.f84 + ' (' + props.f85 + ',' + props.f86 + ')</td><td align="center">' + props.f91 +  '</td><td align="center">' + formatProp(props.f89) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f22/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i><a href=# id="22">Social infrastructure mix (/16)</a></i></td><td align="center">' + props.f14 + ' (' + props.f38 + ',' + props.f39 + ')</td><td align="center">' + props.f22 +  '</td><td align="center">' + formatProp(props.f42) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f23/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i><a href=# id="23">PT access meets policy (%)</a></i></td><td align="center">' + props.f15 + ' (' + props.f43 + ',' + props.f44 + ')</td><td align="center">' + props.f23 +  '</td><td align="center">' + formatProp(props.f47) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f24/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i><a href=# id="24">POS &ge; 1.5Ha within 400m (%)</a></i></td><td align="center">' + props.f16 + ' (' + props.f48 + ',' + props.f49 + ')</td><td align="center">' + props.f24 +  '</td><td align="center">' + formatProp(props.f52) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f25/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i><a href=# id="25">Air quality (rev. Mesh Block NO&#x2082; ppb.)</a></i></td><td align="center">' + props.f17 + ' (' + props.f53 + ',' + props.f54 + ')</td><td align="center">' + props.f25 +  '</td><td align="center">' + formatProp(props.f57) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f26/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i><a href=# id="26">Affordable housing (30/40 rule, SA1 %)</a></i></td><td align="center">' + props.f18 + '</td><td align="center">' + props.f26 +  '</td><td align="center">' + formatProp(props.f62) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (props.f27/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i><a href=# id="27">Live & work w/in SA3 (SA2 %)</a></i></td><td align="center">' + props.f19 + '</td><td align="center">' + props.f27 +  '</td><td align="center">' + formatProp(props.f67) + '</td></tr></tbody></table></div>' 
+                // : '<table class="g-pop-table" width="440" height="300"><col width="0"><col width="260"><col width="90"><col width="90"><tbody><tr><td></td><td><b>SA1: Hover over a region...</b></td><td></td><td></td> </tr><tr><td></td><td><b>Suburb: </b>-</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>-</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>Average</b></td><td align="center"><b>Score (/100)</b></td></tr><tr><td style="position: relative;"></td><td><i><b>Liveability</b></i></td><td align="center"><b>-</b></td>   <td align="center"><b>-</b></td></tr><tr><td style="position: relative;"></td><td><i>&emsp;Walkability Index</i></td><td align="center">-</td>   <td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3)</i></td><td align="center">-</td>   <td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">-</td>   <td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per Ha</i></td><td align="center">-</td>   <td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;Social infrastructure mix (/16)</i></td><td align="center">-</td>  <td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;PT access meets policy (%)</i></td><td align="center">-</td>   <td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">-</td><td align="center">-</td></tr><tr><td style="position: relative;"></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">-</td><td align="center">-</td></tr></tbody></table>');
+        // };
+        
+        // info.addTo(map);
+        
+        // function requantile(p,num) {
+            // return Math.floor((p-1)/num)+1;
+        // }
+   
+        // // get color depending on population density value
+        // function getColor(p) {
+            // // // Decile colours
+            // return  p > 90 ? '#081D58':
+                    // p > 80 ? '#22318D':
+                    // p > 70 ? '#2455A4':
+                    // p > 60 ? '#2280B8':
+                    // p > 50 ? '#34A5C2':
+                    // p > 40 ? '#61C0C0':
+                    // p > 30 ? '#99D6B9':
+                    // p > 20 ? '#D0ECB3':
+                    // p > 10 ? '#EFF9B5':
+                    // p > 0 ? '#FFFFD9':
+                // '#f7f7f7';
+        // }
+        
+        // // redefine console.log for variable tracking
+        // console.oldLog = console.log;
+        // console.log = function(value){
+            // console.oldLog(value);
+            // window.$log = value;
+            // };
+        
+        // console.log("20");
+        
+        // function style(feature) {
+            // // old return 
+            // // fillColor: getColor(feature.properties.f20)
+            // // fillColor: getColor(current_property{checked_indicator})
+            // return {
+                // weight: 1,
+                // color: 'white',
+                // fillOpacity: 0.7,
+                // fillColor: getColor(eval("feature.properties.f"+$log))
+            // };
+        // }
+
+        
+        // function highlightFeature(e) {
+            // var layer = e.target;
+            // // var checked_indicator = document.querySelector('input[name="ind"]:checked').id;
+            // // var current_property = {};
+        
+            // layer.setStyle({
+                // weight: 3,
+                // color: '#d65454',
+                // dashArray: '',
+                // fillOpacity: 0.7
+            // });
+        
+            // if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                // layer.bringToFront();
+            // }
+        
+            // info.update(layer.feature.properties);
+        // }
+        
+        // var geojson;
+        
+        // function resetHighlight(e) {
+            // geojson.resetStyle(e.target);
+            // info.update();
+        // }
+        
+        // function zoomToFeature(e) {
+            // map.fitBounds(e.target.getBounds());
+        // }
+        
+        // function onEachFeature(feature, layer) {
+            // layer.on({
+                // mouseover: highlightFeature,
+                // mouseout: resetHighlight
+                // // click: zoomToFeature
+            // });  
+          // layer.bindPopup('<table class="g-pop-table" width="490" height="300"><col width="0"><col width="225"><col width="125"><col width="50"><col width="90"><tbody><tr><td></td><td><b>SA1: ' + feature.properties.f1 +'</b></td><td></td><td></td><td></td></tr><tr><td></td><td><b>Suburb: </b>' + feature.properties.f2 + '</td><td></td><td></td><td></td></tr><tr><td></td><td><b>LGA: </b>' + feature.properties.f3 +'</td><td></td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><b>SA1 mean (95% int.)</b></td><td align="center"><b>Score (/100)</b></td><td align="center"><div title="Ratio of Within- to Between- area variation"><b>Heterogeneity</b></div></td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f20/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Liveability (zero-centered average)</i></td><td align="center">' + feature.properties.f4 + ' (' + feature.properties.f28 + ',' + feature.properties.f29 + ')</td><td align="center">' + feature.properties.f20 +  '</td><td align="center">' + formatProp(feature.properties.f32) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f21/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Walkability Index</i></td><td align="center">' + feature.properties.f13 + ' (' + feature.properties.f33 + ',' + feature.properties.f34 + ')</td><td align="center">' + feature.properties.f21 +  '</td><td align="center">' + formatProp(feature.properties.f37) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f75/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;- Daily Living (/3)</i></td><td align="center">' + feature.properties.f68 + ' (' + feature.properties.f69 + ',' + feature.properties.f70 + ')</td><td align="center">' + feature.properties.f75 +  '</td><td align="center">' + formatProp(feature.properties.f73) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f82/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;- Dwellings per Ha</i></td><td align="center">' + feature.properties.f76 + ' (' + feature.properties.f77 + ',' + feature.properties.f78 + ')</td><td align="center">' + feature.properties.f82 +  '</td><td align="center">' + formatProp(feature.properties.f81) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f91/100)*230 +'px; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;- 3+ way street connections per Ha</i></td><td align="center">' + feature.properties.f84 + ' (' + feature.properties.f85 + ',' + feature.properties.f86 + ')</td><td align="center">' + feature.properties.f91 +  '</td><td align="center">' + formatProp(feature.properties.f89) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f22/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Social infrastructure mix (/16)</i></td><td align="center">' + feature.properties.f14 + ' (' + feature.properties.f38 + ',' + feature.properties.f39 + ')</td><td align="center">' + feature.properties.f22 +  '</td><td align="center">' + formatProp(feature.properties.f42) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f23/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>PT access meets policy (%)</i></td><td align="center">' + feature.properties.f15 + ' (' + feature.properties.f43 + ',' + feature.properties.f44 + ')</td><td align="center">' + feature.properties.f23 +  '</td><td align="center">' + formatProp(feature.properties.f47) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f24/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>POS &ge; 1.5Ha within 400m (%)</i></td><td align="center">' + feature.properties.f16 + ' (' + feature.properties.f48 + ',' + feature.properties.f49 + ')</td><td align="center">' + feature.properties.f24 +  '</td><td align="center">' + formatProp(feature.properties.f52) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f25/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + feature.properties.f17 + ' (' + feature.properties.f53 + ',' + feature.properties.f54 + ')</td><td align="center">' + feature.properties.f25 +  '</td><td align="center">' + formatProp(feature.properties.f57) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f26/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + feature.properties.f18 + '</td><td align="center">' + feature.properties.f26 +  '</td><td align="center">' + formatProp(feature.properties.f62) + '</td></tr><tr><td style="position: relative;"><div class="g-party-bg" style="width:'+  (feature.properties.f27/100)*230 +'px; height: 100% ; background: #d65454;"></div></td><td><i>Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + feature.properties.f19 + '</td><td align="center">' + feature.properties.f27 +  '</td><td align="center">' + formatProp(feature.properties.f67) + '</td></tr></tbody></table>', {
+              // maxWidth : 490
+          // });
+        // }
+        
+        // // add polygon data
+        // geojson = L.geoJson(myData, {
+            // style: style,
+            // onEachFeature: onEachFeature
+        // }).addTo(map);
+        
+        // function updateColors(){
+            // geojson.eachLayer(function(layer){
+                // geojson.setStyle(style); 
+            // }); 
+            // // setTimeout(updateColors, 1500);
+        // } 
+        
+        // // Create event listener for the active indicator selection
+        // document.body.addEventListener("click", function(e) {
+            // // e.target was the clicked element
+            // if(e.target && e.target.nodeName == "A") {
+                // console.log(e.target.id); 
+                // document.getElementById("activeTitle").innerHTML = e.target.innerHTML;
+                // updateColors();
+                // }
+            // });
+        // // add attribution
+        // map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>');
+        
+        
+        // // add mini-map
+        // var bmap2 = new L.TileLayer(bmap, {minZoom: 0, maxZoom: 13, attribution: bmap_attrib});
+        // var miniMap = new L.Control.MiniMap(bmap2).addTo(map);    
+        
+        // // Style and add legend
+        // var legend = L.control({position: 'bottomright'});
+        
+        // legend.onAdd = function (map) {
+            // var div = L.DomUtil.create('div', 'info legend'),
+                // quantiles = [100,90,80,70,60,55,50,40,30,20,10],
+                // labels = [],
+                // quantile = ['100 High','90','80','70','60','50','40','30','20','10 Low'];
+                // labels.push('<table style="table-layout:fixed;"><col width="20"><col width="8"><col width="80"><tr><td></td><td></td><td><b><div id="activeTitle" z>Liveability</div></b></td>');
+            // for (var i = 0; i < quantiles.length; i++) {
+                // labels.push('<tr><td style="background:' + getColor(quantiles[i]) + '"></td><td></td><td>' + quantile[i] + '</td>');
+            // }
+            // div.innerHTML = labels.join('</tr>')+ '</tr></table>';
+            // return div;
+        // };
+     
+        // legend.addTo(map);
+        
+        // // add scale bar
+        // L.control.scale().addTo(map);
+        // // add full screen toggle
+        // map.addControl(new L.Control.Fullscreen());
+        
+        // // add sidebar
+        // var sidebar = L.control.sidebar('sidebar').addTo(map);
+        
+        
+        // // D3 plot
+        // // to be implemented: histogram of selected indicator
+        
+        // // add save to .png functions
+        // var printer = L.easyPrint({
+          // title: 'Download snapshot to png (ctr+alt+s)',
+            // tileLayer: tiles,
+            // filename: 'LiveabilityIndexExport',
+            // exportOnly: true,
+            // hideControlContainer: false
+        // }).addTo(map);
+        
+        
+        // function manualPrint () {
+            // printer.printMap('CurrentSize', 'MyManualPrint')
+        // }
+        
+        // document.onkeyup=function(e){
+          // var e = e || window.event; // for IE to cover IEs window event-object
+          // if(e.altKey && e.which == 83) {
+            // printer.printMap('CurrentSize', 'LiveabilityIndexExport');
+            // }
+          // }
