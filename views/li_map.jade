@@ -50,7 +50,7 @@ block content
         option(value='PH10') &#xf0e4; Air quality 
         
     #about(data-step='2', data-intro='Click here for more information about an indicator and its interpretation.') &#xf05a;
-        
+      
     #map
       
     // Define popup info boxes  
@@ -82,18 +82,17 @@ block content
             The liveability index is comprised of a selection of indicators from each of these domains which our research has identified as supporting health and wellbeing: <a href="#PH1">Walkability index</a>, <a href="#PH5">Social Infrastructure mix</a>, <a href="#PH6">PT access meets policy</a>, <a href="#PH7">	 POS ≥ 1.5Ha within 400m</a>, <a href="#PH10">Air quality</a>, <a href="#PH8">Affordable housing</a> and <a href="#PH9">Live and work in local area</a>.   It can be used to interogate and visualise spatial variation in liveability across a range of spatial scales, and may be linked to other data such as the Australian Bureau of Statistics community profiles for greater insight into local area contexts.
           p.
             It is envisaged as a useful tool for planners, policy makers, researchers and the broader public for evaluating the current state of our urban environment.
-    #authenticate.overlay
+    #authenticate.overlay.toggle-transition
       .popup
         h1 Sign in
         |     &#x9;&#x9;
         a.close(href='/') &times;
         |     &#x9;&#x9;
         .main.container
-          //- form.form-signin(role='form', action='http://durin.australiasoutheast.cloudapp.azure.com/account/login/?next=/li_map', method='post')
-          //form#login_form(role='form' action='/login_response' method='post')
-          form(role='form' action='/account/login/?next=/li_map' method='post')
+          #status(data-status!=loginStatus, data-session!=sessionID, type='hidden')
+          form#login_form(role='form', action='/account/login/?next=/li_map' method='post')
             .modal-body
-              //input(name='csrfmiddlewaretoken', value='DMuKAgWNRXQtYdd3qR8g0rWI8MUMnZrO', type='hidden')
+              //input(name='csrfmiddlewaretoken', value='QLC40S9jOW6ONDv3wl89scpuqTmRmFz3', type='hidden')
               input(name='csrfmiddlewaretoken' value!=csrf_value type='hidden')
               div.form-group
                 label.sr-only(for='id_username') Username:
@@ -104,21 +103,21 @@ block content
               label.checkbox
                 input(type='checkbox')
                 |  Remember Me
-              button#login_button.submit(type='submit') Sign in            
-          h3
-            a.close(href='#register') Register
-    #register.overlay
+              button#login_button.submit(type='submit') Sign in
+        h3
+          a.toggle(href='#register') Register
+    #register.overlay.toggle-transition
       .popup
+        h1
+          a.toggle(href='#authenticate') Sign In
         h1 Register
         |     &#x9;&#x9;
         a.close(href='/') &times;
         |     &#x9;&#x9;
         .main.container
-        .row
-          p Create a new local account
           form#signup_form(method='post', action='/account/signup/', autocapitalize='off')
-            fieldset
-              input(name='csrfmiddlewaretoken', value='6Jr5k902QdBSud0PNuzTfRaXUBUWRKAQ', type='hidden')
+            .modal-body
+              //input(name='csrfmiddlewaretoken', value='6Jr5k902QdBSud0PNuzTfRaXUBUWRKAQ', type='hidden')
               #div_id_email.form-group
                 label.control-label.required-field(for='id_email')
                   | E-mail
@@ -302,5 +301,12 @@ block content
         .content
           | Binary indicators of destination access were based on current urban policies or the literature if urban planning policies did not exist. While binary indicators are a natural way to express whether a policy has been achieved (or not), it is not intuitive that, for example, living within 390m from a bus stop gives a person full benefit of this proximity while living at 410m the resident receives zero benefit. This binary threshold can be referred to as a ‘hard threshold’, in contrast to ‘soft threshold’ indicators calculated using a logistic decay function yielding for each destination type a continuous access score ranging from 0 to 1.  
           img.popimg(src='/images/cutoffs_access_diagram.png')
+    .button#dropdown.submit &#xf2be;
+      #myDropdown.dropdown-content
+        a(href='..') Home
+        a(href='#') Contact
+        hr
+        a(href='#') Logout
+    
     script.
       load_li_map()

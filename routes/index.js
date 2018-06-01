@@ -22,50 +22,32 @@ router.get('/', function(req, res, next) {
 
 module.exports = router;
 
+/** Geoserver proxying for dev/testing purposes --> this gets clobbered by nginx in production**/
+router.all('/geoserver/*', function(req,res) {
+  //modify the url in any way you want
+  var base = 'http://localhost:8080/geoserver/';
+  req.pipe(request({ qs:req.query, uri: base+req.params[0], method: req.method })).pipe(res);
+});
+
 /* ******************* TESTING *********************** */
 /* GET Login response page (server side only)- for development purposes only */
-
-
 router.get('/login_response', function(req, res) {
     res.render('login_response', {
       title: 'Login'
     });
 });
 
-/* POST Login response page to handle username & password */
-router.post('/login_response', function(req, res) {
-    var username = req.body.id_username;
-    var password = req.body.id_password;
-    var csrf_token; // this one for testing pulling one from the durin html
-
-    // Request entire durin page in order to get csrf token.
-    request("http://durin.australiasoutheast.cloudapp.azure.com/", async function(error, response, body) {
-      // We have to get the DOM asynchronously, otherwise getElementsByName often returns
-      // an error as it the DOM has not yet loaded for it to parse.
-      var x = await getbody(body);
-
-      function getbody(b){
-        var dom = new JSDOM(b);
-        return dom;
-      };
-
-      var csrf_token = x.window.document.getElementsByName('csrfmiddlewaretoken')[0].value;
-
-      console.log("******************************????????????********************* ");
-      console.log("csrf token value: ")
-      console.log(csrf_token);
-      console.log("******************************????????????********************* ");
-    });
-
-    var csrf_cookie_value = req.cookies['csrftoken'];     // Collect csrf value from cookie
-
-
-    if (username === password) {
-      res.redirect('/li_map#puli')  // correct login details
-    } else {
-      res.redirect('/')             // incorrect login details
-    }
+/* POST Login response page to handle username & password
+ NOTE:this is handled by geonode in production*/
+router.post('/account/login', function(req, res) {
+    res.cookie('csrftoken','THISISNOTACSRFTOKEN');
+    res.cookie('sessionid','THISINOTASESSIONID');
+    res.redirect('/li_map#puli');
 })
+
+router.get('/people/profile/test', function(req, res, next) {
+  res.render('profile');
+});
 /* ************************************************************* */
 
 /* GET the map page */
@@ -101,17 +83,25 @@ router.get('/li_map', function(req, res) {
     //   console.log("******************************????????????********************* ");
 
       var csrf_token = req.cookies['csrftoken'];     // Collect csrf value from cookie
+      var session_id = req.cookies['sessionid'];     // Session ID only available when logged in
+
+      var loggedin;
+
+      if (session_id == null) {
+        // User is unauthenticated
+        loggedin = 0;    //false
+      } else {
+        // User is authenticated
+        loggedin = 1;    //true
+      }
 
       res.render('li_map', {
         title: "Pilot Urban Liveability Index",
-        csrf_value: csrf_token
+        csrf_value: csrf_token,
+        loginStatus: loggedin,
+        sessionID: session_id
       });
     //});
-
-    // res.render('li_map', {
-    //   title: "Pilot Urban Liveability Index",
-    //   csrf_value: csrf_cookie_value
-    // });
 });
 
 // /* GET the map page */
@@ -120,3 +110,8 @@ router.get('/li_map', function(req, res) {
              // title: "test_radar" //,
            // });
 // });
+
+router.get('/*', function(req, res) {
+  // redirect any stray requests back to the authentication page
+  res.redirect('/li_map#authenticate');
+});
