@@ -7,8 +7,8 @@ function load_li_map() {
     // var target = document.getElementsByName('csrfmiddlewaretoken')[ 0 ];
     //
     // target.value = leadType;
-    // alert(target.value);
-    // alert(leadType);
+    // console.log(target.value);
+    // console.log(leadType);
     // console.log(target.value);
     // console.log(leadType);
 
@@ -16,6 +16,7 @@ function load_li_map() {
     // Get token from GeoNode for access to geoserver
     // Load profile page and pilfer access token from link to user layers document
 
+    var sa1, ssc, lga, ssc_search;
     // Submit form from here rather than in li_map.jade
     var username, access_token_url, token_href, access_token;
     var profile_page_url, status, loggedin_status, session_id;
@@ -33,13 +34,12 @@ function load_li_map() {
 
       $.ajax({
         type: "GET",
-        url: "/",
-        dataType: "text",
+        url: "/geonode",
+        dataType: "html",
         success: function(data) {
           // get profile page url
-          var escd = escape(data);
-          var re = /\/people\/profile\/[^/]*\//;
-          var search = re.exec(escd);
+          var re = /\/people\/profile\/\w*\b/;
+          var search = re.exec(data);
           profile_page_url = search[0];
 
           $.ajax({
@@ -52,25 +52,23 @@ function load_li_map() {
               search = re.exec(data);
               var access_token_blob = search[0];
               access_token = access_token_blob.split("=")[1];
-
               // load data from GeoServer through multiple ajax calls
               // WFS data
               li_sa1_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_sa1&outputFormat=text%2Fjavascript";
               li_ssc_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_ssc&outputFormat=text%2Fjavascript";
               li_lga_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_lga&outputFormat=text%2Fjavascript";
-
               //var vic_ugb    = "http://localhost:8080/geoserver/landuse_vic/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=landuse_vic:vic_plan_ugb_dissolved&outputFormat=text%2Fjavascript";
 
               allAjaxCalls();
             },
             error: function(data) {
-              alert("Access token could not be found");
+              console.log("Access token could not be found");
             }
           });
 
         },
         error: function(data) {
-          alert("Failure to access profile page");
+          console.log("Failure to access profile page");
         }
       });
     } else {
@@ -79,24 +77,36 @@ function load_li_map() {
       window.reload(true);
     };
 
-    $("#login_form").submit(function(event) {
-        var form = $(this);
 
-        // Pull url and action directly from form in case it ever changes
-        $.ajax({
-          type: form.attr('method'),
-          url: form.attr('action'),
-          data: form.FormData(),
-          success: function(data) {
-            // Can't do anything here due to GeoNode redirect.
-          },
-          error: function(data) {
-            // Can't do anything here due to GeoNode redirect.
-          }
-        });
-
-        event.preventDefault(); // Prevent the form from submitting via the browser
+    $("login_form").submit(function(event) {
+      var form = $(this);
+      submitForm(form);
     });
+
+
+    $("signup_form").submit(function(event){
+      var form = $(this);
+      submitForm(form);
+    });
+
+
+    function submitForm(form) {
+      // Pull url and action directly from form
+      $.ajax({
+        type: form.attr('method'),
+        url: form.attr('action'),
+        data: form.FormData(),
+        success: function(data) {
+          // Can't do anything here due to GeoNode redirect.
+        },
+        error: function(data) {
+          // Can't do anything here due to GeoNode redirect.
+        }
+      });
+
+      event.preventDefault(); // Prevent the form from submitting via the browser
+    };
+
 
     map = L.map('map', {
        center: [-37.966909, 145.023575],
@@ -191,7 +201,8 @@ function load_li_map() {
           threshold2 = thresh_code == 'H' ? 'hard threshold'   : 'soft threshold';
       };
 
-      sa1.eachLayer(function(layer) {
+       if (sa1) {
+         sa1.eachLayer(function(layer) {
            layer.setStyle({
                fillColor: getColor(layer.feature.properties[ind_value]),
                fillOpacity: 0.8,
@@ -199,13 +210,16 @@ function load_li_map() {
                color: 'white',
            });
            layer.setTooltipContent('SA1: ' + layer.feature.properties.F1 +'<br>Suburb: ' + layer.feature.properties.F2 +'<br>LGA: ' + layer.feature.properties.F3 + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+layer.feature.properties[type + thresh_code +strip_val]+'<br>Range: <i>'+layer.feature.properties['D'+thresh_code+strip_val]+'</i><br>90% of residential lots: <i>'+layer.feature.properties['M'+thresh_code+strip_val]+'</i>');
-           layer.setPopupContent('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + layer.feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + layer.feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + layer.feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + layer.feature.properties[rz+2] + '</td>   <td align="center">' + layer.feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + layer.feature.properties["RH3"] + '</td>   <td align="center">' + layer.feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + layer.feature.properties["RH4"] + '</td>   <td align="center">' + layer.feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + layer.feature.properties[rz+5] + '</td>  <td align="center">' + layer.feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + layer.feature.properties[rz+6] + '</td>   <td align="center">' + layer.feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + layer.feature.properties[rz+7] + '</td><td align="center">' + layer.feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + layer.feature.properties["RH10"] + '</td><td align="center">' + layer.feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + layer.feature.properties["RH8"] + '</td><td align="center">' + layer.feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + layer.feature.properties["RH9"] + '</td><td align="center">' + layer.feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>', {
+           layer.setPopupContent('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + layer.feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + layer.feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + layer.feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + layer.feature.properties[rz+2] + '</td>   <td align="center">' + layer.feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + layer.feature.properties["RH3"] + '</td>   <td align="center">' + layer.feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + layer.feature.properties["RH4"] + '</td>   <td align="center">' + layer.feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + layer.feature.properties[rz+5] + '</td>  <td align="center">' + layer.feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + layer.feature.properties[rz+6] + '</td>   <td align="center">' + layer.feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + layer.feature.properties[rz+7] + '</td><td align="center">' + layer.feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + layer.feature.properties["RH10"] + '</td><td align="center">' + layer.feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + layer.feature.properties["RH8"] + '</td><td align="center">' + layer.feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + layer.feature.properties["RH9"] + '</td><td align="center">' + layer.feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>',
+           {
              maxWidth: 400
            });
-       });
+         });
+       };
 
 
-      ssc.eachLayer(function(layer) {
+       if (ssc) {
+         ssc.eachLayer(function(layer) {
            layer.setStyle({
                fillColor: getColor(layer.feature.properties[ind_value]),
                fillOpacity: 0.8,
@@ -213,12 +227,16 @@ function load_li_map() {
                color: 'white',
            });
            layer.setTooltipContent('SA1: ' + layer.feature.properties.F1 +'<br>Suburb: ' + layer.feature.properties.F2 +'<br>LGA: ' + layer.feature.properties.F3 + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+layer.feature.properties[type + thresh_code +strip_val]+'<br>Range: <i>'+layer.feature.properties['D'+thresh_code+strip_val]+'</i><br>90% of residential lots: <i>'+layer.feature.properties['M'+thresh_code+strip_val]+'</i>');
-           layer.setPopupContent('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + layer.feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + layer.feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + layer.feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + layer.feature.properties[rz+2] + '</td>   <td align="center">' + layer.feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + layer.feature.properties["RH3"] + '</td>   <td align="center">' + layer.feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + layer.feature.properties["RH4"] + '</td>   <td align="center">' + layer.feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + layer.feature.properties[rz+5] + '</td>  <td align="center">' + layer.feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + layer.feature.properties[rz+6] + '</td>   <td align="center">' + layer.feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + layer.feature.properties[rz+7] + '</td><td align="center">' + layer.feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + layer.feature.properties["RH10"] + '</td><td align="center">' + layer.feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + layer.feature.properties["RH8"] + '</td><td align="center">' + layer.feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + layer.feature.properties["RH9"] + '</td><td align="center">' + layer.feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>', {
+           layer.setPopupContent('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + layer.feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + layer.feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + layer.feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + layer.feature.properties[rz+2] + '</td>   <td align="center">' + layer.feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + layer.feature.properties["RH3"] + '</td>   <td align="center">' + layer.feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + layer.feature.properties["RH4"] + '</td>   <td align="center">' + layer.feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + layer.feature.properties[rz+5] + '</td>  <td align="center">' + layer.feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + layer.feature.properties[rz+6] + '</td>   <td align="center">' + layer.feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + layer.feature.properties[rz+7] + '</td><td align="center">' + layer.feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + layer.feature.properties["RH10"] + '</td><td align="center">' + layer.feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + layer.feature.properties["RH8"] + '</td><td align="center">' + layer.feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + layer.feature.properties["RH9"] + '</td><td align="center">' + layer.feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>',
+           {
              maxWidth: 400
            });
-       });
+         });
+       };
 
-      lga.eachLayer(function(layer) {
+
+       if (lga) {
+         lga.eachLayer(function(layer) {
            layer.setStyle({
                fillColor: getColor(layer.feature.properties[ind_value]),
                fillOpacity: 0.8,
@@ -226,23 +244,29 @@ function load_li_map() {
                color: 'white',
            });
            layer.setTooltipContent('SA1: ' + layer.feature.properties.F1 +'<br>Suburb: ' + layer.feature.properties.F2 +'<br>LGA: ' + layer.feature.properties.F3 + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+layer.feature.properties[type + thresh_code +strip_val]+'<br>Range: <i>'+layer.feature.properties['D'+thresh_code+strip_val]+'</i><br>90% of residential lots: <i>'+layer.feature.properties['M'+thresh_code+strip_val]+'</i>');
-           layer.setPopupContent('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + layer.feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + layer.feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + layer.feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + layer.feature.properties[rz+2] + '</td>   <td align="center">' + layer.feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + layer.feature.properties["RH3"] + '</td>   <td align="center">' + layer.feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + layer.feature.properties["RH4"] + '</td>   <td align="center">' + layer.feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + layer.feature.properties[rz+5] + '</td>  <td align="center">' + layer.feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + layer.feature.properties[rz+6] + '</td>   <td align="center">' + layer.feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + layer.feature.properties[rz+7] + '</td><td align="center">' + layer.feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + layer.feature.properties["RH10"] + '</td><td align="center">' + layer.feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + layer.feature.properties["RH8"] + '</td><td align="center">' + layer.feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + layer.feature.properties["RH9"] + '</td><td align="center">' + layer.feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>', {
+           layer.setPopupContent('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + layer.feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + layer.feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + layer.feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + layer.feature.properties[rz+2] + '</td>   <td align="center">' + layer.feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + layer.feature.properties["RH3"] + '</td>   <td align="center">' + layer.feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + layer.feature.properties["RH4"] + '</td>   <td align="center">' + layer.feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + layer.feature.properties[rz+5] + '</td>  <td align="center">' + layer.feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + layer.feature.properties[rz+6] + '</td>   <td align="center">' + layer.feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + layer.feature.properties[rz+7] + '</td><td align="center">' + layer.feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + layer.feature.properties["RH10"] + '</td><td align="center">' + layer.feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + layer.feature.properties["RH8"] + '</td><td align="center">' + layer.feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + layer.feature.properties["RH9"] + '</td><td align="center">' + layer.feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>',
+           {
              maxWidth: 400
            });
-       });
+         });
+       };
 
-       ssc_search.eachLayer(function(layer) {
-           layer.setPopupContent('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + layer.feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + layer.feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + layer.feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + layer.feature.properties[rz+2] + '</td>   <td align="center">' + layer.feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + layer.feature.properties["RH3"] + '</td>   <td align="center">' + layer.feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + layer.feature.properties["RH4"] + '</td>   <td align="center">' + layer.feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + layer.feature.properties[rz+5] + '</td>  <td align="center">' + layer.feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + layer.feature.properties[rz+6] + '</td>   <td align="center">' + layer.feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + layer.feature.properties[rz+7] + '</td><td align="center">' + layer.feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + layer.feature.properties["RH10"] + '</td><td align="center">' + layer.feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + layer.feature.properties["RH8"] + '</td><td align="center">' + layer.feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + layer.feature.properties["RH9"] + '</td><td align="center">' + layer.feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>', {
-             maxWidth: 400
-           });
-       });
+
+       if(ssc_search) {
+         ssc_search.eachLayer(function(layer) {
+             layer.setPopupContent('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + layer.feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + layer.feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + layer.feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + layer.feature.properties[rz+2] + '</td>   <td align="center">' + layer.feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + layer.feature.properties["RH3"] + '</td>   <td align="center">' + layer.feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + layer.feature.properties["RH4"] + '</td>   <td align="center">' + layer.feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + layer.feature.properties[rz+5] + '</td>  <td align="center">' + layer.feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + layer.feature.properties[rz+6] + '</td>   <td align="center">' + layer.feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + layer.feature.properties[rz+7] + '</td><td align="center">' + layer.feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + layer.feature.properties["RH10"] + '</td><td align="center">' + layer.feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + layer.feature.properties["RH8"] + '</td><td align="center">' + layer.feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + layer.feature.properties["RH9"] + '</td><td align="center">' + layer.feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>',
+             {
+               maxWidth: 400
+             });
+         });
+       };
     };
 
     $(document).ready(function() {
       $("#inddrop").change(UpdateIndicatorList);
     });
 
-   $(document).ready(function() {
+    $(document).ready(function() {
       $("#about").click(function(e) {
          var selected_ind = document.getElementById("inddrop");
          var ind_value = selected_ind.options[selected_ind.selectedIndex].value;
@@ -548,12 +572,6 @@ function load_li_map() {
 
     // Parse Suburb geojson data, adding to map
     window.parseResponseSSC = function(data) {
-      // test move of CSRF get function
-      // var leadType = Cookies.get('csrftoken');
-      //         var target = document.getElementsByName('csrfmiddlewaretoken')[ 0 ];
-      //         target.value = leadType;
-      //         alert(leadType);
-      //******************
         ssc = L.geoJson(data, {
                id: 'ind',
                style: li_style,
@@ -575,8 +593,6 @@ function load_li_map() {
           })
         });
 
-        UpdateIndicatorList();
-
         // include layer for suburb search
         ssc_search = L.geoJson(data, {
           id: 'search',
@@ -594,11 +610,14 @@ function load_li_map() {
             if ([0,1,2,5,6,7,11].indexOf(strip_val) > -1) {
                 threshold2 = thresh_code == 'H' ? ', hard threshold' : ', soft threshold';
             };
-            layer.bindPopup('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + feature.properties[rz+2] + '</td>   <td align="center">' + feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + feature.properties["RH3"] + '</td>   <td align="center">' + feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + feature.properties["RH4"] + '</td>   <td align="center">' + feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + feature.properties[rz+5] + '</td>  <td align="center">' + feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + feature.properties[rz+6] + '</td>   <td align="center">' + feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + feature.properties[rz+7] + '</td><td align="center">' + feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + feature.properties["RH10"] + '</td><td align="center">' + feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + feature.properties["RH8"] + '</td><td align="center">' + feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + feature.properties["RH9"] + '</td><td align="center">' + feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>', {
-          maxWidth: 400,
+            layer.bindPopup('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + feature.properties[rz+2] + '</td>   <td align="center">' + feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + feature.properties["RH3"] + '</td>   <td align="center">' + feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + feature.properties["RH4"] + '</td>   <td align="center">' + feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + feature.properties[rz+5] + '</td>  <td align="center">' + feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + feature.properties[rz+6] + '</td>   <td align="center">' + feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + feature.properties[rz+7] + '</td><td align="center">' + feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + feature.properties["RH10"] + '</td><td align="center">' + feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + feature.properties["RH8"] + '</td><td align="center">' + feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + feature.properties["RH9"] + '</td><td align="center">' + feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>',
+              {
+                maxWidth: 400,
               });
             }
         });
+
+        UpdateIndicatorList();
 
         // Include a search box to jump to suburb
         var searchControl = new L.Control.Search({
@@ -611,6 +630,7 @@ function load_li_map() {
             map.setView(latlng, zoom); // access the zoom
           }
         });
+
         searchControl.on('search:locationfound', function(e) {
           e.layer.setStyle({
             fillColor: "white",
@@ -618,19 +638,24 @@ function load_li_map() {
             weight: 4,
             fillOpacity: 0.3
           });
+
           if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
             e.layer.bringToFront();
           }
-          if (e.layer._popup)
+          if (e.layer._popup) {
             e.layer.openPopup();
-        }).on('search:collapsed', function(e) {
+          }
+
+          }).on('search:collapsed', function(e) {
+        //});
+        //searchControl.on('search:collapsed', function(e) {
           ssc_search.eachLayer(function(layer) { //restore feature color
             ssc_search.resetStyle(layer);
           });
         });
 
-        map.addControl(searchControl); //inizialize search control
-        };
+      map.addControl(searchControl); //inizialize search control
+    };
 
 
     // Parse LGA geojson data, adding to map
@@ -701,10 +726,49 @@ function load_li_map() {
     // $('a.leaflet-control-layers-toggle').attr('data-intro', 'The displayed map elements summarised above can be changed here; hover over this icon to display the options.  For example, you could select to view the "Walkability Index" at the suburb level.');
 
 
-    // Logout function
-    var Logout = document.getElementById("dropdown");
-    Logout.onclick = function(event) {
+    // Toggle logout dropdown
+    var logoutToggle = document.getElementById("dropdown");
+    logoutToggle.onclick = function(event) {
       //toggle dropdown list
       document.getElementById("myDropdown").classList.toggle("show");
+    };
+
+    // Logout
+    logout = document.getElementById('logout');
+    logout.onclick = function() {
+      // Post logout form to GeoNode
+      var csrftoken = Cookies.get('csrftoken');
+
+      $.ajax({
+        type: "POST",
+        url: "/account/logout/",
+        data: {csrfmiddlewaretoken : csrftoken},
+        success: function(data) {
+          // Log out of GeoServer and return to home page
+          $.ajax({
+            type: "POST",
+            url: "/geoserver/j_spring_security_logout",
+            success: function(data) {
+              window.location.hash = "authenticate";
+            },
+            error: function(data) {
+              $.ajax({
+                type: "POST",
+                url: "/geoserver/j_spring_security_logout",
+                success: function(data) {
+                  // GeoServer bug means we have to log out twice!
+                  window.location.hash = "authenticate";
+                },
+                error: function(data) {
+                  console.log("failed to log out of GeoServer");
+                }
+              });
+            }
+          });
+        },
+        error: function(data) {
+          console.log("logout failure");
+        }
+      });
     };
 }

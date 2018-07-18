@@ -115,9 +115,9 @@ block content
         a.close(href='/') &times;
         |     &#x9;&#x9;
         .main.container
-          form#signup_form(method='post', action='/account/signup/', autocapitalize='off')
+          form#signup_form(method='post', action='/account/signup/?next=/li_map', autocapitalize='off')
             .modal-body
-              //input(name='csrfmiddlewaretoken', value='6Jr5k902QdBSud0PNuzTfRaXUBUWRKAQ', type='hidden')
+              input(name='csrfmiddlewaretoken', value!=csrf_value, type='hidden')
               #div_id_email.form-group
                 label.control-label.required-field(for='id_email')
                   | E-mail
@@ -306,7 +306,7 @@ block content
         a(href='..') Home
         a(href='#') Contact
         hr
-        a(href='#') Logout
+        a#logout() Logout
     
     script.
       load_li_map()
