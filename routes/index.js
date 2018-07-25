@@ -42,7 +42,7 @@ router.get('/login_response', function(req, res) {
 router.post('/account/login', function(req, res) {
     res.cookie('csrftoken','THISISNOTACSRFTOKEN');
     res.cookie('sessionid','THISINOTASESSIONID');
-    res.redirect('/li_map#puli');
+    res.redirect('/li_map#observatory');
 })
 
 router.get('/people/profile/test/', function(req, res, next) {
@@ -98,13 +98,6 @@ router.get('/li_map', function(req, res) {
       });
     };
 });
-
-// router.get('/radar', auth, function(req, res) {
-           // res.render('radar', {
-             // title: "test_radar" //,
-             // /* GET the map page */
-           // });
-// });
 
 router.get('/*', function(req, res) {
   // redirect any stray requests back to the authentication page
