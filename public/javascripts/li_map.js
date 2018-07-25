@@ -176,12 +176,12 @@ function load_li_map() {
        if (sa1) {
          sa1.eachLayer(function(layer) {
            layer.setStyle({
-               fillColor: getColor(layer.feature.properties[ind_value]),
+               fillColor: getColor(layer.feature.properties['p_'+ind_value]),
                fillOpacity: 0.8,
                weight: 0.2,
                color: 'white',
            });
-           layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['lga'] + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
+           layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
            layer.setPopupContent('<table class="g-pop-table" width="400" height="300">'+
                        '<col width="0"><col width="240"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -236,12 +236,12 @@ function load_li_map() {
        if (ssc) {
          ssc.eachLayer(function(layer) {
            layer.setStyle({
-               fillColor: getColor(layer.feature.properties[ind_value]),
+               fillColor: getColor(layer.feature.properties['p_'+ind_value]),
                fillOpacity: 0.8,
                weight: 0.2,
                color: 'white',
            });
-           layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['lga'] + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
+           layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
            layer.setPopupContent('<table class="g-pop-table" width="400" height="300">'+
                        '<col width="0"><col width="240"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -296,12 +296,12 @@ function load_li_map() {
        if (lga) {
          lga.eachLayer(function(layer) {
            layer.setStyle({
-               fillColor: getColor(layer.feature.properties[ind_value]),
+               fillColor: getColor(layer.feature.properties['p_'+ind_value]),
                fillOpacity: 0.8,
                weight: 0.2,
                color: 'white',
            });
-           layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['lga'] + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
+           layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
            layer.setPopupContent('<table class="g-pop-table" width="400" height="300">'+
                        '<col width="0"><col width="240"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -442,7 +442,7 @@ function load_li_map() {
     coloursets = {
         'pgrn': ['#276419','#4d9221','#7fbc41','#b8e186','#e6f5d0','#fde0ef','#f1b6da','#de77ae','#c51b7d','#8e0152','#f7f7f7'],
         'BrBG':['#003c30','#01665e','#35978f','#80cdc1','#c7eae5','#f5f5f5','#f6e8c3','#dfc27d','#bf812d','#8c510a','#543005'],
-         'RdYlBu':['#313695','#4575b4','#74add1','#abd9e9','#e0f3f8','#ffffbf','#fee090','#fdae61','#f46d43','#d73027','#a50026']
+        'RdYlBu':['#313695','#4575b4','#74add1','#abd9e9','#e0f3f8','#ffffbf','#fee090','#fdae61','#f46d43','#d73027','#a50026']
     }
 
     // initialise colourscheme
@@ -465,10 +465,10 @@ function load_li_map() {
                         coloursets[colourscheme][10];
     }
 
-    // function to scale a percentile to a quantile (e.g. for quintile, num = 20)
-    function requantile(p, num) {
-      return Math.floor((p - 1) / num) + 1;
-    }
+    // // function to scale a percentile to a quantile (e.g. for quintile, num = 20) -- NOT USED
+    // function requantile(p, num) {
+      // return Math.floor((p - 1) / num) + 1;
+    // }
 
     // column graph indicator scale function
     function bgWidth(value){
@@ -511,7 +511,7 @@ function load_li_map() {
         weight: 0.2,
         color: 'white',
         fillOpacity: 0.7,
-        fillColor: getColor(feature.properties[init_ind])
+        fillColor: getColor(feature.properties["p_walk_12"])
       };
     }
 
@@ -696,6 +696,22 @@ function load_li_map() {
     };
 
 
+    // Parse SA1 geojson data, adding to map
+    window.parseResponseSA1 = function(data) {
+      sa1 = L.geoJson(data, {
+          id: 'ind',
+          style: li_style,
+          onEachFeature: onEachFeature
+        });
+      overlays.addBaseLayer({
+        group: "Summary scale", 
+        collapsed: true,
+		    name:  'SA1',
+	      layer: sa1
+        });
+      UpdateIndicatorList();
+    };   
+    
     function allAjaxCalls() {
     // All ajax calls to be run once we have user's access token
        // $.ajax({
@@ -745,26 +761,11 @@ function load_li_map() {
     };
 
 
-    // Parse SA1 geojson data, adding to map
-    window.parseResponse_inds = function(data) {
-      // update drop menu with indicator items
-    };    
-
-    // Parse SA1 geojson data, adding to map
-    window.parseResponseSA1 = function(data) {
-      sa1 = L.geoJson(data, {
-          id: 'ind',
-          style: li_style,
-          onEachFeature: onEachFeature
-        });
-      overlays.addBaseLayer({
-        group: "Summary scale", //note: this is not working yet
-        collapsed: true,
-		    name:  'SA1',
-	      layer: sa1
-        });
-      UpdateIndicatorList();
-    };    
+    // // Parse SA1 geojson data, adding to map
+    // window.parseResponse_inds = function(data) {
+      // // update drop menu with indicator items
+    // };    
+ 
     
     // Parse Suburb geojson data, adding to map
     window.parseResponseSSC = function(data) {
@@ -774,13 +775,13 @@ function load_li_map() {
                onEachFeature: onEachFeature
           }).addTo(map);
         overlays.addBaseLayer({
-          group: "Summary scale", //note: this is not working yet
+          group: "Summary scale", 
           collapsed: true,
 		      name:  'Suburb',
 	        layer: ssc
           });
         boundaries.addBaseLayer({
-          group: "Boundary lines", //note: this is not working yet
+          group: "Boundary lines", 
 		      name:  'Suburb',
 	        layer: L.geoJson(data, {
                id: 'ind',
@@ -861,7 +862,7 @@ function load_li_map() {
         // Include a search box to jump to suburb
         var searchControl = new L.Control.Search({
           layer: ssc_search,
-          propertyName: 'F2',
+          propertyName: 'suburb',
           marker: false,
           moveToLocation: function(latlng, title, map) {
             //map.fitBounds( latlng.layer.getBounds() );
@@ -905,13 +906,13 @@ function load_li_map() {
           onEachFeature: onEachFeature
         });
       overlays.addBaseLayer({
-        group: "Summary scale", //note: this is not working yet
+        group: "Summary scale", 
         collapsed: true,
 		    name:  'LGA',
 	      layer: lga
         });
       boundaries.addBaseLayer({
-          group: "Boundary lines", //note: this is not working yet
+          group: "Boundary lines", 
 		       name:  'LGA',
 	           layer: L.geoJson(data, {
                id: 'ind',
@@ -926,7 +927,7 @@ function load_li_map() {
     // add in Urban Growth Boundary (2018)
     window.parseResponseUGB = function(data) {
       boundaries.addBaseLayer({
-          group: "Boundary lines", //note: this is not working yet
+          group: "Boundary lines", 
 		       name:  'UGB (2018)',
 	           layer: L.geoJson(data, {
                id: 'ind',
