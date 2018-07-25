@@ -27,7 +27,7 @@ function load_li_map() {
     // Later, we will have these selectable from respect lists; perhaps with start default
     var locale = "perth"
     var year = "2016"
-    var init = "walk_12"
+    var init_ind = "walk_12"
     status = document.getElementById("status");
     loggedin_status = status.getAttribute("data-status");
     session_id = status.getAttribute("data-session");
@@ -59,7 +59,7 @@ function load_li_map() {
               access_token = access_token_blob.split("=")[1];
               // load data from GeoServer through multiple ajax calls
               // WFS data
-              ind_description = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:ind_description_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
+              // ind_description = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:ind_description_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
               li_sa1_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_sa1_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
               li_ssc_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_ssc_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
               li_lga_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_lga_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
@@ -181,7 +181,7 @@ function load_li_map() {
                weight: 0.2,
                color: 'white',
            });
-           layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['LGA'] + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
+           layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['lga'] + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
            layer.setPopupContent('<table class="g-pop-table" width="400" height="300">'+
                        '<col width="0"><col width="240"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -241,7 +241,7 @@ function load_li_map() {
                weight: 0.2,
                color: 'white',
            });
-           layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['LGA'] + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
+           layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['lga'] + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
            layer.setPopupContent('<table class="g-pop-table" width="400" height="300">'+
                        '<col width="0"><col width="240"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -301,7 +301,7 @@ function load_li_map() {
                weight: 0.2,
                color: 'white',
            });
-           layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['LGA'] + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
+           layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['lga'] + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
            layer.setPopupContent('<table class="g-pop-table" width="400" height="300">'+
                        '<col width="0"><col width="240"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -572,7 +572,7 @@ function load_li_map() {
         threshold  = ', soft threshold'
         threshold2 = 'soft threshold'
       }
-      layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['LGA'] + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
+      layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['lga'] + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
       layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight
@@ -698,14 +698,14 @@ function load_li_map() {
 
     function allAjaxCalls() {
     // All ajax calls to be run once we have user's access token
-       $.ajax({
-        url: ind_description,
-        maxFeatures: 20,
-        dataType: 'jsonp',
-        outputFormat: 'text/javascript',
-        jsonp: 'format_options',
-        jsonpCallback: 'callback:parseResponse_inds'
-      });
+       // $.ajax({
+        // url: ind_description,
+        // maxFeatures: 20,
+        // dataType: 'jsonp',
+        // outputFormat: 'text/javascript',
+        // jsonp: 'format_options',
+        // jsonpCallback: 'callback:parseResponse_inds'
+      // });
       
       $.ajax({
         url: li_sa1_url,
