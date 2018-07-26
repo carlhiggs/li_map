@@ -1,4 +1,224 @@
-function load_li_map() {
+function init_map() {
+    map = L.map('map', {
+          center: [-27.1960144, 133.8354492],
+          zoom: 5,
+          minZoom: 2,
+          maxZoom: 17,
+    });
+       
+    // Define basemaps
+    bmap_satellite = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
+    bmap_satellite_attrib = '&copy; <a href="http://www.esri.com/" title="Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community">Esri</a>';
+    bmap_basic = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+    bmap_basic_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
+
+    // add attribution
+    map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>'+' | '+bmap_basic_attrib+' | '+bmap_satellite_attrib);
+
+    // create underlay basemaps pane; to be kept underneath otherlayers
+    map.createPane('underlay');
+    map.getPane('underlay').style.zIndex = 0;
+    map.getPane('underlay').style.pointerEvents = 'none';
+        // Add tiles, mini-map, scale bar and legend to map
+    var bmap2,
+        miniMap,
+        legend;
+
+    // add mini-map
+    bmap2 = new L.TileLayer(bmap_basic, {
+        minZoom: 0,
+        maxZoom: 13,
+        attribution: bmap_basic_attrib
+    });
+
+    miniMap = new L.Control.MiniMap(bmap2, {
+        position: 'bottomleft'
+    }).addTo(map);
+
+    // add scale bar
+    L.control.scale().addTo(map);
+
+    
+    
+
+    // initialise colourscheme
+    colourscheme = 'RdYlBu'
+
+    // Colour based on percentile
+    
+
+    // // function to scale a percentile to a quantile (e.g. for quintile, num = 20) -- NOT USED
+    // function requantile(p, num) {
+      // return Math.floor((p - 1) / num) + 1;
+    // }
+
+    // Style and add legend
+    legend = L.control({
+        position: 'bottomright'
+    });
+
+    legend.onAdd = function(map) {
+        var div = L.DomUtil.create('div', 'info legend'),
+        quantiles = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10],
+        labels = [],
+        quantile = ['100 High', '90', '80', '70', '60', '50', '40', '30', '20', '10 Low'];
+      labels.push('<table style="table-layout:fixed;"><col width="20"><col width="8"><col width="80">');
+      for (var i = 0; i < quantiles.length; i++) {
+        labels.push('<tr><td style="background:' + getColor(quantiles[i]) + '"></td><td></td><td>' + quantile[i] + '</td>');
+      }
+      div.innerHTML = labels.join('</tr>') + '</tr></table>';
+      return div;
+    };
+
+    legend.addTo(map);
+    
+    // Construct layer control
+    overlays = L.control.panelLayers(
+    [
+          {
+            group: "Summary scale",
+            collapsed: true,
+            layers:[
+                   {
+                       "name": "Off",
+                       "layer": L.tileLayer('')
+                   }
+                   ]
+        }
+    ],[],{compact: true}
+    ).addTo(map);
+
+    //  Ensure that active boundary lines are foregrounded when overlay changes
+    overlays._form.onchange = function() {
+      boundaries._layers.forEach(function (obj) {
+        if (obj.name!="Off" && obj.layer._map!=null){
+          obj.layer.bringToFront();
+        }
+      });
+    };    
+    
+    boundaries = L.control.panelLayers(
+    [
+          {
+            group: "Boundary lines",
+            collapsed: true,
+            layers: [{
+                       "name": "Off",
+                       "layer": L.tileLayer('').addTo(map)
+                   }]
+        }
+    ],[],{compact: true}
+    ).addTo(map);
+
+    basemaps = L.control.panelLayers(
+    [
+        {
+            group: "Base layer",
+            collapsed: true,
+            layers:[
+                   {
+                       "name": "Off",
+                       "layer": L.tileLayer('')
+                   }
+                   ]
+        }
+    ],[],{compact: true}
+    ).addTo(map);
+
+    // add base map layers to layer control
+    basemaps.addBaseLayer({
+        group: "Base layer",
+        collapsed: true,
+	       name:  'Satellite',
+	      layer: L.tileLayer(bmap_satellite).addTo(map),
+          pane: 'underlay',
+        });
+
+    basemaps.addBaseLayer({
+        group: "Base layer",
+        collapsed: true,
+		    name:  'Basic',
+	      layer: L.tileLayer(bmap_basic),
+          pane: 'underlay',
+        });
+
+
+}
+
+// define colour schemes
+coloursets = {
+        'pgrn': ['#276419','#4d9221','#7fbc41','#b8e186','#e6f5d0','#fde0ef','#f1b6da','#de77ae','#c51b7d','#8e0152','#f7f7f7'],
+        'BrBG':['#003c30','#01665e','#35978f','#80cdc1','#c7eae5','#f5f5f5','#f6e8c3','#dfc27d','#bf812d','#8c510a','#543005'],
+        'RdYlBu':['#313695','#4575b4','#74add1','#abd9e9','#e0f3f8','#ffffbf','#fee090','#fdae61','#f46d43','#d73027','#a50026']
+    }
+
+function getColor(p) {
+      // Decile colours
+      // pgrn colour scheme - diverging
+        return p > 90 ? coloursets[colourscheme][0]:
+               p > 80 ? coloursets[colourscheme][1]:
+               p > 70 ? coloursets[colourscheme][2]:
+               p > 60 ? coloursets[colourscheme][3]:
+               p > 50 ? coloursets[colourscheme][4]:
+               p > 40 ? coloursets[colourscheme][5]:
+               p > 30 ? coloursets[colourscheme][6]:
+               p > 20 ? coloursets[colourscheme][7]:
+               p > 10 ? coloursets[colourscheme][8]:
+               p >= 0 ? coloursets[colourscheme][9]:
+                        '#00FFFFFF';
+    }
+
+function purge_panelLayer(panel) {
+      for (i = 0; i < panel._layers.length; i++) {
+        panel.clearLayers();
+      }
+      map.removeControl(panel)
+}
+    
+function load_li_map(locale,year) { 
+    // remove layers and overlay panels if they exist
+    purge_panelLayer(overlays)
+    purge_panelLayer(boundaries)
+
+    
+    // Construct layer control
+    overlays = L.control.panelLayers(
+    [
+          {
+            group: "Summary scale",
+            collapsed: true,
+            layers:[
+                   {
+                       "name": "Off",
+                       "layer": L.tileLayer('')
+                   }
+                   ]
+        }
+    ],[],{compact: true}
+    ).addTo(map);
+
+    //  Ensure that active boundary lines are foregrounded when overlay changes
+    overlays._form.onchange = function() {
+      boundaries._layers.forEach(function (obj) {
+        if (obj.name!="Off" && obj.layer._map!=null){
+          obj.layer.bringToFront();
+        }
+      });
+    };    
+    
+    boundaries = L.control.panelLayers(
+    [
+          {
+            group: "Boundary lines",
+            collapsed: true,
+            layers: [{
+                       "name": "Off",
+                       "layer": L.tileLayer('').addTo(map)
+                   }]
+        }
+    ],[],{compact: true}
+    ).addTo(map);    
+    
     // Create variable to hold map element, give initial settings to map
     // Melb coords: -37.8078244,144.9625175
     // Centered on Black Rock
@@ -25,8 +245,8 @@ function load_li_map() {
     
     // For test purposes we define the locale and year here
     // Later, we will have these selectable from respect lists; perhaps with start default
-    var locale = "perth"
-    var year = "2016"
+    // var locale = "perth"
+    // var year = "2016"
     var init_ind = "walk_12"
     status = document.getElementById("status");
     loggedin_status = status.getAttribute("data-status");
@@ -83,7 +303,7 @@ function load_li_map() {
               access_token = access_token_blob.split("=")[1];
               // load data from GeoServer through multiple ajax calls
               // WFS data
-              //ind_description = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:ind_description_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
+              ind_description = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:ind_description_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
               li_sa1_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_sa1_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
               li_ssc_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_ssc_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
               li_lga_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_lga_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
@@ -136,27 +356,8 @@ function load_li_map() {
       event.preventDefault(); // Prevent the form from submitting via the browser
     };
 
+    map.setView(city_coords[locale],city_zoom[locale])
 
-    map = L.map('map', {
-       center: city_coords['init'],
-       zoom: city_zoom['init'],
-       minZoom: 2,
-       maxZoom: 17,
-    });
-
-    // Define basemaps
-    bmap_satellite = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-    bmap_satellite_attrib = '&copy; <a href="http://www.esri.com/" title="Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community">Esri</a>';
-    bmap_basic = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
-    bmap_basic_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
-
-    // add attribution
-    map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>'+' | '+bmap_basic_attrib+' | '+bmap_satellite_attrib);
-
-    // create underlay basemaps pane; to be kept underneath otherlayers
-    map.createPane('underlay');
-    map.getPane('underlay').style.zIndex = 0;
-    map.getPane('underlay').style.pointerEvents = 'none';
 
     ind_desc = {'walk_12'      : 'Average distance to closest activity centre',
                 'walk_14_hard ': 'Average number of daily living types present',
@@ -433,76 +634,7 @@ function load_li_map() {
     });
 
 
-    // Add tiles, mini-map, scale bar and legend to map
-    var bmap2,
-        miniMap,
-        legend;
 
-    // add mini-map
-    bmap2 = new L.TileLayer(bmap_basic, {
-        minZoom: 0,
-        maxZoom: 13,
-        attribution: bmap_basic_attrib
-    });
-
-    miniMap = new L.Control.MiniMap(bmap2, {
-        position: 'bottomleft'
-    }).addTo(map);
-
-    // add scale bar
-    L.control.scale().addTo(map);
-
-    // define colour schemes
-    coloursets = {
-        'pgrn': ['#276419','#4d9221','#7fbc41','#b8e186','#e6f5d0','#fde0ef','#f1b6da','#de77ae','#c51b7d','#8e0152','#f7f7f7'],
-        'BrBG':['#003c30','#01665e','#35978f','#80cdc1','#c7eae5','#f5f5f5','#f6e8c3','#dfc27d','#bf812d','#8c510a','#543005'],
-        'RdYlBu':['#313695','#4575b4','#74add1','#abd9e9','#e0f3f8','#ffffbf','#fee090','#fdae61','#f46d43','#d73027','#a50026']
-    }
-
-    // initialise colourscheme
-    colourscheme = 'RdYlBu'
-
-    // Colour based on percentile
-    function getColor(p) {
-      // Decile colours
-      // pgrn colour scheme - diverging
-        return p > 90 ? coloursets[colourscheme][0]:
-               p > 80 ? coloursets[colourscheme][1]:
-               p > 70 ? coloursets[colourscheme][2]:
-               p > 60 ? coloursets[colourscheme][3]:
-               p > 50 ? coloursets[colourscheme][4]:
-               p > 40 ? coloursets[colourscheme][5]:
-               p > 30 ? coloursets[colourscheme][6]:
-               p > 20 ? coloursets[colourscheme][7]:
-               p > 10 ? coloursets[colourscheme][8]:
-               p >= 0 ? coloursets[colourscheme][9]:
-                        '#00FFFFFF';
-    }
-
-    // // function to scale a percentile to a quantile (e.g. for quintile, num = 20) -- NOT USED
-    // function requantile(p, num) {
-      // return Math.floor((p - 1) / num) + 1;
-    // }
-
-    // Style and add legend
-    legend = L.control({
-        position: 'bottomright'
-    });
-
-    legend.onAdd = function(map) {
-        var div = L.DomUtil.create('div', 'info legend'),
-        quantiles = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10],
-        labels = [],
-        quantile = ['100 High', '90', '80', '70', '60', '50', '40', '30', '20', '10 Low'];
-      labels.push('<table style="table-layout:fixed;"><col width="20"><col width="8"><col width="80">');
-      for (var i = 0; i < quantiles.length; i++) {
-        labels.push('<tr><td style="background:' + getColor(quantiles[i]) + '"></td><td></td><td>' + quantile[i] + '</td>');
-      }
-      div.innerHTML = labels.join('</tr>') + '</tr></table>';
-      return div;
-    };
-
-    legend.addTo(map);
 
     // change colour scheme function
     // - NOT FUNCTIONAL YET
@@ -631,75 +763,6 @@ function load_li_map() {
       });
     }
 
-    // Construct layer control
-    overlays = L.control.panelLayers(
-    [
-          {
-            group: "Summary scale",
-            collapsed: true,
-            layers:[
-                   {
-                       "name": "Off",
-                       "layer": L.tileLayer('')
-                   }
-                   ]
-        }
-    ],[],{compact: true}
-    ).addTo(map);
-
-    boundaries = L.control.panelLayers(
-    [
-          {
-            group: "Boundary lines",
-            collapsed: true,
-            layers: [{
-                       "name": "Off",
-                       "layer": L.tileLayer('').addTo(map)
-                   }]
-        }
-    ],[],{compact: true}
-    ).addTo(map);
-
-    basemaps = L.control.panelLayers(
-    [
-        {
-            group: "Base layer",
-            collapsed: true,
-            layers:[
-                   {
-                       "name": "Off",
-                       "layer": L.tileLayer('')
-                   }
-                   ]
-        }
-    ],[],{compact: true}
-    ).addTo(map);
-
-    // add base map layers to layer control
-    basemaps.addBaseLayer({
-        group: "Base layer",
-        collapsed: true,
-	       name:  'Satellite',
-	      layer: L.tileLayer(bmap_satellite).addTo(map),
-          pane: 'underlay',
-        });
-
-    basemaps.addBaseLayer({
-        group: "Base layer",
-        collapsed: true,
-		    name:  'Basic',
-	      layer: L.tileLayer(bmap_basic),
-          pane: 'underlay',
-        });
-
-    //  Ensure that active boundary lines are foregrounded when overlay changes
-    overlays._form.onchange = function() {
-      boundaries._layers.forEach(function (obj) {
-        if (obj.name!="Off" && obj.layer._map!=null){
-          obj.layer.bringToFront();
-        }
-      });
-    };
 
 
     // Parse SA1 geojson data, adding to map
@@ -720,14 +783,14 @@ function load_li_map() {
     
     function allAjaxCalls() {
     // All ajax calls to be run once we have user's access token
-       // $.ajax({
-        // url: ind_description,
-        // maxFeatures: 20,
-        // dataType: 'jsonp',
-        // outputFormat: 'text/javascript',
-        // jsonp: 'format_options',
-        // jsonpCallback: 'callback:parseResponse_inds'
-      // });
+       $.ajax({
+        url: ind_description,
+        maxFeatures: 20,
+        dataType: 'jsonp',
+        outputFormat: 'text/javascript',
+        jsonp: 'format_options',
+        jsonpCallback: 'callback:parseResponse_inds'
+      });
       
       $.ajax({
         url: li_sa1_url,
@@ -767,10 +830,10 @@ function load_li_map() {
     };
 
 
-    // // Parse SA1 geojson data, adding to map
-    // window.parseResponse_inds = function(data) {
-      // // update drop menu with indicator items
-    // };    
+    // Parse  indicator data, updating drop down menu etc
+    window.parseResponse_inds = function(data) {
+      // update drop menu with indicator items
+    };    
  
     
     // Parse Suburb geojson data, adding to map
