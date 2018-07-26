@@ -32,6 +32,30 @@ function load_li_map() {
     loggedin_status = status.getAttribute("data-status");
     session_id = status.getAttribute("data-session");
 
+    city_coords = {
+        'init'    : [-27.1960144, 133.8354492],
+        'adelaide': [-34.8436763, 138.7044525],
+        'bris'    : [-27.4491810, 153.2270050],
+        'canberra': [-35.3467755, 149.1569138],
+        'darwin'  : [-12.4250096, 130.9280205],
+        'hobart'  : [-42.8777253, 147.3462296],
+        'melb'    : [-37.8078244, 144.9625175],
+        'perth'   : [-32.1343386, 116.0300445],
+        'syd'     : [-33.9131640, 150.9610748]
+    }
+
+    city_zoom = {
+        'init'    : 5,
+        'adelaide': 10,
+        'bris'    : 10,
+        'canberra': 11,
+        'darwin'  : 12,
+        'hobart'  : 10,
+        'melb'    : 11,
+        'perth'   : 10,
+        'syd'     : 10
+    }
+    
     if(loggedin_status == 1) {
       // Logged in - get access token from GeoNode
 
@@ -59,10 +83,10 @@ function load_li_map() {
               access_token = access_token_blob.split("=")[1];
               // load data from GeoServer through multiple ajax calls
               // WFS data
-              // ind_description = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:ind_description_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
-              li_sa1_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_sa1_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
-              li_ssc_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_ssc_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
-              li_lga_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_lga_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
+              //ind_description = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:ind_description_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
+              li_sa1_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_sa1_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
+              li_ssc_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_ssc_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
+              li_lga_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_lga_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
               vic_ugb    = "/geoserver/landuse_vic/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=landuse_vic:vic_plan_ugb_dissolved&outputFormat=text%2Fjavascript";
               allAjaxCalls();
             },
@@ -114,9 +138,9 @@ function load_li_map() {
 
 
     map = L.map('map', {
-       center: [-37.966909, 145.023575],
-       zoom: 10,
-       minZoom: 8,
+       center: city_coords['init'],
+       zoom: city_zoom['init'],
+       minZoom: 2,
        maxZoom: 17,
     });
 
@@ -187,7 +211,7 @@ function load_li_map() {
                weight: 0.2,
                color: 'white',
            });
-           layer.bindTooltip('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
            layer.setPopupContent('<table class="g-pop-table" width="400" height="300">'+
                        '<col width="0"><col width="240"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -243,7 +267,7 @@ function load_li_map() {
                weight: 0.2,
                color: 'white',
            });
-           layer.bindTooltip('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
            layer.setPopupContent('<table class="g-pop-table" width="400" height="300">'+
                        '<col width="0"><col width="240"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -299,7 +323,7 @@ function load_li_map() {
                weight: 0.2,
                color: 'white',
            });
-           layer.bindTooltip('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
            layer.setPopupContent('<table class="g-pop-table" width="400" height="300">'+
                        '<col width="0"><col width="240"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -451,8 +475,8 @@ function load_li_map() {
                p > 30 ? coloursets[colourscheme][6]:
                p > 20 ? coloursets[colourscheme][7]:
                p > 10 ? coloursets[colourscheme][8]:
-               p > 0  ? coloursets[colourscheme][9]:
-                        coloursets[colourscheme][10];
+               p >= 0 ? coloursets[colourscheme][9]:
+                        '#00FFFFFF';
     }
 
     // // function to scale a percentile to a quantile (e.g. for quintile, num = 20) -- NOT USED
@@ -780,6 +804,7 @@ function load_li_map() {
           onEachFeature: function(feature, layer) {
             var selected_ind = document.getElementById("inddrop");
             var ind_value = selected_ind.options[selected_ind.selectedIndex].value;
+            var threshold, threshold2
             var tags  = ind_value.split('_')
             if (tags.indexOf('hard') > -1) {
               threshold  = ', hard threshold'
