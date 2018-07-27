@@ -405,8 +405,9 @@ label.checkbox {
 
 select#logo {
   margin: 0px;
-  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+  /* background: rgb(255, 249, 232);     /* For browsers that don't support rgba */ 
   /*background-color: rgb(255, 249, 232);   Transparent background color */
+  background:url('../images/ahalo_logo_sm.png') no-repeat !important;
   width: 50px;
   padding: 5px 5px 5px 5px;
   font-size: 1.3em;
