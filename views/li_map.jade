@@ -2,11 +2,32 @@ extends layout_map
 
 block content
     img.center(src='/images/loading_spinner.gif')
-    select#inddrop(data-step='1', data-intro='Select indicator or composite index of interest from this list.  Indicators are grouped according to liveability domain.')
+    select#city
+        option(value='init') City:
+        |         
+        option(value='adelaide') &nbsp;Adelaide
+        |             
+        option(value='bris') &nbsp;Brisbane
+        |             
+        option(value='canberra') &nbsp;Canberra
+        |             
+        option(value='darwin') &nbsp;Darwin
+        |             
+        option(value='hobart') &nbsp;Hobart
+        |             
+        option(value='melb') &nbsp;Melbourne
+        |             
+        option(value='perth') &nbsp;Perth
+        |             
+        option(value='sydney') &nbsp;Sydney
+    select#year
+        option(value='2016') Timepoint:
+        |         
+        option(value='2016', selected="") &nbsp;2016
+        
+    select#inddrop
       optgroup(label='Walkability')
         option(value='walk_12') Distance to closest activity centre (km)
-        |             
-        option(value='walk_13') Pedshed ratio
         |             
         option(value='walk_14_hard') Daily living score (/3&semi; hard threshold)
         |                            
@@ -34,7 +55,7 @@ block content
         |             
         option(value='pos_11_hard') Lots within 400 m of large public open space (%&semi; hard threshold))
         
-    #about(data-step='2', data-intro='Click here for more information about an indicator and its interpretation.') &#xf05a;
+    #about &#xf05a;
       
     #map
       
@@ -195,5 +216,12 @@ block content
         a#logout() Logout
     
     script.
+      var searchControl, opt
       init_map()
-      load_li_map('perth','2016')
+      load_li_map('init','2016')
+      $('#city').change(function() {
+         load_li_map($(this).val(),2016)
+      });
+      // $('#year').change(function() {
+      //    load_li_map($('#city').val(),$(this).val())
+      // });

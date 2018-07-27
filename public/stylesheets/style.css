@@ -14,7 +14,7 @@ html, body { position:absolute; top:0; bottom:0; width:100%; }
   position:absolute;
   /* 50 px for  header; or 0 without */
   /* top: 50px; */
-  top: 0px;
+  top: 50px;
   bottom:0;
   width:100%; }
 
@@ -402,12 +402,11 @@ label.checkbox {
     max-width: 100%
 }
 
-
-select {
+#logo {
   margin: 0px;
   background: rgb(255, 255, 255);     /* For browsers that don't support rgba */
   background-color: rgba(255, 255, 255, 0.8);   /* Transparent background color */
-  width: 16em;
+  width: 50px;
   padding: 5px 5px 5px 5px;
   font-size: 1.3em;
   color: #46abbe;
@@ -417,15 +416,79 @@ select {
   -moz-appearance: none;
   appearance: none;
   position: absolute;
-  top: 12px;
-  left: 85px;
+  top: 0px;
+  left: 50px;
   opacity: 1;
   z-index: 999;
   font-family: 'FontAwesome', 'Lucida Grande';
   cursor: pointer;
 }
 
+select#city {
+  margin: 0px;
+  background: rgb(255, 255, 255);     /* For browsers that don't support rgba */
+  background-color: rgba(255, 255, 255, 0.8);   /* Transparent background color */
+  width: 110px;
+  padding: 5px 5px 5px 5px;
+  font-size: 1.3em;
+  color: #46abbe;
+  border: 1px solid #ccc;
+  height: 50px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: absolute;
+  top: 0px;
+  left: 50px;
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
+}
 
+select#year {
+  margin: 0px;
+  background: rgb(255, 255, 255);     /* For browsers that don't support rgba */
+  background-color: rgba(255, 255, 255, 0.8);   /* Transparent background color */
+  width: 110px;
+  padding: 5px 5px 5px 5px;
+  font-size: 1.3em;
+  color: #46abbe;
+  border: 1px solid #ccc;
+  height: 50px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: absolute;
+  top: 0px;
+  left: 160px;
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
+}
+
+select#inddrop {
+  margin: 0px;
+  background: rgb(255, 255, 255);     /* For browsers that don't support rgba */
+  background-color: rgba(255, 255, 255, 0.8);   /* Transparent background color */
+  width: 100%;
+  padding: 5px 5px 5px 50px;
+  font-size: 1.3em;
+  color: #46abbe;
+  border: 1px solid #ccc;
+  height: 50px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: absolute;
+  top: 0px;
+  left: 270px;
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
+}
 
 /* CAUTION: IE hackery ahead */
 select::-ms-expand {
@@ -450,7 +513,7 @@ select: hover {
   color: #46abbe;
   position: fixed;
   top: 0px;
-  left: 40px;
+  left: 270px;
   opacity: 1;
   z-index: 999;
   font-family: 'FontAwesome', 'Lucida Grande';
@@ -566,7 +629,7 @@ input[type='checkbox']{
    font-size: 1.3em;
    color: #46abbe;
    position: fixed;
-   top: 40px;
+   top: 62px;
    left: 40px;
    opacity: 1;
    z-index: 999;

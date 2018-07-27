@@ -37,9 +37,7 @@ function init_map() {
 
     // add scale bar
     L.control.scale().addTo(map);
-
-    
-    
+ 
 
     // initialise colourscheme
     colourscheme = 'RdYlBu'
@@ -141,16 +139,30 @@ function init_map() {
 	      layer: L.tileLayer(bmap_basic),
           pane: 'underlay',
         });
+        
+    // // add full screen toggle
+    // // NOT CURRENTLY WORKING WITH INDICATOR DROP MENU
+    // map.addControl(new L.Control.Fullscreen());
 
 
-}
+    // // add save to .png functions
+    // var printer = L.easyPrint({
+      // title: 'Download snapshot to png (ctr+alt+s): **this may take some time to process!!**',
+      // tileLayer: basic_tiles,
+      // filename: 'LiveabilityIndexExport',
+      // exportOnly: true,
+      // hideControlContainer: false
+    // }).addTo(map);
+
+
+};
 
 // define colour schemes
 coloursets = {
         'pgrn': ['#276419','#4d9221','#7fbc41','#b8e186','#e6f5d0','#fde0ef','#f1b6da','#de77ae','#c51b7d','#8e0152','#f7f7f7'],
         'BrBG':['#003c30','#01665e','#35978f','#80cdc1','#c7eae5','#f5f5f5','#f6e8c3','#dfc27d','#bf812d','#8c510a','#543005'],
         'RdYlBu':['#313695','#4575b4','#74add1','#abd9e9','#e0f3f8','#ffffbf','#fee090','#fdae61','#f46d43','#d73027','#a50026']
-    }
+    };
 
 function getColor(p) {
       // Decile colours
@@ -166,20 +178,106 @@ function getColor(p) {
                p > 10 ? coloursets[colourscheme][8]:
                p >= 0 ? coloursets[colourscheme][9]:
                         '#00FFFFFF';
-    }
+    };
 
 function purge_panelLayer(panel) {
       for (i = 0; i < panel._layers.length; i++) {
         panel.clearLayers();
       }
       map.removeControl(panel)
+};
+
+// update drop menu with indicator items
+// Following https://stackoverflow.com/questions/22266171/javascript-html-select-add-optgroup-and-option-dynamically
+function add_optgr(sel, lab, opts) {
+    var i, 
+        len = opts.length, opt,
+        gr = document.createElement('OPTGROUP');
+
+    gr.label = lab;
+    for (i = 0; i < len; ++i) {
+        opt = document.createElement('OPTION');
+        opt.textContent = opts[i].name;
+        // Here you most likely also want to set .value
+        pt.value = opts[i].value;
+        gr.appendChild(opt);
+    }
+    sel.appendChild(gr);
+    return gr;
 }
+
+/* Build the select.
+ * @wrap: Container where to add finished product.
+ * @size: Size attribute for select.
+ * @opt : Options object.
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
+function build_select(wrap, size, opt) {
+    var sel = document.createElement('SELECT'),
+        prop;
+    size = size || 1;
+    sel.size = size;
+    for (prop in opt)
+        if (opt.hasOwnProperty(prop))
+            add_optgr(sel, prop, opt[prop]);
+    wrap.appendChild(sel);
+};
+
+
+function json2desc(data) {
+    var  options, domain_lookup, ind_desc, domain, prev_domain, ind_array;
+    options = {};
+    domain_lookup = {'walk': 'Walkability',
+                     'trans': 'Transport',
+                     'pos': 'Public Open Space',
+                     'hous': 'Housing',
+                     'food': 'Food',
+                     'alc': 'Alcohol'
+                     };
+    prev_domain = "";
+    ind_array = [];
+    for (i=0; i < data.features.length; i++) {
+      tags = data.features[i].properties["indicators"].split('_')
+      domain = domain_lookup[tags[0]]
+      if ((prev_domain != domain)&&(prev_domain=="")) {
+          newvar = {};
+          newvar[name] = data.features[i].properties["Description"];
+          newvar[value] = data.features[i].properties["indicators"];
+          ind_array.push(newvar);
+      };
+      if ((prev_domain != domain)&&(prev_domain!="")) {
+          options[prev_domain] = ind_array;
+          ind_array = [];          
+          newvar = {};
+          newvar[name] = data.features[i].properties["Description"];
+          newvar[value] = data.features[i].properties["indicators"];
+          ind_array.push(newvar);
+      };
+      if (prev_domain == domain) {          
+          newvar = {};
+          newvar[name] = data.features[i].properties["Description"];
+          newvar[value] = data.features[i].properties["indicators"];
+          ind_array.push(newvar);
+      }
+      // ind_desc.push([data.features[1].properties["indicators"],data.features[1].properties["Description"]]);
+      prev_domain = domain;
+    };
+    return(options)
+};
+
+function get_nested_array_length(data) {
+    var nrows = 0;
+    for (i = 0; i < Object.keys(data).length; i++) {
+        nrows += data[Object.keys(data)[i]].length
+        console.log(nrows)
+    }
+    return nrows;
+};
     
 function load_li_map(locale,year) { 
     // remove layers and overlay panels if they exist
     purge_panelLayer(overlays)
     purge_panelLayer(boundaries)
-
+    // map.removeControl(searchControl);
     
     // Construct layer control
     overlays = L.control.panelLayers(
@@ -763,7 +861,16 @@ function load_li_map(locale,year) {
       });
     }
 
-
+    // Parse  indicator data, updating drop down menu etc
+    window.parseResponse_inds = function(data) {
+        // reformat json array to reqd format
+        opt = json2desc(data);
+        size = get_nested_array_length(data);            
+        build_select(document.getElementById('inddrop'),
+                     size,
+                     opt
+        );
+    };  
 
     // Parse SA1 geojson data, adding to map
     window.parseResponseSA1 = function(data) {
@@ -827,13 +934,7 @@ function load_li_map(locale,year) {
         jsonp: 'format_options',
         jsonpCallback: 'callback:parseResponseUGB'
       });
-    };
-
-
-    // Parse  indicator data, updating drop down menu etc
-    window.parseResponse_inds = function(data) {
-      // update drop menu with indicator items
-    };    
+    };  
  
     
     // Parse Suburb geojson data, adding to map
@@ -1003,35 +1104,27 @@ function load_li_map(locale,year) {
         });
       UpdateIndicatorList();
     }
-
-
-	// // add full screen toggle
-    // // NOT CURRENTLY WORKING WITH INDICATOR DROP MENU
-    // map.addControl(new L.Control.Fullscreen());
-
-
-    // // add save to .png functions
-    // var printer = L.easyPrint({
-      // title: 'Download snapshot to png (ctr+alt+s): **this may take some time to process!!**',
-      // tileLayer: basic_tiles,
-      // filename: 'LiveabilityIndexExport',
-      // exportOnly: true,
-      // hideControlContainer: false
-    // }).addTo(map);
-
-    // programmatically add intro attributes to dynamic elements
-    $('leaflet-control-search leaflet-control').attr('data-step', "3")
-    $('leaflet-control-search leaflet-control').attr('data-intro', "Search for a suburb here to locate and display its summary information for all indicators.")
-    $('#sa1_overlay').attr('data-step', '4');
-    $('#sa1_overlay').attr('data-intro', 'The currently selected map is displayed here --- the Liveability Index, for SA1 areas (an ABS definition, like a local neighbourhood).  If you hover over one of the highlighted areas its value for this indicator will displayed here.  Click on an area for more detail.');
-    // $('#info_overlay').attr('data-step', '5');
-    // $('#info_overlay').attr('data-intro', 'Summary information can be retrieved either at the SA1 or Suburb level');
-    // $('#bmap_overlay').attr('data-step', '6');
-    // $('#bmap_overlay').attr('data-intro', 'The background map can be toggled between a basic gray scale map, or a satellite view.  The latter may be useful to examine local built environment in light of the displayed indicators.');
-    // $('a.leaflet-control-layers-toggle').attr('data-step', '7');
-    // $('a.leaflet-control-layers-toggle').attr('data-intro', 'The displayed map elements summarised above can be changed here; hover over this icon to display the options.  For example, you could select to view the "Walkability Index" at the suburb level.');
-
-
+    
+    if(locale=='init'){
+      // programmatically add intro attributes to dynamic elements
+      $('#city').attr('data-step','1')
+      $('#city').attr('data-intro','Select indicator or composite index of interest from this list.  Indicators are grouped according to liveability domain.')
+      $('#inddrop').attr('data-step','2')
+      $('#inddrop').attr('data-intro','Select indicator or composite index of interest from this list.  Indicators are grouped according to liveability domain.')
+      $('#about').attr('data-step','3')
+      $('#about').attr('data-intro','Click here for more information about an indicator and its interpretation.')
+      $('leaflet-control-search leaflet-control').attr('data-step', "4")
+      $('leaflet-control-search leaflet-control').attr('data-intro', "Search for a suburb here to locate and display its summary information for all indicators.")
+      // $('#overlays').attr('data-step', '4');
+      // $('#overlays').attr('data-intro', 'The currently selected map is displayed here --- the Liveability Index, for SA1 areas (an ABS definition, like a local neighbourhood).  If you hover over one of the highlighted areas its value for this indicator will displayed here.  Click on an area for more detail.');
+      // $('#info_overlay').attr('data-step', '5');
+      // $('#info_overlay').attr('data-intro', 'Summary information can be retrieved either at the SA1 or Suburb level');
+      // $('#bmap_overlay').attr('data-step', '6');
+      // $('#bmap_overlay').attr('data-intro', 'The background map can be toggled between a basic gray scale map, or a satellite view.  The latter may be useful to examine local built environment in light of the displayed indicators.');
+      // $('a.leaflet-control-layers-toggle').attr('data-step', '7');
+      // $('a.leaflet-control-layers-toggle').attr('data-intro', 'The displayed map elements summarised above can be changed here; hover over this icon to display the options.  For example, you could select to view the "Walkability Index" at the suburb level.');
+    }
+    
     // Toggle logout dropdown
     var logoutToggle = document.getElementById("dropdown");
     logoutToggle.onclick = function(event) {
