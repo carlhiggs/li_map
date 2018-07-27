@@ -22,7 +22,8 @@ html, body { position:absolute; top:0; bottom:0; width:100%; }
   padding: 6px 8px;
   /* font: 14px/16px Arial, Helvetica, sans-serif;  */
   background: white;
-  background: rgba(255,255,255,0.8);
+  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+  background-color: rgb(255, 249, 232,0.5);   Transparent background color */
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
   border-radius: 5px;
 }
@@ -402,10 +403,10 @@ label.checkbox {
     max-width: 100%
 }
 
-#logo {
+select#logo {
   margin: 0px;
-  background: rgb(255, 255, 255);     /* For browsers that don't support rgba */
-  background-color: rgba(255, 255, 255, 0.8);   /* Transparent background color */
+  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+  /*background-color: rgb(255, 249, 232);   Transparent background color */
   width: 50px;
   padding: 5px 5px 5px 5px;
   font-size: 1.3em;
@@ -417,7 +418,7 @@ label.checkbox {
   appearance: none;
   position: absolute;
   top: 0px;
-  left: 50px;
+  left: 0px;
   opacity: 1;
   z-index: 999;
   font-family: 'FontAwesome', 'Lucida Grande';
@@ -426,8 +427,8 @@ label.checkbox {
 
 select#city {
   margin: 0px;
-  background: rgb(255, 255, 255);     /* For browsers that don't support rgba */
-  background-color: rgba(255, 255, 255, 0.8);   /* Transparent background color */
+  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+  /*background-color: rgb(255, 249, 232);   Transparent background color */
   width: 110px;
   padding: 5px 5px 5px 5px;
   font-size: 1.3em;
@@ -448,8 +449,8 @@ select#city {
 
 select#year {
   margin: 0px;
-  background: rgb(255, 255, 255);     /* For browsers that don't support rgba */
-  background-color: rgba(255, 255, 255, 0.8);   /* Transparent background color */
+  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+  /*background-color: rgb(255, 249, 232);   Transparent background color */
   width: 110px;
   padding: 5px 5px 5px 5px;
   font-size: 1.3em;
@@ -470,8 +471,8 @@ select#year {
 
 select#inddrop {
   margin: 0px;
-  background: rgb(255, 255, 255);     /* For browsers that don't support rgba */
-  background-color: rgba(255, 255, 255, 0.8);   /* Transparent background color */
+  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+  /*background-color: rgb(255, 249, 232);   Transparent background color */
   width: 100%;
   padding: 5px 5px 5px 50px;
   font-size: 1.3em;
