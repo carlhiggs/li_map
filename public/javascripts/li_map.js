@@ -199,7 +199,7 @@ function add_optgr(sel, lab, opts) {
         opt = document.createElement('OPTION');
         opt.textContent = opts[i].name;
         // Here you most likely also want to set .value
-        pt.value = opts[i].value;
+        opt.value = opts[i].value;
         gr.appendChild(opt);
     }
     sel.appendChild(gr);
@@ -215,7 +215,7 @@ function build_select(wrap, size, opt) {
     var sel = document.createElement('SELECT'),
         prop;
     size = size || 1;
-    sel.size = size;
+    sel.id = 'inddrop';
     for (prop in opt)
         if (opt.hasOwnProperty(prop))
             add_optgr(sel, prop, opt[prop]);
@@ -240,22 +240,22 @@ function json2desc(data) {
       domain = domain_lookup[tags[0]]
       if ((prev_domain != domain)&&(prev_domain=="")) {
           newvar = {};
-          newvar[name] = data.features[i].properties["Description"];
-          newvar[value] = data.features[i].properties["indicators"];
+          newvar['name'] = data.features[i].properties["Description"];
+          newvar['value'] = data.features[i].properties["indicators"];
           ind_array.push(newvar);
       };
       if ((prev_domain != domain)&&(prev_domain!="")) {
           options[prev_domain] = ind_array;
           ind_array = [];          
           newvar = {};
-          newvar[name] = data.features[i].properties["Description"];
-          newvar[value] = data.features[i].properties["indicators"];
+          newvar['name'] = data.features[i].properties["Description"];
+          newvar['value'] = data.features[i].properties["indicators"];
           ind_array.push(newvar);
       };
       if (prev_domain == domain) {          
           newvar = {};
-          newvar[name] = data.features[i].properties["Description"];
-          newvar[value] = data.features[i].properties["indicators"];
+          newvar['name'] = data.features[i].properties["Description"];
+          newvar['value'] = data.features[i].properties["indicators"];
           ind_array.push(newvar);
       }
       // ind_desc.push([data.features[1].properties["indicators"],data.features[1].properties["Description"]]);
@@ -272,6 +272,7 @@ function get_nested_array_length(data) {
     }
     return nrows;
 };
+
     
 function load_li_map(locale,year) { 
     // remove layers and overlay panels if they exist
@@ -377,7 +378,7 @@ function load_li_map(locale,year) {
     if(loggedin_status == 1) {
       // Logged in - get access token from GeoNode
 
-      window.location.hash = "observatory";
+      // window.location.hash = "observatory";
 
       $.ajax({
         type: "GET",
@@ -405,7 +406,7 @@ function load_li_map(locale,year) {
               li_sa1_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_sa1_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
               li_ssc_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_ssc_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
               li_lga_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_lga_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
-              vic_ugb    = "/geoserver/landuse_vic/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=landuse_vic:vic_plan_ugb_dissolved&outputFormat=text%2Fjavascript";
+              // vic_ugb    = "/geoserver/landuse_vic/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=landuse_vic:vic_plan_ugb_dissolved&outputFormat=text%2Fjavascript";
               allAjaxCalls();
             },
             error: function(data) {
@@ -454,6 +455,29 @@ function load_li_map(locale,year) {
       event.preventDefault(); // Prevent the form from submitting via the browser
     };
 
+    window.parseResponse_inds = function(data) {
+        // reformat json array to reqd format
+        test = data;
+        opt = json2desc(data);
+        // console.log(opt)
+        // size = data.totalFeatures;
+        // build_select(document.getElementById('inddrop'),
+                     // size,
+                     // opt);
+        $(function(){
+             var $select = $('#inddrop');
+             $select.empty(); // remove old options
+             $.each(opt, function(key, value){
+                 var group = $('<optgroup label="' + key + '" />');
+                 $.each(value, function(){
+                     $('<option />').html(this.name).appendTo(group)
+                       .attr("value",this.value);
+                 });
+                 group.appendTo($select);
+             });
+        });
+    };      
+    
     map.setView(city_coords[locale],city_zoom[locale])
 
 
@@ -860,17 +884,6 @@ function load_li_map(locale,year) {
         maxWidth: 400
       });
     }
-
-    // Parse  indicator data, updating drop down menu etc
-    window.parseResponse_inds = function(data) {
-        // reformat json array to reqd format
-        opt = json2desc(data);
-        size = get_nested_array_length(data);            
-        build_select(document.getElementById('inddrop'),
-                     size,
-                     opt
-        );
-    };  
 
     // Parse SA1 geojson data, adding to map
     window.parseResponseSA1 = function(data) {

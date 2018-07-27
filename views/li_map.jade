@@ -218,9 +218,9 @@ block content
         a#logout() Logout
     
     script.
-      var searchControl, opt
-      init_map()
-      load_li_map('init','2016')
+      var searchControl, opt, test;
+      init_map();
+      load_li_map('init','2016');
       $('#city').change(function() {
          load_li_map($(this).val(),2016)
       });
