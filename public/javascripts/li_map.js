@@ -517,7 +517,7 @@ function load_li_map(locale,year) {
       var selected_ind = document.getElementById("inddrop");
       var ind_value = selected_ind.options[selected_ind.selectedIndex].value;
       var tags  = ind_value.split('_')
-      var threshold, threshold2
+      var threshold = threshold2 = ''
       if (tags.indexOf('hard') > -1) {
         threshold  = ', hard threshold'
         threshold2 = 'hard threshold'
@@ -827,7 +827,7 @@ function load_li_map(locale,year) {
       var selected_ind = document.getElementById("inddrop");
       var ind_value = selected_ind.options[selected_ind.selectedIndex].value;
       var tags  = ind_value.split('_')
-      var threshold, threshold2
+      var threshold = threshold2 = ''
       if (tags.indexOf('hard') > -1) {
         threshold  = ', hard threshold'
         threshold2 = 'hard threshold'
@@ -981,7 +981,7 @@ function load_li_map(locale,year) {
           onEachFeature: function(feature, layer) {
             var selected_ind = document.getElementById("inddrop");
             var ind_value = selected_ind.options[selected_ind.selectedIndex].value;
-            var threshold, threshold2
+            var threshold = threshold2 = ''
             var tags  = ind_value.split('_')
             if (tags.indexOf('hard') > -1) {
               threshold  = ', hard threshold'
