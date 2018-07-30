@@ -200,6 +200,7 @@ input[type=radio] {
 
 .leaflet-fade-anim .leaflet-popup {
   transition: none;
+  width: 460px;
 }
 
 #suburb_hover, #lga_hover, #sa1_overlay, #ssc_overlay

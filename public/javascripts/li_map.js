@@ -344,8 +344,7 @@ function load_li_map(locale,year) {
     
     // For test purposes we define the locale and year here
     // Later, we will have these selectable from respect lists; perhaps with start default
-    // var locale = "perth"
-    // var year = "2016"
+
     var init_ind = "walk_12"
     status = document.getElementById("status");
     loggedin_status = status.getAttribute("data-status");
@@ -484,7 +483,7 @@ function load_li_map(locale,year) {
     
     map.setView(city_coords[locale],city_zoom[locale])
 
-
+    // initial example set of indicators used to populate menu
     ind_desc = {'walk_12'      : 'Average distance to closest activity centre',
                 'walk_14_hard ': 'Average number of daily living types present',
                 'walk_14_soft ': 'Average number of daily living types present',
@@ -539,13 +538,13 @@ function load_li_map(locale,year) {
                color: 'white',
            });
            layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
-           layer.setPopupContent('<table class="g-pop-table" width="400" height="300">'+
-                       '<col width="0"><col width="240"><col width="80"><col width="80">'+
+           layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
+                       '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
                        '<tr><td></td><td><b>Suburb: </b>' + layer.feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
                        '<tr><td></td><td><b>LGA: </b>'    + layer.feature.properties['lga'] + '</td><td></td><td></td></tr>'+
                        '<tr></tr>'+
-                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
                        '<td><i class=".subindicator">Distance to closest activity centre (km)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_12']+'</td>'+
@@ -555,7 +554,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup)</i></td>'+
+                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup>)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_15']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -578,7 +577,7 @@ function load_li_map(locale,year) {
                        '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
-                       '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2011 Census QuickStats</a>',
+                       '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',
            {
              maxWidth: 400
            });
@@ -595,13 +594,13 @@ function load_li_map(locale,year) {
                color: 'white',
            });
            layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
-           layer.setPopupContent('<table class="g-pop-table" width="400" height="300">'+
-                       '<col width="0"><col width="240"><col width="80"><col width="80">'+
+           layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
+                       '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
                        '<tr><td></td><td><b>Suburb: </b>' + layer.feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
                        '<tr><td></td><td><b>LGA: </b>'    + layer.feature.properties['lga'] + '</td><td></td><td></td></tr>'+
                        '<tr></tr>'+
-                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
                        '<td><i class=".subindicator">Distance to closest activity centre (km)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_12']+'</td>'+
@@ -611,7 +610,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup)</i></td>'+
+                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup>)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_15']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -634,7 +633,7 @@ function load_li_map(locale,year) {
                        '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
-                       '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2011 Census QuickStats</a>',
+                       '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',
            {
              maxWidth: 400
            });
@@ -651,13 +650,13 @@ function load_li_map(locale,year) {
                color: 'white',
            });
            layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
-           layer.setPopupContent('<table class="g-pop-table" width="400" height="300">'+
-                       '<col width="0"><col width="240"><col width="80"><col width="80">'+
+           layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
+                       '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
                        '<tr><td></td><td><b>Suburb: </b>' + layer.feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
                        '<tr><td></td><td><b>LGA: </b>'    + layer.feature.properties['lga'] + '</td><td></td><td></td></tr>'+
                        '<tr></tr>'+
-                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
                        '<td><i class=".subindicator">Distance to closest activity centre (km)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_12']+'</td>'+
@@ -667,7 +666,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup)</i></td>'+
+                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup>)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_15']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -690,7 +689,7 @@ function load_li_map(locale,year) {
                        '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
-                       '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2011 Census QuickStats</a>',
+                       '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',
            {
              maxWidth: 400
            });
@@ -700,13 +699,13 @@ function load_li_map(locale,year) {
 
        if(ssc_search) {
          ssc_search.eachLayer(function(layer) {
-             layer.setPopupContent('<table class="g-pop-table" width="400" height="300">'+
-                       '<col width="0"><col width="240"><col width="80"><col width="80">'+
+             layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
+                       '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
                        '<tr><td></td><td><b>Suburb: </b>' + layer.feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
                        '<tr><td></td><td><b>LGA: </b>'    + layer.feature.properties['lga'] + '</td><td></td><td></td></tr>'+
                        '<tr></tr>'+
-                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
                        '<td><i class=".subindicator">Distance to closest activity centre (km)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_12']+'</td>'+
@@ -716,7 +715,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup)</i></td>'+
+                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup>)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_15']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -739,7 +738,7 @@ function load_li_map(locale,year) {
                        '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
-                       '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2011 Census QuickStats</a>',
+                       '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',
              {
                maxWidth: 400
              });
@@ -845,13 +844,13 @@ function load_li_map(locale,year) {
         mouseover: highlightFeature,
         mouseout: resetHighlight
       });
-      layer.bindPopup('<table class="g-pop-table" width="400" height="300">'+
-                       '<col width="0"><col width="240"><col width="80"><col width="80">'+
+      layer.bindPopup('<table class="g-pop-table" width="450" height="300">'+
+                       '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
                        '<tr><td></td><td><b>Suburb: </b>' + feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
                        '<tr><td></td><td><b>LGA: </b>'    + feature.properties['lga'] + '</td><td></td><td></td></tr>'+
                        '<tr></tr>'+
-                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
                        '<td><i class=".subindicator">Distance to closest activity centre (km)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'walk_12']+'</td>'+
@@ -861,7 +860,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + feature.properties['r_'+'walk_14_soft']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup)</i></td>'+
+                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup>)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'walk_15']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -884,7 +883,7 @@ function load_li_map(locale,year) {
                        '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'pos_11_soft']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
-                       '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2011 Census QuickStats</a>', {
+                       '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>', {
         maxWidth: 400
       });
     }
@@ -1005,13 +1004,13 @@ function load_li_map(locale,year) {
               threshold  = ', soft threshold'
               threshold2 = 'soft threshold'
             }
-            layer.bindPopup('<table class="g-pop-table" width="400" height="300">'+
-                       '<col width="0"><col width="240"><col width="80"><col width="80">'+
+            layer.bindPopup('<table class="g-pop-table" width="450" height="300">'+
+                       '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
                        '<tr><td></td><td><b>Suburb: </b>' + feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
                        '<tr><td></td><td><b>LGA: </b>'    + feature.properties['lga'] + '</td><td></td><td></td></tr>'+
                        '<tr></tr>'+
-                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
                        '<td><i class=".subindicator">Distance to closest activity centre (km)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'walk_12']+'</td>'+
@@ -1021,7 +1020,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + feature.properties['r_'+'walk_14_soft']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup)</i></td>'+
+                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup>)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'walk_15']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -1044,7 +1043,7 @@ function load_li_map(locale,year) {
                        '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'pos_11_soft']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
-                       '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2011 Census QuickStats</a>',
+                       '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',
               {
                 maxWidth: 400,
               });
