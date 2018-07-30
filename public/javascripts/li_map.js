@@ -71,6 +71,21 @@ function init_map() {
     legend.addTo(map);
     
     // Construct layer control
+    basemaps = L.control.panelLayers(
+    [
+        {
+            group: "Base layer",
+            collapsed: true,
+            layers:[
+                   {
+                       "name": "Off",
+                       "layer": L.tileLayer('')
+                   }
+                   ]
+        }
+    ],[],{compact: true}
+    ).addTo(map);
+    
     overlays = L.control.panelLayers(
     [
           {
@@ -108,20 +123,7 @@ function init_map() {
     ],[],{compact: true}
     ).addTo(map);
 
-    basemaps = L.control.panelLayers(
-    [
-        {
-            group: "Base layer",
-            collapsed: true,
-            layers:[
-                   {
-                       "name": "Off",
-                       "layer": L.tileLayer('')
-                   }
-                   ]
-        }
-    ],[],{compact: true}
-    ).addTo(map);
+
 
     // add base map layers to layer control
     basemaps.addBaseLayer({
@@ -153,7 +155,6 @@ function init_map() {
       // exportOnly: true,
       // hideControlContainer: false
     // }).addTo(map);
-
 };
 
 // define colour schemes
@@ -1088,6 +1089,9 @@ function load_li_map(locale,year) {
         });
 
       map.addControl(searchControl); //inizialize search control
+      $('.leaflet-control-search').attr('data-step','1');
+      $('.leaflet-control-search').attr('data-intro',"Type and select a suburb's name using the search tool to display indicator summary information for a particular suburb.");
+      introJs().start();
     };
 
 
@@ -1136,43 +1140,37 @@ function load_li_map(locale,year) {
     if(locale=='init'){
       // programmatically add intro attributes to dynamic elements
       $('#city').attr('data-step','1')
-      $('#city').attr('data-intro','Select a city and time point to zoom and load indicator map data for this region.')
+      $('#city').attr('data-intro','To get started, select a city and time point to zoom and load indicator map data for this region.')
       $('#inddrop').attr('data-step','2')
       $('#inddrop').attr('data-intro','Select indicator of interest from this list.')
       $('#about').attr('data-step','3')
-      $('#about').attr('data-intro','Click here for more information about an indicator: what it means, how it was calculated and the policy it relates to.')
-
-      // $('#overlays').attr('data-step', '4');
-      // $('#overlays').attr('data-intro', 'The currently selected map is displayed here --- the Liveability Index, for SA1 areas (an ABS definition, like a local neighbourhood).  If you hover over one of the highlighted areas its value for this indicator will displayed here.  Click on an area for more detail.');
-      // $('#info_overlay').attr('data-step', '5');
-      // $('#info_overlay').attr('data-intro', 'Summary information can be retrieved either at the SA1 or Suburb level');
-      // $('#bmap_overlay').attr('data-step', '6');
-      // $('#bmap_overlay').attr('data-intro', 'The background map can be toggled between a basic gray scale map, or a satellite view.  The latter may be useful to examine local built environment in light of the displayed indicators.');
-      // $('a.leaflet-control-layers-toggle').attr('data-step', '7');
-      // $('a.leaflet-control-layers-toggle').attr('data-intro', 'The displayed map elements summarised above can be changed here; hover over this icon to display the options.  For example, you could select to view the "Walkability Index" at the suburb level.');
+      $('#about').attr('data-intro','Click here for more information about an indicator: what it means, how it was calculated and the policy it relates to.')      
+      $('#dropdown').attr('data-step','10')
+      $('#dropdown').attr('data-intro','You can logout here when you are done, or if you need to switch users.')
+      $("span:contains('Base layer')").attr('data-step', '4');
+      $("span:contains('Base layer')").attr('data-intro', 'A satellite imagery or plain basemap theme may be chosen.');
+      $("span:contains('Summary scale')").attr('data-step', '5');
+      $("span:contains('Summary scale')").attr('data-intro', "Once a city has been selected, you can choose the scale at which to view the indicator here: SA1 (<a href = 'http://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/1270.0.55.001~July%202016~Main%20Features~Statistical%20Area%20Level%201%20(SA1)~10013'  target='_blank' >ABS Statistical Area 1)</a>; Suburb; or Local Government Area (LGA).  Areas are clipped to the residential portions for which data has been measured.  If you hover over one of the highlighted areas its summary information for the selected indicator will displayed here.  Click on an area for more detail, such as summaries of key indicators and link to an ABS community profile.");
+      $("span:contains('Boundary lines')").attr('data-step', '6');
+      $("span:contains('Boundary lines')").attr('data-intro', 'The full ABS-sourced boundary lines for suburbs and LGAs may be displayed on top of the indicator summary layer; for example, you may display LGA boundary lines while viewing SA1 level indicator estimates to visualise how a particular indicator varies across an LGA.');
     }
     
     if(locale!='init'){
-      // display explanation of suburb
-      $('.leaflet-control-search').attr('data-step', "4")
-      $('.leaflet-control-search').attr('data-intro', "Search for a suburb here to locate and display its summary information for all indicators.")
       // programmatically add intro attributes to dynamic elements
-      $('#city').removeAttr('data-step')
-      $('#city').removeAttr('data-intro')
-      $('#inddrop').removeAttr('data-step')
-      $('#inddrop').removeAttr('data-intro')
-      $('#about').removeAttr('data-step')
-      $('#about').removeAttr('data-intro')
-      // $('leaflet-control-search leaflet-control').removeAttr('data-step')
-      // $('leaflet-control-search leaflet-control').removeAttr('data-intro')
-      // $('#overlays').attr('data-step', '4');
-      // $('#overlays').attr('data-intro', 'The currently selected map is displayed here --- the Liveability Index, for SA1 areas (an ABS definition, like a local neighbourhood).  If you hover over one of the highlighted areas its value for this indicator will displayed here.  Click on an area for more detail.');
-      // $('#info_overlay').attr('data-step', '5');
-      // $('#info_overlay').attr('data-intro', 'Summary information can be retrieved either at the SA1 or Suburb level');
-      // $('#bmap_overlay').attr('data-step', '6');
-      // $('#bmap_overlay').attr('data-intro', 'The background map can be toggled between a basic gray scale map, or a satellite view.  The latter may be useful to examine local built environment in light of the displayed indicators.');
-      // $('a.leaflet-control-layers-toggle').attr('data-step', '7');
-      // $('a.leaflet-control-layers-toggle').attr('data-intro', 'The displayed map elements summarised above can be changed here; hover over this icon to display the options.  For example, you could select to view the "Walkability Index" at the suburb level.');
+      $('#city').removeAttr('data-step');
+      $('#city').removeAttr('data-intro');
+      $('#inddrop').removeAttr('data-step');
+      $('#inddrop').removeAttr('data-intro');
+      $('#about').removeAttr('data-step');
+      $('#about').removeAttr('data-intro');
+      $('#dropdown').removeAttr('data-step');
+      $('#dropdown').removeAttr('data-intro');
+      $("span:contains('Base layer')").removeAttr('data-step');
+      $("span:contains('Base layer')").removeAttr('data-intro');
+      $("span:contains('Summary scale')").removeAttr('data-step');
+      $("span:contains('Summary scale')").removeAttr('data-intro');
+      $("span:contains('Boundary lines')").removeAttr('data-step');
+      $("span:contains('Boundary lines')").removeAttr('data-intro');
     }
     
     // Toggle logout dropdown

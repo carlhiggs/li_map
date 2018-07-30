@@ -698,12 +698,8 @@ block content
         a#logout() Logout
     
     script.
-      var searchControl, opt, test;
       init_map();
       load_li_map('init','2016');
       $('#city').change(function() {
          load_li_map($(this).val(),2016);
       });
-      // $('#year').change(function() {
-      //    load_li_map($('#city').val(),$(this).val())
-      // });
