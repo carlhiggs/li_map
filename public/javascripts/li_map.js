@@ -1148,7 +1148,7 @@ function load_li_map(locale,year) {
       $('#dropdown').attr('data-step','10')
       $('#dropdown').attr('data-intro','You can logout here when you are done, or if you need to switch users.')
       $("span:contains('Base layer')").attr('data-step', '4');
-      $("span:contains('Base layer')").attr('data-intro', 'A satellite imagery or plain basemap theme may be chosen.');
+      $("span:contains('Base layer')").attr('data-intro', 'Satellite imagery or a plain map theme may be chosen for a base layer.');
       $("span:contains('Summary scale')").attr('data-step', '5');
       $("span:contains('Summary scale')").attr('data-intro', "Once a city has been selected, you can choose the scale at which to view the indicator here: SA1 (<a href = 'http://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/1270.0.55.001~July%202016~Main%20Features~Statistical%20Area%20Level%201%20(SA1)~10013'  target='_blank' >ABS Statistical Area 1)</a>; Suburb; or Local Government Area (LGA).  Areas are clipped to the residential portions for which data has been measured.  If you hover over one of the highlighted areas its summary information for the selected indicator will displayed here.  Click on an area for more detail, such as summaries of key indicators and link to an ABS community profile.");
       $("span:contains('Boundary lines')").attr('data-step', '6');
