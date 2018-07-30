@@ -153,54 +153,534 @@ block content
                   input#id_password2.form-control(name='password2', placeholder='Password (again)', type='password')
               .form-actions
                 button.submit(type='submit') Register
-    #walk_17_hard.overlay
+    #walk_1.overlay
       .popup
-        h2 &#xf21d; Walkability index (hard)
+        h2 
         |    &#x9;&#x9;
         a.close(href='#') &times;
         |     &#x9;&#x9;
         .content
-          | Walkability is calculated using standardised measures of <a href="#PH2">daily living score</a>, <a href="#PH3">dwelling density</a>, <a href="#PH4">street connectivity</a>.  This version of the walkability index is calculated using hard-threshold indicators of <a href="#destination_access">destination access</a>.
-    #walk_17_soft.overlay
+          | % of street blocks with a perimeter of < 720 m (i.e. between 120 m and 240 m long and 60 m and 120 m wide).  Policy: VPP56.06-7 Neighbourhood street network detail objective.
+    #walk_2_hard.overlay
       .popup
-        h2 &#xf21d; Walkability index (soft)
+        h2 
         |    &#x9;&#x9;
         a.close(href='#') &times;
         |     &#x9;&#x9;
         .content
-          | Walkability is calculated using standardised measures of <a href="#PS2">daily living score</a>, <a href="#PH3">dwelling density</a>, <a href="#PH4">street connectivity</a>. This version of the walkability index is calculated using soft-threshold indicators of <a href="#destination_access">destination access</a>.
+          | < / >= 80% dwellings < 1 km of an activity centre with a supermarket.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Precinct Structure Planning Guidelines Part Two.
+    #walk_2_soft.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 80% dwellings < 1 km of an activity centre with a supermarket.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Precinct Structure Planning Guidelines Part Two.
+    #walk_3.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | </ >= 15 dwellings per net developable hectare.  Policy: PSP Guidelines Part One/Victorian Planning Provisions.
+    #walk_4.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % of street blocks with a perimeter of < 720 m (i.e. <240 m long and <120 m wide).  Policy: Liveable Neighbourhoods: E2 Movement Network – Street Layout R1.1.
+    #walk_5.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % dwellings < 400 m network distance of a secondary or district centre or < 200 m network distance of a neighbourhood centre.  Policy: Activity Centres State Planning Policy 4.2, 2010.
+    #walk_6.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 26 dwellings per net developable hectare.  Policy: Liveable Neighbourhoods / Directions 2031.
+    #walk_7.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % residential lots by size: ≤350m2; >350 - ≤550m2; >550 - ≤750m2; >750 - ≤950m2; >950 m2.  Policy: Liveable Neighbourhoods: E4 Lot Design – Housing Diversity R6.1.
+    #walk_8.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % of street blocks with a perimeter of < 560 m (i.e. between 100 m and 200 m long and 40 m and 80 m wide).  Policy: Neighbourhood planning and design: PDA guideline no. 5. May 2015.
+    #walk_9.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 15 dwellings per hectare for suburban areas.  Policy: Neighbourhood planning and design: PDA guideline no. 5. May 2015.
+    #walk_10.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 30 dwellings per hectare for urban areas ( higher density neighbourhoods typically located around a major centre or secondary centre or large transit node).  Policy: Neighbourhood planning and design: PDA guideline no. 5. May 2015.
+    #walk_11.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 15 dwellings per hectare for new residential release areas.  Policy: Department of Urban Affairs and Planning Integrated Transport and Land Use Guidelines, 2001.
+    #walk_12.overlay
+      .popup
+        h2 Distance to closest activity centre (km)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | Average distance to closest activity centre, where activity centre is defined as a supermarket within a commercial zoned Mesh Block.  Policy: N/A.
+    #walk_13.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | Average pedshed ratio, defined as the area of the 400 m pedestrian network from each residential dwelling buffered by 50m divided by the radial  400 m "crow flies" area (i.e. 50.2 Ha.).  Policy: N/A.
     #walk_14_hard.overlay
       .popup
-        h2 &#xf21d; Daily living score (hard)
+        h2 Daily living destination types present (/3)
         |    &#x9;&#x9;
         a.close(href='#') &times;
         |     &#x9;&#x9;
         .content
-          | The daily living score is an indicator of land use mix, based on access to at least one public transport stop, a convenience destination (such as a newsagency, or convenience store) and a supermarket.  
+          | The daily living score is an indicator of land use mix, based on access to at least one public transport stop, a convenience destination (such as a newsagency, or convenience store) and a supermarket. The indicator presents the average number of daily living types present, measured as a score of 0-3, with 1 point for each category of (convenience store/petrol station/newsagent, PT stop, supermarket) < 1600m network distance.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: N/A.
     #walk_14_soft.overlay
       .popup
-        h2 &#xf21d; Daily living score (soft)
+        h2 Daily living destination types present (/3)
         |    &#x9;&#x9;
         a.close(href='#') &times;
         |     &#x9;&#x9;
         .content
-          | The daily living score is an indicator of land use mix, based on access to at least one public transport stop, a convenience destination (such as a newsagency, or convenience store) and a supermarket.  This version of the daily living score is calculated using soft-threshold indicators of <a href="#destination_access">destination access</a>.
-    #walk_16.overlay
-      .popup
-        h2 &#xf21d; Dwelling density
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | Dwelling density is the ratio of the total number of dwellings located in Mesh Blocks intersecting each residential address point's 1600m buffer divided by the buffer size in hectares.
+          | The daily living score is an indicator of land use mix, based on access to at least one public transport stop, a convenience destination (such as a newsagency, or convenience store) and a supermarket. The indicator presents the average number of daily living types present, measured as a score of 0-3, with 1 point for each category of (convenience store/petrol station/newsagent, PT stop, supermarket) < 1600m network distance.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: N/A.
     #walk_15.overlay
       .popup
-        h2 &#xf21d; Street connectivity
+        h2 
         |    &#x9;&#x9;
         a.close(href='#') &times;
         |     &#x9;&#x9;
         .content
-          | Street connectivity is the ratio of the count of intersections with 3 or more directions intersecting a participants’ 1600m buffer divided by the buffer size in square kilometres  
+          | Street connectivity is the ratio of the count of intersections with 3 or more directions intersecting a participants’ 1600m buffer divided by the buffer size in square kilometres, where the area is computed from the 1600m pedestrian-accessible street network buffered by 50m.  Policy: N/A.
+    #walk_16.overlay
+      .popup
+        h2 Dwelling density per Ha
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | Dwelling density is the ratio of the total number of dwellings located in Mesh Blocks intersecting each residential address point's 1600m buffer divided by the buffer size in hectares.  It is calculated as the aggregate sum of dwellings recorded in the meshblock polygons intersecting the 1600m pedestrian-accessible street network once buffered by 50m ("neighbourhood") and divided by the "neighbourhood" area in hectares.  Policy: N/A.
+    #walk_17_hard.overlay
+      .popup
+        h2 Walkability index
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | Walkability is calculated using standardised measures of <a href="#walk_14_hard">daily living score</a>, <a href="#walk_16">dwelling density</a>, <a href="#walk_15">street connectivity</a>.  All destination access measures were evaluated using a 1600m local area neighbourhood.  This version of the walkability index is calculated using hard-threshold indicators of <a href="#destination_access">destination access</a>.  Policy: N/A.
+    #walk_17_soft.overlay
+      .popup
+        h2 Walkability index
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | Walkability is calculated using standardised measures of <a href="#walk_14_soft">daily living score</a>, <a href="#walk_16">dwelling density</a>, <a href="#walk_15">street connectivity</a>. All destination access measures were evaluated using a 1600m local area neighbourhood.  This version of the walkability index is calculated using soft-threshold indicators of <a href="#destination_access">destination access</a>.  Policy: N/A.
+    #trans_1_hard.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 95% of of residential cadastre with access to bus stop < 400 m OR < 600m of a tram stop OR < 800 m of a train station.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Victorian Planning Provisions.
+    #trans_1_soft.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 95% of of residential cadastre with access to bus stop < 400 m OR < 600m of a tram stop OR < 800 m of a train station.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Victorian Planning Provisions.
+    #trans_2_hard.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 95% of dwellings with access to bus stop < 400 m.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Precinct Structure Planning Guidelines Part Two.
+    #trans_2_soft.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 95% of dwellings with access to bus stop < 400 m.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Precinct Structure Planning Guidelines Part Two.
+    #trans_3.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 60% of residential cadastre < 400m walk from a neighbourhood or town centre, or a bus stop, or in a 800m walk from a railway station..  Policy: Liveable Neighbourhoods: E2 Movement Network.
+    #trans_4_hard.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 100% of residential cadastre < 400 metres of an existing or planned public transport stop.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Neighbourhood planning and design: PDA guideline no. 5. May 2015.
+    #trans_4_soft.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 100% of residential cadastre < 400 metres of an existing or planned public transport stop.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Neighbourhood planning and design: PDA guideline no. 5. May 2015.
+    #trans_5_hard.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 100% of residential cadastre < 400 m of a bus stop every 30 min OR < 800 m of a train station every 15 min.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Department of Urban Affairs and Planning, 2001: Location/land use factor 1.2 Implementation Criterion.
+    #trans_5_soft.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 100% of residential cadastre < 400 m of a bus stop every 30 min OR < 800 m of a train station every 15 min.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Department of Urban Affairs and Planning, 2001: Location/land use factor 1.2 Implementation Criterion.
+    #trans_6_hard.overlay
+      .popup
+        h2 Regular serviced public transport within 400 m (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % of residential dwellings < 400 m of a public transport stop with a scheduled service at least every 30 minutes between 7am and 7pm on a normal weekday (= a combined measure of proximity and frequency).  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: N/A.
+    #trans_6_soft.overlay
+      .popup
+        h2 Regular serviced public transport within 400 m (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % of residential dwellings < 400 m of a public transport stop with a scheduled service at least every 30 minutes between 7am and 7pm on a normal weekday (= a combined measure of proximity and frequency).  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: N/A.
+    #pos_1_hard.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 95% of residential dwellings < 400 m of public open space.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Victorian Planning Provisions 56.05-2 Public space provision objective/ Precinct Structure Planning Guidelines Part Two.
+    #pos_1_soft.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 95% of residential dwellings < 400 m of public open space.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Victorian Planning Provisions 56.05-2 Public space provision objective/ Precinct Structure Planning Guidelines Part Two.
+    #pos_2_hard.overlay
+      .popup
+        h2 < / >= 100% of residential lots < 300 m of any public open space
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 100% of residential cadastre < 300 m of any public open space.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Liveable Neighbourhoods: E1 Community Design – Public Open space Network R5.1.
+    #pos_2_soft.overlay
+      .popup
+        h2 < / >= 100% of residential lots < 300 m of any public open space
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 100% of residential cadastre < 300 m of any public open space.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Liveable Neighbourhoods: E1 Community Design – Public Open space Network R5.1.
+    #pos_3_hard.overlay
+      .popup
+        h2 < / >= 50% of residential lots < 400 m of any local park >0.4 to <=1 ha
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 50% of residential dwellings < 400 m of any local park >0.4 to <=1 ha.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Liveable Neighbourhoods/Classification Framework for Public Open Space.
+    #pos_3_soft.overlay
+      .popup
+        h2 < / >= 50% of residential lots < 400 m of any local park >0.4 to <=1 ha
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 50% of residential dwellings < 400 m of any local park >0.4 to <=1 ha.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Liveable Neighbourhoods/Classification Framework for Public Open Space.
+    #pos_4_hard.overlay
+      .popup
+        h2 < / >= 50% of residential lots < 800 m of any neighbourhood park >1 ha - <= 5ha
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 50% of residential dwellings < 800 m of any neighbourhood park >1 ha - <= 5ha.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Liveable Neighbourhoods/Classification Framework for Public Open Space.
+    #pos_4_soft.overlay
+      .popup
+        h2 < / >= 50% of residential lots < 800 m of any neighbourhood park >1 ha - <= 5ha
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 50% of residential dwellings < 800 m of any neighbourhood park >1 ha - <= 5ha.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Liveable Neighbourhoods/Classification Framework for Public Open Space.
+    #pos_5_hard.overlay
+      .popup
+        h2 < / >= 50% of residential lots < 2 km of any district park >5 ha (<=20 ha)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 50% of residential dwellings < 2 km of any district park >5 ha (<=20 ha).  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Liveable Neighbourhoods/Classification Framework for Public Open Space.
+    #pos_5_soft.overlay
+      .popup
+        h2 < / >= 50% of residential lots < 2 km of any district park >5 ha (<=20 ha)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 50% of residential dwellings < 2 km of any district park >5 ha (<=20 ha).  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Liveable Neighbourhoods/Classification Framework for Public Open Space.
+    #pos_6_hard.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 90% of residential dwellings < 400 m of a neighbourhood recreation park >0.5 ha.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Park planning and design: PDA guideline no. 12. May 2015.
+    #pos_6_soft.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 90% of residential dwellings < 400 m of a neighbourhood recreation park >0.5 ha.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Park planning and design: PDA guideline no. 12. May 2015.
+    #pos_7_hard.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 90% of residential dwellings < 2.5 km of a district recreation park >5 ha.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Park planning and design: PDA guideline no. 12. May 2015.
+    #pos_7_soft.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 90% of residential dwellings < 2.5 km of a district recreation park >5 ha.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Park planning and design: PDA guideline no. 12. May 2015.
+    #pos_8_hard.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 50% of residential dwellings < 400 m of a park >0.5 ha.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Department of Planning, Recreation and Open Space Planning Guidelines for Local Government.
+    #pos_8_soft.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 50% of residential dwellings < 400 m of a park >0.5 ha.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Department of Planning, Recreation and Open Space Planning Guidelines for Local Government.
+    #pos_9_hard.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 50% of residential dwellings < 2 km of a park >2 ha.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Department of Planning, Recreation and Open Space Planning Guidelines for Local Government.
+    #pos_9_soft.overlay
+      .popup
+        h2 
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | < / >= 50% of residential dwellings < 2 km of a park >2 ha.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: Department of Planning, Recreation and Open Space Planning Guidelines for Local Government.
+    #pos_10_hard.overlay
+      .popup
+        h2 Public open space within 400 m (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % residential dwellings < 400 m of POS.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: N/A.
+    #pos_10_soft.overlay
+      .popup
+        h2 Public open space within 400 m (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % residential dwellings < 400 m of POS.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: N/A.
+    #pos_11_hard.overlay
+      .popup
+        h2 Public open space > 1.5 Ha within 400 m (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % residential dwellings < 400 m of POS > 1.5 ha.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: N/A.
+    #pos_11_soft.overlay
+      .popup
+        h2 Public open space > 1.5 Ha within 400 m (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % residential dwellings < 400 m of POS > 1.5 ha.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: N/A.
+    #pos_12.overlay
+      .popup
+        h2 Area of suburb that is parkland (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % of suburb area that is parkland.  Policy: N/A.
+    #hous_1.overlay
+      .popup
+        h2 30/40 measure of unaffordable housing met (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % of residential dwellings meeting 30/40 measure of unaffordable housing.  Policy: N/A.
+    #hous_2.overlay
+      .popup
+        h2 Rental properties relative to total residential dwellings (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % of residential dwellings renting as a proportion of total.  Policy: N/A.
+    #hous_1.overlay
+      .popup
+        h2 % of employed persons working in the LGA in which their suburb resides
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % of employed persons working in the LGA in which their suburb resides.  Policy: N/A.
+    #hous_2.overlay
+      .popup
+        h2 Employed persons working in the SA4 region in which their suburb is located (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % of employed persons working in the region (i.e. SA4) in which their suburb resides.  Policy: N/A.
+    #hous_3.overlay
+      .popup
+        h2 Employed persons aged 15+ commute using active transport (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % of employed persons aged 15 and over using active transport to travel to work.  Policy: N/A.
+    #hous_4.overlay
+      .popup
+        h2 Employed persons aged 15+ commute using public transport (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % of employed persons aged 15 and over using public transport to travel to work.  Policy: N/A.
+    #hous_5.overlay
+      .popup
+        h2 Employed persons aged 15+ commute using private vehicle (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % of employed persons aged 15 and over using private vehicle/s to travel to work.  Policy: N/A.
+    #food_1.overlay
+      .popup
+        h2 Supermarkets relative to supermarkets and fast food outlets combined within 3.2 km (proportion)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | Average proportion of supermarkets to supermarkets and fast food outlets combined < 3200 m .  Policy: N/A.
+    #food_2_hard.overlay
+      .popup
+        h2 Supermarket within 1 km (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % residential dwellings < 1km of a supermarket.  This indicator is calculated using hard-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: N/A.
+    #food_2_soft.overlay
+      .popup
+        h2 Supermarket within 1 km (%)
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | % residential dwellings < 1km of a supermarket.  This indicator is calculated using soft-thresholding (see  <a href='#destination_access'>destination access</a>).  Policy: N/A.
+    #alc_1.overlay
+      .popup
+        h2 Average number of on-licenses  within 400 m of residential lots
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | Average number of on-licenses < 400 m.  Policy: N/A.
+    #alc_2.overlay
+      .popup
+        h2 Average number of off-licenses within 800 m of residential lots
+        |    &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | Average number of off-licenses < 800 m.  Policy: N/A.  
     #destination_access.overlay
       .popup
         h2 &#xf0c0; Destination access
@@ -222,7 +702,7 @@ block content
       init_map();
       load_li_map('init','2016');
       $('#city').change(function() {
-         load_li_map($(this).val(),2016)
+         load_li_map($(this).val(),2016);
       });
       // $('#year').change(function() {
       //    load_li_map($('#city').val(),$(this).val())
