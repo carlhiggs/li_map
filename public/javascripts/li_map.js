@@ -154,7 +154,6 @@ function init_map() {
       // hideControlContainer: false
     // }).addTo(map);
 
-
 };
 
 // define colour schemes
@@ -278,7 +277,7 @@ function load_li_map(locale,year) {
     // remove layers and overlay panels if they exist
     purge_panelLayer(overlays)
     purge_panelLayer(boundaries)
-    // map.removeControl(searchControl);
+    $(".leaflet-control-search").remove()
     
     // Construct layer control
     overlays = L.control.panelLayers(
@@ -406,6 +405,10 @@ function load_li_map(locale,year) {
               li_sa1_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_sa1_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
               li_ssc_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_ssc_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
               li_lga_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_lga_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
+              // Load additional supplementary layers
+              boundaries_ssc_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:boundaries_ssc_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
+              boundaries_lga_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:boundaries_lga_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
+              urban_sos_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:boundaries_lga_"+locale+"_"+year+"&CQL_FILTER=sos_name_2016 IN ('Major Urban', 'Other Urban')&outputFormat=text%2Fjavascript";
               // vic_ugb    = "/geoserver/landuse_vic/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=landuse_vic:vic_plan_ugb_dissolved&outputFormat=text%2Fjavascript";
               allAjaxCalls();
             },
@@ -940,13 +943,32 @@ function load_li_map(locale,year) {
       });
 
       $.ajax({
-        url: vic_ugb,
+        url: boundaries_ssc_url,
+        maxFeatures: 20,
+        dataType: 'jsonp',
+        outputFormat: 'text/javascript',
+        jsonp: 'format_options',
+        jsonpCallback: 'callback:parseResponse_bSSC'
+      });
+
+      $.ajax({
+        url: boundaries_lga_url,
         maxFeatures: 31,
         dataType: 'jsonp',
         outputFormat: 'text/javascript',
         jsonp: 'format_options',
-        jsonpCallback: 'callback:parseResponseUGB'
+        jsonpCallback: 'callback:parseResponse_bLGA'
       });
+
+      $.ajax({
+        url: urban_sos_url,
+        maxFeatures: 31,
+        dataType: 'jsonp',
+        outputFormat: 'text/javascript',
+        jsonp: 'format_options',
+        jsonpCallback: 'callback:parseResponse_urban'
+      });
+
     };  
  
     
@@ -963,15 +985,6 @@ function load_li_map(locale,year) {
 		      name:  'Suburb',
 	        layer: ssc
           });
-        boundaries.addBaseLayer({
-          group: "Boundary lines", 
-		      name:  'Suburb',
-	        layer: L.geoJson(data, {
-               id: 'ind',
-               style: border_style,
-               interactive: false
-          })
-        });
 
         // include layer for suburb search
         ssc_search = L.geoJson(data, {
@@ -1091,43 +1104,44 @@ function load_li_map(locale,year) {
 		    name:  'LGA',
 	      layer: lga
         });
+      UpdateIndicatorList();
+    }
+
+
+    // add in boundary layers
+    window.parseResponse_bSSC = function(data) {
       boundaries.addBaseLayer({
-          group: "Boundary lines", 
-		       name:  'LGA',
-	           layer: L.geoJson(data, {
+            group: "Boundary lines", 
+		    name:  'Suburb',
+	        layer: L.geoJson(data, {
                id: 'ind',
                style: border_style,
                interactive: false
           })
         });
-      UpdateIndicatorList();
     }
 
-
-    // add in Urban Growth Boundary (2018)
-    window.parseResponseUGB = function(data) {
+    window.parseResponse_bLGA = function(data) {
       boundaries.addBaseLayer({
-          group: "Boundary lines", 
-		       name:  'UGB (2018)',
-	           layer: L.geoJson(data, {
+            group: "Boundary lines", 
+		    name:  'LGA',
+	        layer: L.geoJson(data, {
                id: 'ind',
                style: border_style,
                interactive: false
           })
         });
-      UpdateIndicatorList();
-    }
+    }  
     
     if(locale=='init'){
       // programmatically add intro attributes to dynamic elements
       $('#city').attr('data-step','1')
-      $('#city').attr('data-intro','Select indicator or composite index of interest from this list.  Indicators are grouped according to liveability domain.')
+      $('#city').attr('data-intro','Select a city and time point to zoom and load indicator map data for this region.')
       $('#inddrop').attr('data-step','2')
-      $('#inddrop').attr('data-intro','Select indicator or composite index of interest from this list.  Indicators are grouped according to liveability domain.')
+      $('#inddrop').attr('data-intro','Select indicator of interest from this list.')
       $('#about').attr('data-step','3')
-      $('#about').attr('data-intro','Click here for more information about an indicator and its interpretation.')
-      $('leaflet-control-search leaflet-control').attr('data-step', "4")
-      $('leaflet-control-search leaflet-control').attr('data-intro', "Search for a suburb here to locate and display its summary information for all indicators.")
+      $('#about').attr('data-intro','Click here for more information about an indicator: what it means, how it was calculated and the policy it relates to.')
+
       // $('#overlays').attr('data-step', '4');
       // $('#overlays').attr('data-intro', 'The currently selected map is displayed here --- the Liveability Index, for SA1 areas (an ABS definition, like a local neighbourhood).  If you hover over one of the highlighted areas its value for this indicator will displayed here.  Click on an area for more detail.');
       // $('#info_overlay').attr('data-step', '5');
@@ -1139,6 +1153,9 @@ function load_li_map(locale,year) {
     }
     
     if(locale!='init'){
+      // display explanation of suburb
+      $('.leaflet-control-search').attr('data-step', "4")
+      $('.leaflet-control-search').attr('data-intro', "Search for a suburb here to locate and display its summary information for all indicators.")
       // programmatically add intro attributes to dynamic elements
       $('#city').removeAttr('data-step')
       $('#city').removeAttr('data-intro')
@@ -1146,8 +1163,8 @@ function load_li_map(locale,year) {
       $('#inddrop').removeAttr('data-intro')
       $('#about').removeAttr('data-step')
       $('#about').removeAttr('data-intro')
-      $('leaflet-control-search leaflet-control').removeAttr('data-step')
-      $('leaflet-control-search leaflet-control').removeAttr('data-intro')
+      // $('leaflet-control-search leaflet-control').removeAttr('data-step')
+      // $('leaflet-control-search leaflet-control').removeAttr('data-intro')
       // $('#overlays').attr('data-step', '4');
       // $('#overlays').attr('data-intro', 'The currently selected map is displayed here --- the Liveability Index, for SA1 areas (an ABS definition, like a local neighbourhood).  If you hover over one of the highlighted areas its value for this indicator will displayed here.  Click on an area for more detail.');
       // $('#info_overlay').attr('data-step', '5');
