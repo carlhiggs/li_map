@@ -487,8 +487,8 @@ function load_li_map(locale,year) {
                 'walk_16'      : 'Dwelling density per Ha',
                 'walk_17_hard' : 'Walkability index',
                 'walk_17_soft' : 'Walkability index',
-                'trans_6_hard' : 'Lots within 400m of regular public transport (%)',
-                'trans_6_soft' : 'Lots within 400m of regular public transport (%)',
+                'trans_6_hard' : 'Regular serviced public transport within 400 m (%)',
+                'trans_6_soft' : 'Regular serviced public transport within 400 m (%)',
                 'pos_2_hard'   : '< / >= 100% of residential lots < 300 m of any public open space',
                 'pos_2_soft'   : '< / >= 100% of residential lots < 300 m of any public open space',
                 'pos_3_hard'   : '< / >= 50% of residential lots < 400 m of any local park >0.4 to <=1 ha',
@@ -497,13 +497,13 @@ function load_li_map(locale,year) {
                 'pos_4_soft'   : '< / >= 50% of residential lots < 800 m of any neighbourhood park >1 ha - <= 5ha',
                 'pos_5_hard'   : '< / >= 50% of residential lots < 2 km of any district park >5 ha (<=20 ha)',
                 'pos_5_soft'   : '< / >= 50% of residential lots < 2 km of any district park >5 ha (<=20 ha)',
-                'pos_10_hard'  : 'Lots within 400 m of public open space (%)',
-                'pos_10_soft'  : 'Lots within 400 m of public open space (%)',
-                'pos_11_hard'  : 'Lots within 400 m of large public open space (%)',
-                'pos_11_soft'  : 'Lots within 400 m of large public open space (%)',
+                'pos_10_hard'  : 'Public open space within 400 m (%)',
+                'pos_10_soft'  : 'Public open space within 400 m (%)',
+                'pos_11_hard'  : 'Public open space > 1.5 Ha within 400 m (%)',
+                'pos_11_soft'  : 'Public open space > 1.5 Ha within 400 m (%)',
                 'food_1'       : 'Proportion of supermarkets to supermarkets and fast food outlets combined < 3200 m',
-                'food_2_hard'  : '% residential lots < 1km of a supermarket',
-                'food_2_soft'  : '% residential lots < 1km of a supermarket',
+                'food_2_hard'  : 'Supermarket within 1 km (%)',
+                'food_2_soft'  : 'Supermarket within 1 km (%)',
                 'alc_1'        : 'Average number of on-licenses  within 400 m of residential lots',
                 'alc_2'        : 'Average number of off-licenses within 800 m of residential lots'}
 
@@ -563,15 +563,15 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_17_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_17_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'trans_6_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400m of regular public transport (%)</i></td>'+
+                       '<td><i class=".subindicator">Regular serviced public transport within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'trans_6_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'trans_6_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_10_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400 m of public open space (%)</i></td>'+
+                       '<td><i class=".subindicator">Public open space within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'pos_10_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_10_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_11_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400 m of large public open space (%)</i></td>'+
+                       '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
                        '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2011 Census QuickStats</a>',
@@ -619,15 +619,15 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_17_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_17_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'trans_6_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400m of regular public transport (%)</i></td>'+
+                       '<td><i class=".subindicator">Regular serviced public transport within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'trans_6_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'trans_6_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_10_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400 m of public open space (%)</i></td>'+
+                       '<td><i class=".subindicator">Public open space within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'pos_10_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_10_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_11_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400 m of large public open space (%)</i></td>'+
+                       '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
                        '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2011 Census QuickStats</a>',
@@ -675,15 +675,15 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_17_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_17_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'trans_6_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400m of regular public transport (%)</i></td>'+
+                       '<td><i class=".subindicator">Regular serviced public transport within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'trans_6_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'trans_6_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_10_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400 m of public open space (%)</i></td>'+
+                       '<td><i class=".subindicator">Public open space within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'pos_10_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_10_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_11_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400 m of large public open space (%)</i></td>'+
+                       '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
                        '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2011 Census QuickStats</a>',
@@ -724,15 +724,15 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_17_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_17_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'trans_6_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400m of regular public transport (%)</i></td>'+
+                       '<td><i class=".subindicator">Regular serviced public transport within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'trans_6_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'trans_6_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_10_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400 m of public open space (%)</i></td>'+
+                       '<td><i class=".subindicator">Public open space within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'pos_10_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_10_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_11_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400 m of large public open space (%)</i></td>'+
+                       '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
                        '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2011 Census QuickStats</a>',
@@ -869,15 +869,15 @@ function load_li_map(locale,year) {
                        '<td align="center">' + feature.properties['r_'+'walk_17_soft']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'walk_17_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'trans_6_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400m of regular public transport (%)</i></td>'+
+                       '<td><i class=".subindicator">Regular serviced public transport within 400 m (%)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'trans_6_soft']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'trans_6_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'pos_10_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400 m of public open space (%)</i></td>'+
+                       '<td><i class=".subindicator">Public open space within 400 m (%)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'pos_10_soft']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'pos_10_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'pos_11_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400 m of large public open space (%)</i></td>'+
+                       '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'pos_11_soft']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
                        '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2011 Census QuickStats</a>', {
@@ -1019,15 +1019,15 @@ function load_li_map(locale,year) {
                        '<td align="center">' + feature.properties['r_'+'walk_17_soft']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'walk_17_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'trans_6_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400m of regular public transport (%)</i></td>'+
+                       '<td><i class=".subindicator">Regular serviced public transport within 400 m (%)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'trans_6_soft']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'trans_6_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'pos_10_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400 m of public open space (%)</i></td>'+
+                       '<td><i class=".subindicator">Public open space within 400 m (%)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'pos_10_soft']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'pos_10_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'pos_11_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Lots within 400 m of large public open space (%)</i></td>'+
+                       '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'pos_11_soft']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
                        '<tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2011 Census QuickStats</a>',
