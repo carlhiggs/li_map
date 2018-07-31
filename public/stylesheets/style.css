@@ -11,6 +11,177 @@ a {
 
 html, body { position:absolute; top:0; bottom:0; width:100%; }
 
+
+nav {
+  height: 50px;
+  width: 100%;
+  /* overflow: hidden; */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+select#logo {
+  margin: 0px;
+  /* background: rgb(255, 249, 232);     /* For browsers that don't support rgba */ 
+  /*background-color: rgb(255, 249, 232);   Transparent background color */
+  background:url('../images/ahalo_logo_sm.png') no-repeat !important;
+  width: 50px;
+  padding: 5px 5px 5px 5px;
+  font-size: 1.3em;
+  color: #46abbe;
+  border: 1px solid #ccc;
+  height: 50px;
+  appearance: none;
+  /* position: relative; */
+  float: left;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* top: 0px; */
+  /* left: 0px; */
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
+}
+
+select#city {
+  margin: 0px;
+  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+  /*background-color: rgb(255, 249, 232);   Transparent background color */
+  width: 110px;
+  padding: 5px 5px 5px 5px;
+  font-size: 1.3em;
+  color: #46abbe;
+  border: 1px solid #ccc;
+  height: 50px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  float: left;
+  /* position: absolute; */
+  /* top: 0px; */
+  /* left: 50px; */
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
+}
+
+select#year {
+  margin: 0px;
+  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+  /*background-color: rgb(255, 249, 232);   Transparent background color */
+  width: 110px;
+  padding: 5px 5px 5px 5px;
+  font-size: 1.3em;
+  color: #46abbe;
+  border: 1px solid #ccc;
+  height: 50px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  float: left;
+  /* position: absolute; */
+  /* top: 0px; */
+  /* left: 160px; */
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
+}
+
+select#threshold {
+  margin: 0px;
+  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+  /*background-color: rgb(255, 249, 232);   Transparent background color */
+  width: auto;
+  padding: 5px 5px 5px 5px;
+  font-size: 1.3em;
+  color: #46abbe;
+  border: 1px solid #ccc;
+  height: 50px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  float: left;
+  /* position: absolute; */
+  /* top: 0px; */
+  /* left: 160px; */
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
+}
+
+select#inddrop {
+  margin: 0px;
+  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+  /*background-color: rgb(255, 249, 232);   Transparent background color */
+  width: auto;
+  padding: 5px 5px 5px 50px;
+  font-size: 1.3em;
+  color: #46abbe;
+  border: 1px solid #ccc;
+  min-height: 50px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* float: left; */
+  position: fixed;
+  top: 0px;
+  left: 375px;
+  /* left: 270px; */
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
+  /* wrap text in compatible browsers */
+  -moz-white-space:pre-wrap; 
+  -o-white-space:pre-wrap; 
+  white-space:pre-wrap; 
+
+  /* hide text that can't wrap with an ellipsis */
+  overflow: hidden;
+  text-overflow:ellipsis;
+
+  /* add border after every option */
+  border-bottom: 1px solid #DDD;
+}
+
+
+/* CAUTION: IE hackery ahead */
+select::-ms-expand {
+    background: FFFFFF;
+    opacity: 0.2;
+
+}
+
+select: hover {
+    display: none; /* remove default arrow on ie10 and ie11 */
+}
+
+#about {
+  margin: 0px;
+  background: transparent;
+  padding: 0px 0px 0px 0px;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 1.3em;
+  color: #46abbe;
+  position: fixed;
+  top: 0px;
+  left: 375px;
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
+}
+
+
+
  #map {
   position:absolute;
   /* 50 px for  header; or 0 without */
@@ -106,23 +277,6 @@ html, body { position:absolute; top:0; bottom:0; width:100%; }
   margin: 0;
 }
 
-.nav {
-  background: #000;
-  text-align: center;
-}
-.nav li {
-  display: inline-block;
-}
-.nav a {
-  display: inline-block;
-  padding: 20px;
-  color: #fff;
-  text-decoration: none;
-}
-.nav a:hover {
-  background-color: #3ab795;
-  text-decoration: underline;
-}
 .center {
     display: inline-block;
     vertical-align: middle;
@@ -403,136 +557,6 @@ label.checkbox {
 
 .popimg {
     max-width: 100%
-}
-
-select#logo {
-  margin: 0px;
-  /* background: rgb(255, 249, 232);     /* For browsers that don't support rgba */ 
-  /*background-color: rgb(255, 249, 232);   Transparent background color */
-  background:url('../images/ahalo_logo_sm.png') no-repeat !important;
-  width: 50px;
-  padding: 5px 5px 5px 5px;
-  font-size: 1.3em;
-  color: #46abbe;
-  border: 1px solid #ccc;
-  height: 50px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  opacity: 1;
-  z-index: 999;
-  font-family: 'FontAwesome', 'Lucida Grande';
-  cursor: pointer;
-}
-
-select#city {
-  margin: 0px;
-  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
-  /*background-color: rgb(255, 249, 232);   Transparent background color */
-  width: 110px;
-  padding: 5px 5px 5px 5px;
-  font-size: 1.3em;
-  color: #46abbe;
-  border: 1px solid #ccc;
-  height: 50px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  position: absolute;
-  top: 0px;
-  left: 50px;
-  opacity: 1;
-  z-index: 999;
-  font-family: 'FontAwesome', 'Lucida Grande';
-  cursor: pointer;
-}
-
-select#year {
-  margin: 0px;
-  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
-  /*background-color: rgb(255, 249, 232);   Transparent background color */
-  width: 110px;
-  padding: 5px 5px 5px 5px;
-  font-size: 1.3em;
-  color: #46abbe;
-  border: 1px solid #ccc;
-  height: 50px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  position: absolute;
-  top: 0px;
-  left: 160px;
-  opacity: 1;
-  z-index: 999;
-  font-family: 'FontAwesome', 'Lucida Grande';
-  cursor: pointer;
-}
-
-select#inddrop {
-  margin: 0px;
-  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
-  /*background-color: rgb(255, 249, 232);   Transparent background color */
-  width: 100%;
-  padding: 5px 5px 5px 50px;
-  font-size: 1.3em;
-  color: #46abbe;
-  border: 1px solid #ccc;
-  min-height: 50px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  position: absolute;
-  top: 0px;
-  left: 270px;
-  opacity: 1;
-  z-index: 999;
-  font-family: 'FontAwesome', 'Lucida Grande';
-  cursor: pointer;
-  /* wrap text in compatible browsers */
-  -moz-white-space:pre-wrap; 
-  -o-white-space:pre-wrap; 
-  white-space:pre-wrap; 
-
-  /* hide text that can't wrap with an ellipsis */
-  overflow: hidden;
-  text-overflow:ellipsis;
-
-  /* add border after every option */
-  border-bottom: 1px solid #DDD;
-}
-
-/* CAUTION: IE hackery ahead */
-select::-ms-expand {
-    background: FFFFFF;
-    opacity: 0.2;
-
-}
-
-select: hover {
-    display: none; /* remove default arrow on ie10 and ie11 */
-}
-
-#about {
-  margin: 0px;
-  background: transparent;
-  padding: 0px 0px 0px 0px;
-  width: 50px;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-  font-size: 1.3em;
-  color: #46abbe;
-  position: fixed;
-  top: 0px;
-  left: 270px;
-  opacity: 1;
-  z-index: 999;
-  font-family: 'FontAwesome', 'Lucida Grande';
-  cursor: pointer;
 }
 
 

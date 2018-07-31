@@ -2,7 +2,7 @@ extends layout_map
 
 block content
     img.center(src='/images/loading_spinner.gif')
-    #nav
+    nav
       select#logo 
       select#city
           option(value='init') City:
@@ -26,6 +26,13 @@ block content
           option(value='2016') Timepoint:
           |         
           option(value='2016', selected="") &nbsp;2016
+      
+      select#threshold
+          option(value='') Threshold:
+          |         
+          option(value='_hard') Hard
+          |         
+          option(value='_soft') Soft
           
       select#inddrop
         optgroup(label='Walkability')
