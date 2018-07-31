@@ -205,9 +205,19 @@ select: hover {
 }
 
 
-.legend { text-align: left; line-height: 15px; color: #555; }
+.legend { 
+  text-align: left; 
+  line-height: 15px; 
+  /* color: #555;  */
+  }
 
-.legend i { width: 15px; height: 15px; float: left; margin-right: 8px; opacity: 0.7; }
+.legend i { 
+width: 15px; 
+height: 15px; 
+float: left; 
+margin-right: 8px; 
+opacity: 0.7; 
+}
 
 .manualButton {
   padding:15px 30px;
@@ -540,7 +550,7 @@ label.checkbox {
 }
 
 .leaflet-panel-layers-list {
-  width: 13em;
+  width: 130px;
 }
 
 .leaflet-panel-layers-title {

@@ -39,8 +39,6 @@ function init_map() {
     L.control.scale().addTo(map);
  
 
-    // initialise colourscheme
-    colourscheme = 'RdYlBu'
 
     // Colour based on percentile
     
@@ -59,12 +57,12 @@ function init_map() {
         var div = L.DomUtil.create('div', 'info legend'),
         quantiles = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10],
         labels = [],
-        quantile = ['100 High', '90', '80', '70', '60', '50', '40', '30', '20', '10 Low'];
-      labels.push('<table style="table-layout:fixed;"><col width="20"><col width="8"><col width="80">');
+        quantile = ['&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;'];
+      labels.push('<table style="table-layout:fixed; line-height: 15px;" ><col width="20"><tr><td>High</td></tr>');
       for (var i = 0; i < quantiles.length; i++) {
-        labels.push('<tr><td style="background:' + getColor(quantiles[i]) + '"></td><td></td><td>' + quantile[i] + '</td>');
+        labels.push('<tr><td style="background:' + getColor(quantiles[i]) + '">' + quantile[i] + '</td>');
       }
-      div.innerHTML = labels.join('</tr>') + '</tr></table>';
+      div.innerHTML = labels.join('</tr>') + '</tr><tr><td>Low</td></tr></table>';
       return div;
     };
 
@@ -163,6 +161,10 @@ coloursets = {
         'BrBG':['#003c30','#01665e','#35978f','#80cdc1','#c7eae5','#f5f5f5','#f6e8c3','#dfc27d','#bf812d','#8c510a','#543005'],
         'RdYlBu':['#313695','#4575b4','#74add1','#abd9e9','#e0f3f8','#ffffbf','#fee090','#fdae61','#f46d43','#d73027','#a50026']
     };
+    
+    
+// initialise colourscheme
+colourscheme = 'RdYlBu'
 
 function getColor(p) {
       // Decile colours
@@ -240,7 +242,7 @@ function json2desc(data) {
       domain = domain_lookup[tags[0]]
       if ((prev_domain != domain)&&(prev_domain=="")) {
           newvar = {};
-          newvar['name'] = data.features[i].properties["Description"];
+          newvar['name'] = data.features[i].properties["short_desc"];
           newvar['value'] = data.features[i].properties["indicators"];
           ind_array.push(newvar);
       };
@@ -248,13 +250,13 @@ function json2desc(data) {
           options[prev_domain] = ind_array;
           ind_array = [];          
           newvar = {};
-          newvar['name'] = data.features[i].properties["Description"];
+          newvar['name'] = data.features[i].properties["short_desc"];
           newvar['value'] = data.features[i].properties["indicators"];
           ind_array.push(newvar);
       };
       if (prev_domain == domain) {          
           newvar = {};
-          newvar['name'] = data.features[i].properties["Description"];
+          newvar['name'] = data.features[i].properties["short_desc"];
           newvar['value'] = data.features[i].properties["indicators"];
           ind_array.push(newvar);
       }
@@ -275,11 +277,9 @@ function get_nested_array_length(data) {
 
     
 function load_li_map(locale,year) { 
-    // remove layers and overlay panels if they exist
     purge_panelLayer(overlays)
     purge_panelLayer(boundaries)
-    $(".leaflet-control-search").remove()
-    
+
     // Construct layer control
     overlays = L.control.panelLayers(
     [
@@ -318,10 +318,6 @@ function load_li_map(locale,year) {
     ],[],{compact: true}
     ).addTo(map);    
     
-    // Create variable to hold map element, give initial settings to map
-    // Melb coords: -37.8078244,144.9625175
-    // Centered on Black Rock
-
     // var leadType = Cookies.get('csrftoken');
     // var target = document.getElementsByName('csrfmiddlewaretoken')[ 0 ];
     //
@@ -330,11 +326,11 @@ function load_li_map(locale,year) {
     // console.log(leadType);
     // console.log(target.value);
     // console.log(leadType);
-
-
+    
     // Get token from GeoNode for access to geoserver
     // Load profile page and pilfer access token from link to user layers document
-
+    var selected_locale = document.getElementById("city");
+    var proper_locale = selected_locale.options[selected_locale.selectedIndex].innerHTML.replace('&nbsp;','');
     var sa1, ssc, lga, ssc_search;
     // Submit form from here rather than in li_map.jade
     var username, access_token_url, token_href, access_token;
@@ -462,11 +458,6 @@ function load_li_map(locale,year) {
         // reformat json array to reqd format
         ind_desc = data;
         opt = json2desc(data);
-        // console.log(opt)
-        // size = data.totalFeatures;
-        // build_select(document.getElementById('inddrop'),
-                     // size,
-                     // opt);
         $(function(){
              var $select = $('#inddrop');
              $select.empty(); // remove old options
@@ -482,33 +473,6 @@ function load_li_map(locale,year) {
     };      
     
     map.setView(city_coords[locale],city_zoom[locale])
-
-    // initial example set of indicators used to populate menu
-    // ind_desc = {'walk_12'      : 'Average distance to closest activity centre',
-                // 'walk_14_hard ': 'Average number of daily living types present',
-                // 'walk_14_soft ': 'Average number of daily living types present',
-                // 'walk_16'      : 'Dwelling density per Ha',
-                // 'walk_17_hard' : 'Walkability index',
-                // 'walk_17_soft' : 'Walkability index',
-                // 'trans_6_hard' : 'Regular serviced public transport within 400 m (%)',
-                // 'trans_6_soft' : 'Regular serviced public transport within 400 m (%)',
-                // 'pos_2_hard'   : '< / >= 100% of residential lots < 300 m of any public open space',
-                // 'pos_2_soft'   : '< / >= 100% of residential lots < 300 m of any public open space',
-                // 'pos_3_hard'   : '< / >= 50% of residential lots < 400 m of any local park >0.4 to <=1 ha',
-                // 'pos_3_soft'   : '< / >= 50% of residential lots < 400 m of any local park >0.4 to <=1 ha',
-                // 'pos_4_hard'   : '< / >= 50% of residential lots < 800 m of any neighbourhood park >1 ha - <= 5ha',
-                // 'pos_4_soft'   : '< / >= 50% of residential lots < 800 m of any neighbourhood park >1 ha - <= 5ha',
-                // 'pos_5_hard'   : '< / >= 50% of residential lots < 2 km of any district park >5 ha (<=20 ha)',
-                // 'pos_5_soft'   : '< / >= 50% of residential lots < 2 km of any district park >5 ha (<=20 ha)',
-                // 'pos_10_hard'  : 'Public open space within 400 m (%)',
-                // 'pos_10_soft'  : 'Public open space within 400 m (%)',
-                // 'pos_11_hard'  : 'Public open space > 1.5 Ha within 400 m (%)',
-                // 'pos_11_soft'  : 'Public open space > 1.5 Ha within 400 m (%)',
-                // 'food_1'       : 'Proportion of supermarkets to supermarkets and fast food outlets combined < 3200 m',
-                // 'food_2_hard'  : 'Supermarket within 1 km (%)',
-                // 'food_2_soft'  : 'Supermarket within 1 km (%)',
-                // 'alc_1'        : 'Average number of on-licenses  within 400 m of residential lots',
-                // 'alc_2'        : 'Average number of off-licenses within 800 m of residential lots'}
 
     // column graph indicator scale function
     function bgWidth(value){
@@ -529,7 +493,8 @@ function load_li_map(locale,year) {
         threshold  = ', soft threshold'
         threshold2 = 'soft threshold'
       }
-      var layer_description = ind_desc.features.find(x => x.properties.indicators === ind_value).properties.Description + threshold;
+      var layer_description = ind_desc.features.find(x => x.properties.indicators === ind_value).properties.short_desc + threshold;
+      var ind_units = ind_desc.features.find(x => x.properties.indicators === ind_value).properties.units
        if (sa1) {
          sa1.eachLayer(function(layer) {
            layer.setStyle({
@@ -538,45 +503,45 @@ function load_li_map(locale,year) {
                weight: 0.2,
                color: 'white',
            });
-           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average: '+  layer.feature.properties['r_'+ind_value]+' '+ind_units+'<br>Range: '+  layer.feature.properties['d_'+ind_value]+'<br>90% of residential lots: '+  layer.feature.properties['m_'+ind_value]);
            layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
                        '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
                        '<tr><td></td><td><b>Suburb: </b>' + layer.feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
                        '<tr><td></td><td><b>LGA: </b>'    + layer.feature.properties['lga'] + '</td><td></td><td></td></tr>'+
                        '<tr></tr>'+
-                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td></td><td><b>Indicator *</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_17_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Walkability index score</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_17_soft']+'</td>'+
+                       '<td><i class=".subindicator">Walkability index score (0 is average)</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_17_soft'] +'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_17_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_14_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - Daily living score (/3)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+'</td>'+
+                       '<td><i class=".subindicator">&emsp; - Daily living score</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+' / 3</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - Dwelling density (per Ha)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_16']+'</td>'+
+                       '<td><i class=".subindicator">&emsp; - Dwelling density</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_16']+' / Ha</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_16']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - 3+ way street connections (per km<sup>2</sup>)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_15']+'</td>'+
+                       '<td><i class=".subindicator">&emsp; - 3+ way street connections</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_15']+' / km<sup>2</sup></td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Distance to closest activity centre (km)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_12']+'</td>'+
+                       '<td><i class=".subindicator">Distance to closest activity centre</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_12']+' km</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_12']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'trans_6_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Regular serviced public transport within 400 m (%)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'trans_6_soft']+'</td>'+
+                       '<td><i class=".subindicator">Regular serviced public transport within 400 m</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'trans_6_soft']+' %</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'trans_6_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_10_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Public open space within 400 m (%)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'pos_10_soft']+'</td>'+
+                       '<td><i class=".subindicator">Public open space within 400 m</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'pos_10_soft']+' %</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_10_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_11_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+'</td>'+
+                       '<td><i class=".subindicator">Public open space larger than 1.5 Ha within 400 m</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+' %</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
                        '<tr><td></td><td><small>* soft threshold</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',           {
              maxWidth: 400
@@ -593,45 +558,45 @@ function load_li_map(locale,year) {
                weight: 0.2,
                color: 'white',
            });
-           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average: '+  layer.feature.properties['r_'+ind_value]+' '+ind_units+'<br>Range: '+  layer.feature.properties['d_'+ind_value]+'<br>90% of residential lots: '+  layer.feature.properties['m_'+ind_value]);
            layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
                        '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
                        '<tr><td></td><td><b>Suburb: </b>' + layer.feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
                        '<tr><td></td><td><b>LGA: </b>'    + layer.feature.properties['lga'] + '</td><td></td><td></td></tr>'+
                        '<tr></tr>'+
-                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td></td><td><b>Indicator *</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_17_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Walkability index score</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_17_soft']+'</td>'+
+                       '<td><i class=".subindicator">Walkability index score (0 is average)</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_17_soft'] +'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_17_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_14_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - Daily living score (/3)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+'</td>'+
+                       '<td><i class=".subindicator">&emsp; - Daily living score</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+' / 3</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - Dwelling density (per Ha)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_16']+'</td>'+
+                       '<td><i class=".subindicator">&emsp; - Dwelling density</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_16']+' / Ha</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_16']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - 3+ way street connections (per km<sup>2</sup>)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_15']+'</td>'+
+                       '<td><i class=".subindicator">&emsp; - 3+ way street connections</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_15']+' / km<sup>2</sup></td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Distance to closest activity centre (km)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_12']+'</td>'+
+                       '<td><i class=".subindicator">Distance to closest activity centre</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_12']+' km</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_12']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'trans_6_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Regular serviced public transport within 400 m (%)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'trans_6_soft']+'</td>'+
+                       '<td><i class=".subindicator">Regular serviced public transport within 400 m</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'trans_6_soft']+' %</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'trans_6_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_10_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Public open space within 400 m (%)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'pos_10_soft']+'</td>'+
+                       '<td><i class=".subindicator">Public open space within 400 m</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'pos_10_soft']+' %</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_10_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_11_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+'</td>'+
+                       '<td><i class=".subindicator">Public open space larger than 1.5 Ha within 400 m</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+' %</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
                        '<tr><td></td><td><small>* soft threshold</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',           {
              maxWidth: 400
@@ -648,45 +613,45 @@ function load_li_map(locale,year) {
                weight: 0.2,
                color: 'white',
            });
-           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average: '+  layer.feature.properties['r_'+ind_value]+' '+ind_units+'<br>Range: '+  layer.feature.properties['d_'+ind_value]+'<br>90% of residential lots: '+  layer.feature.properties['m_'+ind_value]);
            layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
                        '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
                        '<tr><td></td><td><b>Suburb: </b>' + layer.feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
                        '<tr><td></td><td><b>LGA: </b>'    + layer.feature.properties['lga'] + '</td><td></td><td></td></tr>'+
                        '<tr></tr>'+
-                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td></td><td><b>Indicator *</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_17_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Walkability index score</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_17_soft']+'</td>'+
+                       '<td><i class=".subindicator">Walkability index score (0 is average)</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_17_soft'] +'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_17_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_14_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - Daily living score (/3)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+'</td>'+
+                       '<td><i class=".subindicator">&emsp; - Daily living score</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+' / 3</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - Dwelling density (per Ha)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_16']+'</td>'+
+                       '<td><i class=".subindicator">&emsp; - Dwelling density</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_16']+' / Ha</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_16']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - 3+ way street connections (per km<sup>2</sup>)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_15']+'</td>'+
+                       '<td><i class=".subindicator">&emsp; - 3+ way street connections</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_15']+' / km<sup>2</sup></td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Distance to closest activity centre (km)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_12']+'</td>'+
+                       '<td><i class=".subindicator">Distance to closest activity centre</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_12']+' km</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_12']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'trans_6_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Regular serviced public transport within 400 m (%)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'trans_6_soft']+'</td>'+
+                       '<td><i class=".subindicator">Regular serviced public transport within 400 m</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'trans_6_soft']+' %</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'trans_6_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_10_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Public open space within 400 m (%)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'pos_10_soft']+'</td>'+
+                       '<td><i class=".subindicator">Public open space within 400 m</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'pos_10_soft']+' %</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_10_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_11_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+'</td>'+
+                       '<td><i class=".subindicator">Public open space larger than 1.5 Ha within 400 m</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+' %</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
                        '<tr><td></td><td><small>* soft threshold</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',           {
              maxWidth: 400
@@ -703,40 +668,40 @@ function load_li_map(locale,year) {
                        '<tr><td></td><td><b>Suburb: </b>' + layer.feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
                        '<tr><td></td><td><b>LGA: </b>'    + layer.feature.properties['lga'] + '</td><td></td><td></td></tr>'+
                        '<tr></tr>'+
-                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td></td><td><b>Indicator *</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_17_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Walkability index score</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_17_soft']+'</td>'+
+                       '<td><i class=".subindicator">Walkability index score (0 is average)</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_17_soft'] +'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_17_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_14_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - Daily living score (/3)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+'</td>'+
+                       '<td><i class=".subindicator">&emsp; - Daily living score</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+' / 3</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - Dwelling density (per Ha)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_16']+'</td>'+
+                       '<td><i class=".subindicator">&emsp; - Dwelling density</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_16']+' / Ha</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_16']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - 3+ way street connections (per km<sup>2</sup>)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_15']+'</td>'+
+                       '<td><i class=".subindicator">&emsp; - 3+ way street connections</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_15']+' / km<sup>2</sup></td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Distance to closest activity centre (km)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'walk_12']+'</td>'+
+                       '<td><i class=".subindicator">Distance to closest activity centre</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_12']+' km</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_12']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'trans_6_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Regular serviced public transport within 400 m (%)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'trans_6_soft']+'</td>'+
+                       '<td><i class=".subindicator">Regular serviced public transport within 400 m</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'trans_6_soft']+' %</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'trans_6_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_10_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Public open space within 400 m (%)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'pos_10_soft']+'</td>'+
+                       '<td><i class=".subindicator">Public open space within 400 m</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'pos_10_soft']+' %</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_10_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'pos_11_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
-                       '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+'</td>'+
+                       '<td><i class=".subindicator">Public open space larger than 1.5 Ha within 400 m</i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'pos_11_soft']+' %</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
-                       '<tr><td></td><td><small>* soft threshold</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',             {
+                       '<tr><td></td><td><small>* soft threshold</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',           {
                maxWidth: 400
              });
          });
@@ -778,22 +743,33 @@ function load_li_map(locale,year) {
       };
     }
 
-    // Define border style
-    function border_style(feature) {
+    // Define suburb border style
+    function ssc_border_style(feature) {
       return {
         weight: 1.5,
-        color: '#ffff33',
-        fillOpacity: 0
+        color: '#999',
+        fillOpacity: 0,
+        opacity: 0.9
       };
     }
 
+    // Define lga border style
+    function lga_border_style(feature) {
+      return {
+        weight: 2,
+        color: '#FFF',
+        fillOpacity: 0,
+        opacity: 0.9
+      };
+    }    
+    
 
     // a null style function for info and search layers
     function null_style(feature) {
         return {
             weight: 0,
             color: '#d65454',
-            fillOpacity: 0,
+            fillOpacity: 0
         };
     }
 
@@ -836,51 +812,12 @@ function load_li_map(locale,year) {
         threshold  = ', soft threshold'
         threshold2 = 'soft threshold'
       }
-      layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
+      layer.bindTooltip('');
       layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight
       });
-      layer.bindPopup('<table class="g-pop-table" width="450" height="300">'+
-                       '<col width="0"><col width="290"><col width="80"><col width="80">'+
-                       '<tbody><tr><td></td><td><b>SA1: ' + feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
-                       '<tr><td></td><td><b>Suburb: </b>' + feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
-                       '<tr><td></td><td><b>LGA: </b>'    + feature.properties['lga'] + '</td><td></td><td></td></tr>'+
-                       '<tr></tr>'+
-                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
-                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_17_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Walkability index score</i></td>'+
-                       '<td align="center">' + feature.properties['r_'+'walk_17_soft']+'</td>'+
-                       '<td align="center">' + feature.properties['p_'+'walk_17_soft']+'</td></tr>'+
-                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_14_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp;- Daily living score (/3)</i></td>'+
-                       '<td align="center">' + feature.properties['r_'+'walk_14_soft']+'</td>'+
-                       '<td align="center">' + feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
-                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp;- Dwelling density (per Ha)</i></td>'+
-                       '<td align="center">' + feature.properties['r_'+'walk_16']+'</td>'+
-                       '<td align="center">' + feature.properties['p_'+'walk_16']+'</td></tr>'+
-                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp;- Street connections with 3 or more ways (per km<sup>2</sup>)</i></td>'+
-                       '<td align="center">' + feature.properties['r_'+'walk_15']+'</td>'+
-                       '<td align="center">' + feature.properties['p_'+'walk_15']+'</td></tr>'+
-                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Distance to closest activity centre (km)</i></td>'+
-                       '<td align="center">' + feature.properties['r_'+'walk_12']+'</td>'+
-                       '<td align="center">' + feature.properties['p_'+'walk_12']+'</td></tr>'+
-                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'trans_6_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Regular serviced public transport within 400 m (%)</i></td>'+
-                       '<td align="center">' + feature.properties['r_'+'trans_6_soft']+'</td>'+
-                       '<td align="center">' + feature.properties['p_'+'trans_6_soft']+'</td></tr>'+
-                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'pos_10_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Public open space within 400 m (%)</i></td>'+
-                       '<td align="center">' + feature.properties['r_'+'pos_10_soft']+'</td>'+
-                       '<td align="center">' + feature.properties['p_'+'pos_10_soft']+'</td></tr>'+
-                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'pos_11_soft']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Public open space > 1.5 Ha within 400 m (%)</i></td>'+
-                       '<td align="center">' + feature.properties['r_'+'pos_11_soft']+'</td>'+
-                       '<td align="center">' + feature.properties['p_'+'pos_11_soft']+'</td></tr>'+
-                       '<tr><td></td><td><small>* soft threshold</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',        
+      layer.bindPopup('',        
            {
                        maxWidth: 400
       });
@@ -1008,7 +945,7 @@ function load_li_map(locale,year) {
                        '<tr><td></td><td><b>Suburb: </b>' + feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
                        '<tr><td></td><td><b>LGA: </b>'    + feature.properties['lga'] + '</td><td></td><td></td></tr>'+
                        '<tr></tr>'+
-                       '<tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td></td><td><b>Indicator *</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
                        '<td><i class=".subindicator">Distance to closest activity centre (km)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'walk_12']+'</td>'+
@@ -1116,7 +1053,7 @@ function load_li_map(locale,year) {
 		    name:  'Suburb',
 	        layer: L.geoJson(data, {
                id: 'ind',
-               style: border_style,
+               style: ssc_border_style,
                interactive: false
           })
         });
@@ -1128,7 +1065,7 @@ function load_li_map(locale,year) {
 		    name:  'LGA',
 	        layer: L.geoJson(data, {
                id: 'ind',
-               style: border_style,
+               style: lga_border_style,
                interactive: false
           })
         });
@@ -1168,6 +1105,31 @@ function load_li_map(locale,year) {
       $("span:contains('Summary scale')").removeAttr('data-intro');
       $("span:contains('Boundary lines')").removeAttr('data-step');
       $("span:contains('Boundary lines')").removeAttr('data-intro');
+
+      // remove layers and overlay panels if they exist
+      $(".leaflet-control-search").remove()
+      $("div.info.legend.leaflet-control").remove()    
+  
+      // Add legend with city name annotated to emphasise its relative scale
+      // Style and add legend
+      legend = L.control({
+          position: 'bottomright'
+      });
+     
+      legend.onAdd = function(map) {
+          var div = L.DomUtil.create('div', 'info legend'),
+          quantiles = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10],
+          labels = [],
+          quantile = ['&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;'];
+        labels.push('<b>'+proper_locale+'</b><table style="table-layout:fixed; line-height: 15px;" ><col width="20"><tr><td>High</td></tr>');
+        for (var i = 0; i < quantiles.length; i++) {
+          labels.push('<tr><td style="background:' + getColor(quantiles[i]) + '">' + quantile[i] + '</td>');
+        }
+        div.innerHTML = labels.join('</tr>') + '</tr><tr><td>Low</td></tr></table>';
+        return div;
+      };
+
+      legend.addTo(map);
     }
     
     // Toggle logout dropdown
