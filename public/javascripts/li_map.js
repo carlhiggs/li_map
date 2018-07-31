@@ -460,7 +460,7 @@ function load_li_map(locale,year) {
 
     window.parseResponse_inds = function(data) {
         // reformat json array to reqd format
-        test = data;
+        ind_desc = data;
         opt = json2desc(data);
         // console.log(opt)
         // size = data.totalFeatures;
@@ -484,31 +484,31 @@ function load_li_map(locale,year) {
     map.setView(city_coords[locale],city_zoom[locale])
 
     // initial example set of indicators used to populate menu
-    ind_desc = {'walk_12'      : 'Average distance to closest activity centre',
-                'walk_14_hard ': 'Average number of daily living types present',
-                'walk_14_soft ': 'Average number of daily living types present',
-                'walk_16'      : 'Dwelling density per Ha',
-                'walk_17_hard' : 'Walkability index',
-                'walk_17_soft' : 'Walkability index',
-                'trans_6_hard' : 'Regular serviced public transport within 400 m (%)',
-                'trans_6_soft' : 'Regular serviced public transport within 400 m (%)',
-                'pos_2_hard'   : '< / >= 100% of residential lots < 300 m of any public open space',
-                'pos_2_soft'   : '< / >= 100% of residential lots < 300 m of any public open space',
-                'pos_3_hard'   : '< / >= 50% of residential lots < 400 m of any local park >0.4 to <=1 ha',
-                'pos_3_soft'   : '< / >= 50% of residential lots < 400 m of any local park >0.4 to <=1 ha',
-                'pos_4_hard'   : '< / >= 50% of residential lots < 800 m of any neighbourhood park >1 ha - <= 5ha',
-                'pos_4_soft'   : '< / >= 50% of residential lots < 800 m of any neighbourhood park >1 ha - <= 5ha',
-                'pos_5_hard'   : '< / >= 50% of residential lots < 2 km of any district park >5 ha (<=20 ha)',
-                'pos_5_soft'   : '< / >= 50% of residential lots < 2 km of any district park >5 ha (<=20 ha)',
-                'pos_10_hard'  : 'Public open space within 400 m (%)',
-                'pos_10_soft'  : 'Public open space within 400 m (%)',
-                'pos_11_hard'  : 'Public open space > 1.5 Ha within 400 m (%)',
-                'pos_11_soft'  : 'Public open space > 1.5 Ha within 400 m (%)',
-                'food_1'       : 'Proportion of supermarkets to supermarkets and fast food outlets combined < 3200 m',
-                'food_2_hard'  : 'Supermarket within 1 km (%)',
-                'food_2_soft'  : 'Supermarket within 1 km (%)',
-                'alc_1'        : 'Average number of on-licenses  within 400 m of residential lots',
-                'alc_2'        : 'Average number of off-licenses within 800 m of residential lots'}
+    // ind_desc = {'walk_12'      : 'Average distance to closest activity centre',
+                // 'walk_14_hard ': 'Average number of daily living types present',
+                // 'walk_14_soft ': 'Average number of daily living types present',
+                // 'walk_16'      : 'Dwelling density per Ha',
+                // 'walk_17_hard' : 'Walkability index',
+                // 'walk_17_soft' : 'Walkability index',
+                // 'trans_6_hard' : 'Regular serviced public transport within 400 m (%)',
+                // 'trans_6_soft' : 'Regular serviced public transport within 400 m (%)',
+                // 'pos_2_hard'   : '< / >= 100% of residential lots < 300 m of any public open space',
+                // 'pos_2_soft'   : '< / >= 100% of residential lots < 300 m of any public open space',
+                // 'pos_3_hard'   : '< / >= 50% of residential lots < 400 m of any local park >0.4 to <=1 ha',
+                // 'pos_3_soft'   : '< / >= 50% of residential lots < 400 m of any local park >0.4 to <=1 ha',
+                // 'pos_4_hard'   : '< / >= 50% of residential lots < 800 m of any neighbourhood park >1 ha - <= 5ha',
+                // 'pos_4_soft'   : '< / >= 50% of residential lots < 800 m of any neighbourhood park >1 ha - <= 5ha',
+                // 'pos_5_hard'   : '< / >= 50% of residential lots < 2 km of any district park >5 ha (<=20 ha)',
+                // 'pos_5_soft'   : '< / >= 50% of residential lots < 2 km of any district park >5 ha (<=20 ha)',
+                // 'pos_10_hard'  : 'Public open space within 400 m (%)',
+                // 'pos_10_soft'  : 'Public open space within 400 m (%)',
+                // 'pos_11_hard'  : 'Public open space > 1.5 Ha within 400 m (%)',
+                // 'pos_11_soft'  : 'Public open space > 1.5 Ha within 400 m (%)',
+                // 'food_1'       : 'Proportion of supermarkets to supermarkets and fast food outlets combined < 3200 m',
+                // 'food_2_hard'  : 'Supermarket within 1 km (%)',
+                // 'food_2_soft'  : 'Supermarket within 1 km (%)',
+                // 'alc_1'        : 'Average number of on-licenses  within 400 m of residential lots',
+                // 'alc_2'        : 'Average number of off-licenses within 800 m of residential lots'}
 
     // column graph indicator scale function
     function bgWidth(value){
@@ -529,6 +529,7 @@ function load_li_map(locale,year) {
         threshold  = ', soft threshold'
         threshold2 = 'soft threshold'
       }
+      var layer_description = ind_desc.features.find(x => x.properties.indicators === ind_value).properties.Description + threshold;
        if (sa1) {
          sa1.eachLayer(function(layer) {
            layer.setStyle({
@@ -537,7 +538,7 @@ function load_li_map(locale,year) {
                weight: 0.2,
                color: 'white',
            });
-           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
            layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
                        '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -592,7 +593,7 @@ function load_li_map(locale,year) {
                weight: 0.2,
                color: 'white',
            });
-           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
            layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
                        '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -647,7 +648,7 @@ function load_li_map(locale,year) {
                weight: 0.2,
                color: 'white',
            });
-           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average:'+  layer.feature.properties['r_'+ind_value]+'<br>Range: <i>'+  layer.feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+  layer.feature.properties['m_'+ind_value]+'</i>');
            layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
                        '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -835,7 +836,7 @@ function load_li_map(locale,year) {
         threshold  = ', soft threshold'
         threshold2 = 'soft threshold'
       }
-      layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['lga'] + '<br><br><b>'+ind_desc[ind_value]+threshold+'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
+      layer.bindTooltip('SA1: ' + feature.properties['sa1'] +'<br>Suburb: ' + feature.properties['suburb'] +'<br>LGA: ' + feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average:'+feature.properties['r_'+ind_value]+'<br>Range: <i>'+feature.properties['d_'+ind_value]+'</i><br>90% of residential lots: <i>'+feature.properties['m_'+ind_value]+'</i>');
       layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight
