@@ -561,6 +561,18 @@ input[type='checkbox']{
     margin-top: 0.3em;
  }
 
+.leaflet-tooltip {
+    width: 400px;
+    max-width: 400px;
+    white-space: normal;
+}
+
+div.leaflet-tooltip.leaflet-zoom-animated{
+    width: 400px;
+    max-width: 400px;
+    white-space: normal;
+}
+
 
 .tooltip {
     position: relative;
