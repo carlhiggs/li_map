@@ -666,6 +666,10 @@ hr {
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {display: block;}
  
+/* Hide red number from introJs guide boxes */ 
+span.introjs-helperNumberLayer {
+     visibility: hidden;
+ }
  
 @media screen and (max-width: 1000px) {
   .box{

@@ -554,7 +554,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup>)</i></td>'+
+                       '<td><i class=".subindicator">Street connections with 3 or more ways (per km<sup>2</sup>)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_15']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -610,7 +610,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup>)</i></td>'+
+                       '<td><i class=".subindicator">Street connections with 3 or more ways (per km<sup>2</sup>)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_15']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -666,7 +666,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup>)</i></td>'+
+                       '<td><i class=".subindicator">Street connections with 3 or more ways (per km<sup>2</sup>)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_15']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -715,7 +715,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_14_soft']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup>)</i></td>'+
+                       '<td><i class=".subindicator">Street connections with 3 or more ways (per km<sup>2</sup>)</i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_15']+'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -860,7 +860,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + feature.properties['r_'+'walk_14_soft']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup>)</i></td>'+
+                       '<td><i class=".subindicator">Street connections with 3 or more ways (per km<sup>2</sup>)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'walk_15']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -1020,7 +1020,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + feature.properties['r_'+'walk_14_soft']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'walk_14_soft']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">Street connectivity (per km<sup>2</sup>)</i></td>'+
+                       '<td><i class=".subindicator">Street connections with 3 or more ways (per km<sup>2</sup>)</i></td>'+
                        '<td align="center">' + feature.properties['r_'+'walk_15']+'</td>'+
                        '<td align="center">' + feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -1135,6 +1135,9 @@ function load_li_map(locale,year) {
           })
         });
     }  
+    
+    // set introjs options
+    introJs().setOption({showStepNumbers:false});
     
     if(locale=='init'){
       // programmatically add intro attributes to dynamic elements
