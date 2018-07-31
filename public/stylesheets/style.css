@@ -58,10 +58,10 @@ select#city {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  float: left;
-  /* position: absolute; */
-  /* top: 0px; */
-  /* left: 50px; */
+  /* float: left; */
+  position: absolute;
+  top: 0px;
+  left: 50px;
   opacity: 1;
   z-index: 999;
   font-family: 'FontAwesome', 'Lucida Grande';
@@ -81,33 +81,10 @@ select#year {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  float: left;
-  /* position: absolute; */
-  /* top: 0px; */
-  /* left: 160px; */
-  opacity: 1;
-  z-index: 999;
-  font-family: 'FontAwesome', 'Lucida Grande';
-  cursor: pointer;
-}
-
-select#threshold {
-  margin: 0px;
-  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
-  /*background-color: rgb(255, 249, 232);   Transparent background color */
-  width: auto;
-  padding: 5px 5px 5px 5px;
-  font-size: 1.3em;
-  color: #46abbe;
-  border: 1px solid #ccc;
-  height: 50px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  float: left;
-  /* position: absolute; */
-  /* top: 0px; */
-  /* left: 160px; */
+  /* float: left; */
+  position: absolute;
+  top: 0px;
+  left: 160px;
   opacity: 1;
   z-index: 999;
   font-family: 'FontAwesome', 'Lucida Grande';
@@ -118,7 +95,7 @@ select#inddrop {
   margin: 0px;
   background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
   /*background-color: rgb(255, 249, 232);   Transparent background color */
-  width: auto;
+  width: calc(100% - 270px);
   padding: 5px 5px 5px 50px;
   font-size: 1.3em;
   color: #46abbe;
@@ -127,10 +104,9 @@ select#inddrop {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  /* float: left; */
   position: fixed;
   top: 0px;
-  left: 375px;
+  left: 270px;
   /* left: 270px; */
   opacity: 1;
   z-index: 999;
@@ -173,7 +149,7 @@ select: hover {
   color: #46abbe;
   position: fixed;
   top: 0px;
-  left: 375px;
+  left: 270px;
   opacity: 1;
   z-index: 999;
   font-family: 'FontAwesome', 'Lucida Grande';

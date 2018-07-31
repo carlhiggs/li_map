@@ -2,69 +2,61 @@ extends layout_map
 
 block content
     img.center(src='/images/loading_spinner.gif')
-    nav
-      select#logo 
-      select#city
-          option(value='init') City:
-          |         
-          option(value='adelaide') &nbsp;Adelaide
-          |             
-          option(value='bris') &nbsp;Brisbane
-          |             
-          option(value='canberra') &nbsp;Canberra
-          |             
-          option(value='darwin') &nbsp;Darwin
-          |             
-          option(value='hobart') &nbsp;Hobart
-          |             
-          option(value='melb') &nbsp;Melbourne
-          |             
-          option(value='perth') &nbsp;Perth
-          |             
-          option(value='sydney') &nbsp;Sydney
-      select#year
-          option(value='2016') Timepoint:
-          |         
-          option(value='2016', selected="") &nbsp;2016
-      
-      select#threshold
-          option(value='') Threshold:
-          |         
-          option(value='_hard') Hard
-          |         
-          option(value='_soft') Soft
-          
-      select#inddrop
-        optgroup(label='Walkability')
-          option(value='walk_12') Distance to closest activity centre (km)
-          |             
-          option(value='walk_14_hard') Daily living score (/3&semi; hard threshold)
-          |                            
-          option(value='walk_14_soft') Daily living score (/3&semi; soft threshold)
-          |                       
-          option(value='walk_15') Street connectivity (per km<sup>2</sup)
-          |                            
-          option(value='walk_16') Dwelling density (per Ha)
-          |                            
-          option(value='walk_17_hard') Walkability index (hard threshold)
-          |                            
-          option(value='walk_17_soft') Walkability index (soft threshold)
-          |                            
-        optgroup(label='Transport')
-          option(value='trans_6_hard') Lots within 400m of regular public transport (%&semi; hard threshold)
-          |                     
-          option(value='trans_6_soft') Lots within 400m of regular public transport (%&semi; soft threshold)
-          |             
-        optgroup(label='Public open space')
-          option(value='pos_10_hard') Lots within 400 m of public open space (%)
-          |             
-          option(value='pos_10_soft') Lots within 400 m of public open space (%&semi; hard threshold))
-          |             
-          option(value='pos_11_soft') Lots within 400 m of large public open space (%&semi; soft threshold))
-          |             
-          option(value='pos_11_hard') Lots within 400 m of large public open space (%&semi; hard threshold))
-          
-      #about &#xf05a;
+    select#logo 
+    select#city
+        option(value='init') City:
+        |         
+        option(value='adelaide') &nbsp;Adelaide
+        |             
+        option(value='bris') &nbsp;Brisbane
+        |             
+        option(value='canberra') &nbsp;Canberra
+        |             
+        option(value='darwin') &nbsp;Darwin
+        |             
+        option(value='hobart') &nbsp;Hobart
+        |             
+        option(value='melb') &nbsp;Melbourne
+        |             
+        option(value='perth') &nbsp;Perth
+        |             
+        option(value='sydney') &nbsp;Sydney
+    select#year
+        option(value='2016') Timepoint:
+        |         
+        option(value='2016', selected="") &nbsp;2016
+        
+    select#inddrop
+      optgroup(label='Walkability')
+        option(value='walk_12') Distance to closest activity centre (km)
+        |             
+        option(value='walk_14_hard') Daily living score (/3&semi; hard threshold)
+        |                            
+        option(value='walk_14_soft') Daily living score (/3&semi; soft threshold)
+        |                       
+        option(value='walk_15') Street connectivity (per km<sup>2</sup)
+        |                            
+        option(value='walk_16') Dwelling density (per Ha)
+        |                            
+        option(value='walk_17_hard') Walkability index (hard threshold)
+        |                            
+        option(value='walk_17_soft') Walkability index (soft threshold)
+        |                            
+      optgroup(label='Transport')
+        option(value='trans_6_hard') Lots within 400m of regular public transport (%&semi; hard threshold)
+        |                     
+        option(value='trans_6_soft') Lots within 400m of regular public transport (%&semi; soft threshold)
+        |             
+      optgroup(label='Public open space')
+        option(value='pos_10_hard') Lots within 400 m of public open space (%)
+        |             
+        option(value='pos_10_soft') Lots within 400 m of public open space (%&semi; hard threshold))
+        |             
+        option(value='pos_11_soft') Lots within 400 m of large public open space (%&semi; soft threshold))
+        |             
+        option(value='pos_11_hard') Lots within 400 m of large public open space (%&semi; hard threshold))
+        
+    #about &#xf05a;
       
     #map
       
