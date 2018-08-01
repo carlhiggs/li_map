@@ -227,16 +227,15 @@ function build_select(wrap, size, opt) {
 // make info divs for indicators, containing metadata
 function add_ind_info(ind, short_desc, long_desc, datasources, policy) {
     // remove div with id of ind if already exists
-    if (document.contains(document.getElementById(ind))) {
-            document.getElementById(ind).remove();
+    if (document.contains(document.getElementById(ind))===false) {
+      // create new div
+      var sel = document.createElement('div'),
+          prop;
+      sel.id = ind;
+      $(sel).attr('class','overlay')
+      sel.innerHTML = '<div class="popup"><h2>'+short_desc+'</h2><a href="#" class="close">&times;</a><div class = "content">'+long_desc+'.<br><br><b>Data sources</b>: '+datasources+'<br><br><b>Policy</b>: '+policy+'.</div></div>';
+      document.body.appendChild(sel);
     }
-    // create new div
-    var sel = document.createElement('div'),
-        prop;
-    sel.id = ind;
-    $(sel).attr('class','overlay')
-    sel.innerHTML = '<div class="popup"><h2>'+short_desc+'</h2><a href="#" class="close">&times;</a><div class = "content">'+long_desc+'.<br><br><b>Data sources</b>: '+datasources+'<br><br><b>Policy</b>: '+policy+'.</div></div>';
-    document.body.appendChild(sel);
 };
 
 
