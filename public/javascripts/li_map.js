@@ -376,9 +376,9 @@ function load_li_map(locale,year) {
         'canberra': [-35.3249297, 149.1387177],
         'darwin'  : [-12.4642346, 130.9731674],
         'hobart'  : [-42.8777253, 147.3462296],
-        'melb'    : [-37.8078244, 144.9625175],
+        'melb'    : [-37.9176594, 145.0621033],
         'perth'   : [-32.1343386, 116.0300445],
-        'syd'     : [-33.9131640, 150.9610748]
+        'syd'     : [-33.7603111, 150.9919739]
     }
 
     city_zoom = {
@@ -387,8 +387,8 @@ function load_li_map(locale,year) {
         'bris'    : 10,
         'canberra': 11,
         'darwin'  : 12,
-        'hobart'  : 10,
-        'melb'    : 11,
+        'hobart'  : 11,
+        'melb'    : 10,
         'perth'   : 10,
         'syd'     : 10
     }
@@ -543,15 +543,15 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_17'+thresh_code] +'</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_17'+thresh_code]+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_14'+thresh_code]) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator"><a href="#walk_14'+thresh_code+'">&emsp; - Daily living score</a></i></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_14'+thresh_code+'">Daily living score</a></i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_14'+thresh_code]+' / 3</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14'+thresh_code]+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator"><a href="#walk_16">&emsp; - Dwelling density</a></i></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_16">Dwelling density</a></i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_16']+' / Ha</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_16']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator"><a href="#walk_15">&emsp; - Street connectivity</a></i></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_15">Street connectivity</a></i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_15']+' / km<sup>2</sup></td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
