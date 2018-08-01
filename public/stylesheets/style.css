@@ -314,6 +314,7 @@ opacity: 0.7;
   top: 0px;
   height: 100% ;
   background: #ffb3b3;
+  pointer-events: none;
 }
 .g-popup {
   background-color: white;
