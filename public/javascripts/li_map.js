@@ -259,7 +259,7 @@ function json2desc(data) {
       ind = data.features[i].properties["indicators"];
       short_desc = data.features[i].properties["short_desc"];
       long_desc = data.features[i].properties["Description"];
-      datasources = (data.features[i].properties["datasources"]='') ? '<i>To be added!</i>': data.features[i].properties["Description"];
+      datasources = (typeof data.features[i].properties["datasources"]!=='undefined') ? data.features[i].properties["datasources"] : '<i>To be added!</i>';
       policy = data.features[i].properties["Policy"];
       tags = ind.split('_')
       domain = domain_lookup[tags[0]]
@@ -531,7 +531,7 @@ function load_li_map(locale,year) {
                weight: 0.2,
                color: 'white',
            });
-           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average: '+  layer.feature.properties['r_'+ind_value]+' '+ind_units+'<br>Range: '+  layer.feature.properties['d_'+ind_value]+'<br>25th to 75th percentile (usual range): '+  layer.feature.properties['m_'+ind_value]);
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average: '+  layer.feature.properties['r_'+ind_value]+' '+ind_units+'<br>Range: '+  layer.feature.properties['d_'+ind_value]+' '+ind_units+'<br>25th to 75th percentile (usual range): '+  layer.feature.properties['m_'+ind_value]+' '+ind_units);
            layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
                        '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -586,7 +586,7 @@ function load_li_map(locale,year) {
                weight: 0.2,
                color: 'white',
            });
-           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average: '+  layer.feature.properties['r_'+ind_value]+' '+ind_units+'<br>Range: '+  layer.feature.properties['d_'+ind_value]+'<br>25th to 75th percentile (usual range): '+  layer.feature.properties['m_'+ind_value]);
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average: '+  layer.feature.properties['r_'+ind_value]+' '+ind_units+'<br>Range: '+  layer.feature.properties['d_'+ind_value]+' '+ind_units+'<br>25th to 75th percentile (usual range): '+  layer.feature.properties['m_'+ind_value]+' '+ind_units);
            layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
                        '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -641,7 +641,7 @@ function load_li_map(locale,year) {
                weight: 0.2,
                color: 'white',
            });
-           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average: '+  layer.feature.properties['r_'+ind_value]+' '+ind_units+'<br>Range: '+  layer.feature.properties['d_'+ind_value]+'<br>25th to 75th percentile (usual range): '+  layer.feature.properties['m_'+ind_value]);
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average: '+  layer.feature.properties['r_'+ind_value]+' '+ind_units+'<br>Range: '+  layer.feature.properties['d_'+ind_value]+' '+ind_units+'<br>25th to 75th percentile (usual range): '+  layer.feature.properties['m_'+ind_value]+' '+ind_units);
            layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
                        '<col width="0"><col width="290"><col width="80"><col width="80">'+
                        '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
@@ -775,7 +775,7 @@ function load_li_map(locale,year) {
     function ssc_border_style(feature) {
       return {
         weight: 1.5,
-        color: '#999',
+        color: '#fdf2ff',
         fillOpacity: 0,
         opacity: 0.9
       };
