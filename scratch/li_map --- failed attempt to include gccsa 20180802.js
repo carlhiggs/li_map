@@ -453,7 +453,8 @@ function load_li_map(locale,year) {
               // Load additional supplementary layers
               boundaries_ssc_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:boundaries_ssc_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
               boundaries_lga_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:boundaries_lga_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
-              // urban_sos_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:urban_sos_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
+              urban_sos_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:boundaries_lga_"+locale+"_"+year+"&CQL_FILTER=sos_name_2016 IN ('Major Urban', 'Other Urban')&outputFormat=text%2Fjavascript";
+              // vic_ugb    = "/geoserver/landuse_vic/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=landuse_vic:vic_plan_ugb_dissolved&outputFormat=text%2Fjavascript";
               allAjaxCalls();
             },
             error: function(data) {
@@ -756,9 +757,9 @@ function load_li_map(locale,year) {
     function region_border_style(feature) {
       return {
         weight: 2,
-        color: '#c2fce9',
+        color: '#fcf4c9',
         fillOpacity: 0,
-        opacity: 0.9
+        opacity: 0.8
       };
     }
     
@@ -860,10 +861,6 @@ function load_li_map(locale,year) {
           maxWidth: 400
       });
     }
-    
-    function regionFilter(feature) {
-      if (feature.properties.GCCSA_NAME !== locale_to_region[locale]) return true
-    }
 
     // Parse SA1 geojson data, adding to map
     window.parseResponseSA1 = function(data) {
@@ -907,28 +904,23 @@ function load_li_map(locale,year) {
       // }
     // }
     
-    function onEachRegion(feature, layer) {
-          layer.on({
-              // mouseover: highlightFeature,
-              // mouseout:  resetRegion,
-              click:  clickedgeojson
-          });
-          layer.bindTooltip(feature.properties['GCCSA_NAME']);
-    }
+    // function onEachRegion(feature, layer) {
+        // layer.on({
+            // mouseover: highlightFeature,
+            // mouseout:  resetRegion,
+            // click:  clickedgeojson
+        // });
+        // layer.bindTooltip(feature.properties['GCCSA_NAME']);
+    // }
         
-    //clickedgeojson function
-    function clickedgeojson(e) {
-         var layer = e.target;
-        var region = layer.feature.properties["GCCSA_NAME"];
-        var city = region_to_locale[region];
-        if (city!=locale){
-         console.log(e)
-         L.DomEvent.stopPropagation(e);
-    	  $('#city').val(city);
-         load_li_map(city,2016);
-         map.removeLayer(regions);
-        }
-    };
+    // //clickedgeojson function
+    // function clickedgeojson(e) {
+        // // L.DomEvent.stopPropagation(e);
+        // // var region = layer.feature.properties["GCCSA_NAME"];
+        // // var locale = region_to_locale[region];
+    	// // $('#city').val(locale);
+        // // load_li_map(locale,2016);
+    // };
     
     function allAjaxCalls() {
     // All ajax calls to be run once we have user's access token
@@ -996,14 +988,14 @@ function load_li_map(locale,year) {
         jsonpCallback: 'callback:parseResponse_bLGA'
       });
 
-      // $.ajax({
-        // url: urban_sos_url,
-        // maxFeatures: 31,
-        // dataType: 'jsonp',
-        // outputFormat: 'text/javascript',
-        // jsonp: 'format_options',
-        // jsonpCallback: 'callback:parseResponse_urban'
-      // });
+      $.ajax({
+        url: urban_sos_url,
+        maxFeatures: 31,
+        dataType: 'jsonp',
+        outputFormat: 'text/javascript',
+        jsonp: 'format_options',
+        jsonpCallback: 'callback:parseResponse_urban'
+      });
 
     };  
  
@@ -1133,15 +1125,24 @@ function load_li_map(locale,year) {
         });
     }  
 
+    window.parseResponse_region = function(data) {
+      // regions = L.geoJson(data, {
+          // id: 'region',
+          // style: region_style,
+          // onEachFeature: onEachRegion
+        // }).addTo(map);
+      boundaries.addBaseLayer({
+            group: "Boundary lines", 
+		    name:  'GCCSA',
+	        layer: L.geoJson(data, {
+               id: 'region',
+               style: region_border_style,
+               interactive: false
+          })
+        });
+    };      
+    
     if(locale=='init'){
-      window.parseResponse_region = function(data) {
-          regions = L.geoJson(data, {
-              id: 'region',
-              style: region_style,
-              onEachFeature: onEachRegion
-            }).addTo(map);
-      };   
-      
       // programmatically add intro attributes to dynamic elements
       $('#city').attr('data-step','1')
       $('#city').attr('data-intro','To get started, select a city and time point to zoom and load indicator map data for this region.')
@@ -1157,21 +1158,9 @@ function load_li_map(locale,year) {
       $("span:contains('Summary scale')").attr('data-intro', "Once a city has been selected, you can choose the scale at which to view the indicator here: SA1 (<a href = 'http://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/1270.0.55.001~July%202016~Main%20Features~Statistical%20Area%20Level%201%20(SA1)~10013'  target='_blank' >ABS Statistical Area 1)</a>; Suburb; or Local Government Area (LGA).  Areas are clipped to the residential portions for which data has been measured.  If you hover over one of the highlighted areas its summary information for the selected indicator will displayed here.  Click on an area for more detail, such as summaries of key indicators and link to an ABS community profile.");
       $("span:contains('Boundary lines')").attr('data-step', '6');
       $("span:contains('Boundary lines')").attr('data-intro', 'The full ABS-sourced boundary lines for suburbs and LGAs may be displayed on top of the indicator summary layer; for example, you may display LGA boundary lines while viewing SA1 level indicator estimates to visualise how a particular indicator varies across an LGA.');
-    };
+    }
     
     if(locale!='init'){
-      window.parseResponse_region = function(data) {
-        boundaries.addBaseLayer({
-              group: "Boundary lines", 
-	  	    name:  'GCCSA',
-	          layer: L.geoJson(data, {
-                 id: 'region',
-                 style: region_border_style,
-                 interactive: false
-            })
-          });
-      };
-      
       // programmatically add intro attributes to dynamic elements
       $('#city').removeAttr('data-step');
       $('#city').removeAttr('data-intro');

@@ -21,6 +21,10 @@ nav {
   left: 0;
 }
 
+regiontext {
+    text-align:center;
+}
+
 select#logo {
   margin: 0px;
   /* background: rgb(255, 249, 232);     /* For browsers that don't support rgba */ 
@@ -574,12 +578,14 @@ input[type='checkbox']{
 
 .leaflet-tooltip {
     width: 400px;
+    /*min-width: 120px;*/
     max-width: 400px;
     white-space: normal;
 }
 
 div.leaflet-tooltip.leaflet-zoom-animated{
     width: 400px;
+    /*min-width: 120px;*/
     max-width: 400px;
     white-space: normal;
 }
