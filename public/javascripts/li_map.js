@@ -572,7 +572,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_14'+thresh_code]+' / 3</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14'+thresh_code]+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - <a href="#walk_16">Dwelling density</a></i></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_16">Dwelling density, gross</a></i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_16']+' / Ha</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_16']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -619,7 +619,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_14'+thresh_code]+' / 3</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14'+thresh_code]+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - <a href="#walk_16">Dwelling density</a></i></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_16">Dwelling density, gross</a></i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_16']+' / Ha</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_16']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -666,7 +666,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_14'+thresh_code]+' / 3</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14'+thresh_code]+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - <a href="#walk_16">Dwelling density</a></i></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_16">Dwelling density, gross</a></i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_16']+' / Ha</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_16']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -706,7 +706,7 @@ function load_li_map(locale,year) {
                        '<td align="center">' + layer.feature.properties['r_'+'walk_14'+thresh_code]+' / 3</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_14'+thresh_code]+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
-                       '<td><i class=".subindicator">&emsp; - <a href="#walk_16">Dwelling density</a></i></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_16">Dwelling density, gross</a></i></td>'+
                        '<td align="center">' + layer.feature.properties['r_'+'walk_16']+' / Ha</td>'+
                        '<td align="center">' + layer.feature.properties['p_'+'walk_16']+'</td></tr>'+
                        '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
@@ -851,7 +851,7 @@ function load_li_map(locale,year) {
         threshold  = ', soft threshold'
         threshold2 = 'soft threshold'
       }
-      layer.bindTooltip('');
+      layer.bindTooltip('',{className:'feature_tooltip'});
       layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight
@@ -894,26 +894,26 @@ function load_li_map(locale,year) {
       // }
     // }
 
-    // function resetRegion(e) {
-       // var layer = e.target;
-       // layer.setStyle({
-          // weight: 1.5,
-          // color: '#46abbe',
-          // fillOpacity: 0.8,
-          // opacity: 1
-       // });
-       // if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        // layer.bringToBack();
-      // }
-    // }
+    function resetRegion(e) {
+       var layer = e.target;
+       layer.setStyle({
+          weight: 1.5,
+          color: '#46abbe',
+          fillOpacity: 0.8,
+          opacity: 1
+       });
+       if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToBack();
+      }
+    }
     
     function onEachRegion(feature, layer) {
           layer.on({
-              // mouseover: highlightFeature,
-              // mouseout:  resetRegion,
+              mouseover: highlightFeature,
+              mouseout:  resetRegion,
               click:  clickedgeojson
           });
-          layer.bindTooltip(feature.properties['GCCSA_NAME']);
+          layer.bindTooltip(feature.properties['GCCSA_NAME'],{className: 'regiontext'});
     }
         
     //clickedgeojson function
@@ -926,7 +926,6 @@ function load_li_map(locale,year) {
          L.DomEvent.stopPropagation(e);
     	  $('#city').val(city);
          load_li_map(city,2016);
-         map.removeLayer(regions);
         }
     };
     
@@ -1160,6 +1159,7 @@ function load_li_map(locale,year) {
     };
     
     if(locale!='init'){
+      map.removeLayer(regions);
       window.parseResponse_region = function(data) {
         boundaries.addBaseLayer({
               group: "Boundary lines", 

@@ -21,8 +21,9 @@ nav {
   left: 0;
 }
 
-regiontext {
+.regiontext {
     text-align:center;
+    background: transparent;
 }
 
 select#logo {
@@ -576,19 +577,19 @@ input[type='checkbox']{
     margin-top: 0.3em;
  }
 
-.leaflet-tooltip {
+.feature_tooltip {
     width: 400px;
     /*min-width: 120px;*/
     max-width: 400px;
     white-space: normal;
 }
 
-div.leaflet-tooltip.leaflet-zoom-animated{
-    width: 400px;
-    /*min-width: 120px;*/
-    max-width: 400px;
-    white-space: normal;
-}
+/* .feature_tooltip{ */
+    /* width: 400px; */
+    /* /*min-width: 120px;*/ */
+    /* max-width: 400px; */
+    /* white-space: normal; */
+/* } */
 
 
 .tooltip {
