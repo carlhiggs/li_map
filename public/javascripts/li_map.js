@@ -521,6 +521,19 @@ function load_li_map(locale,year) {
     };      
     
     map.setView(city_coords[locale],city_zoom[locale])
+    
+    $('#logo').change(function() {
+        if ($(this).val()=== 'refreshCountry'){
+          load_li_map('init',2016);
+          $(".leaflet-control-search").remove()
+          $('#city').val('init');
+        }
+        if ($(this).val()=== 'refreshCity') {
+          thislocale = $('#city').val()
+          map.setView(city_coords[thislocale],city_zoom[thislocale])
+        }
+        $('#logo').val('');
+      });
 
     // column graph indicator scale function
     function bgWidth(value){

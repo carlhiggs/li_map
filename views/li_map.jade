@@ -3,6 +3,11 @@ extends layout_map
 block content
     img.center(src='/images/loading_spinner.gif')
     select#logo 
+        option(value='')
+        |         
+        option(value='refreshCity') Refresh zoom level for current city
+        |         
+        option(value='refreshCountry') Return to national study region view
     select#city
         option(value='init') City:
         |         
@@ -152,9 +157,10 @@ block content
         a#logout() Logout
     
     script.
-      var layer_description,city;
+      var layer_description,city,locale;
       init_map();
       load_li_map('init','2016');
       $('#city').change(function() {
          load_li_map($(this).val(),2016);
       });
+
