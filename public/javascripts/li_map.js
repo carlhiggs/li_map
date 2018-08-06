@@ -267,7 +267,7 @@ function json2desc(data) {
     for (i=0; i < data.features.length; i++) {
       ind = data.features[i].properties["indicators"];
       short_desc = data.features[i].properties["short_desc"];
-      long_desc = data.features[i].properties["Description"];
+      long_desc = data.features[i].properties["description"];
       datasources = (typeof data.features[i].properties["datasources"]!=='undefined') ? data.features[i].properties["datasources"] : '<i>To be added!</i>';
       policy = data.features[i].properties["Policy"];
       tags = ind.split('_')
