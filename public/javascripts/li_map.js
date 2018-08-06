@@ -9,11 +9,13 @@ function init_map() {
     // Define basemaps
     bmap_satellite = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
     bmap_satellite_attrib = '&copy; <a href="http://www.esri.com/" title="Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community">Esri</a>';
-    bmap_basic = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
-    bmap_basic_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
-
+    bmap_osm_mono = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+    bmap_osm_mono_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
+    bmap_osm_colour = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    bmap_osmcolour_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+    
     // add attribution
-    map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>'+' | '+bmap_basic_attrib+' | '+bmap_satellite_attrib);
+    map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>'+' | '+bmap_osm_mono_attrib+' | '+bmap_satellite_attrib);
 
     // create underlay basemaps pane; to be kept underneath otherlayers
     map.createPane('underlay');
@@ -25,10 +27,10 @@ function init_map() {
         legend;
 
     // add mini-map
-    bmap2 = new L.TileLayer(bmap_basic, {
+    bmap2 = new L.TileLayer(bmap_osm_mono, {
         minZoom: 0,
         maxZoom: 13,
-        attribution: bmap_basic_attrib
+        attribution: bmap_osm_mono_attrib
     });
 
     miniMap = new L.Control.MiniMap(bmap2, {
@@ -135,11 +137,19 @@ function init_map() {
     basemaps.addBaseLayer({
         group: "Base layer",
         collapsed: true,
-		    name:  'Basic',
-	      layer: L.tileLayer(bmap_basic),
+		    name:  'OSM (simple)',
+	      layer: L.tileLayer(bmap_osm_mono),
           pane: 'underlay',
         });
-        
+
+
+    basemaps.addBaseLayer({
+        group: "Base layer",
+        collapsed: true,
+		    name:  'OSM (detail)',
+	      layer: L.tileLayer(bmap_osm_colour),
+          pane: 'underlay',
+        });        
     // // add full screen toggle
     // // NOT CURRENTLY WORKING WITH INDICATOR DROP MENU
     // map.addControl(new L.Control.Fullscreen());
@@ -444,7 +454,7 @@ function load_li_map(locale,year) {
               access_token = access_token_blob.split("=")[1];
               // load data from GeoServer through multiple ajax calls
               // WFS data
-              // li_region_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_"+region+"_"+year+"&CQL_FILTER=GCCSA_NAME%20is%20not%20"+locale_to_region[locale]+"&outputFormat=text%2Fjavascript";
+              // li_region_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_"+region+"_"+year+"&CQL_FILTER=gccsa_name%20is%20not%20"+locale_to_region[locale]+"&outputFormat=text%2Fjavascript";
               li_region_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_"+region+"_"+year+"&outputFormat=text%2Fjavascript";
               ind_description = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:ind_description_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
               li_sa1_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_sa1_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
@@ -875,7 +885,7 @@ function load_li_map(locale,year) {
     }
     
     function regionFilter(feature) {
-      if (feature.properties.GCCSA_NAME !== locale_to_region[locale]) return true
+      if (feature.properties.gccsa_name !== locale_to_region[locale]) return true
     }
 
     // Parse SA1 geojson data, adding to map
@@ -926,13 +936,13 @@ function load_li_map(locale,year) {
               mouseout:  resetRegion,
               click:  clickedgeojson
           });
-          layer.bindTooltip(feature.properties['GCCSA_NAME'],{className: 'regiontext'});
+          layer.bindTooltip(feature.properties['gccsa_name'],{className: 'regiontext'});
     }
         
     //clickedgeojson function
     function clickedgeojson(e) {
          var layer = e.target;
-        var region = layer.feature.properties["GCCSA_NAME"];
+        var region = layer.feature.properties['gccsa_name'];
         var city = region_to_locale[region];
         if (city!=locale){
          console.log(e)
@@ -1097,8 +1107,16 @@ function load_li_map(locale,year) {
         });
 
       map.addControl(searchControl); //inizialize search control
-      $('.leaflet-control-search').attr('data-step','1');
+      
+      // Suburb loading process
+      $("div.info.legend.leaflet-control").attr('data-step','1');
+      $("div.info.legend.leaflet-control").attr('data-intro',"Indicator summaries for areas at a given scale are divided into ten equal size groupings (deciles) for mapping.  This legend describes an area's performance on the chosen indicator relative to all other areas of that scale for the selected city and timepoint: dark blue represents the top 10 percent of areas (for example, those who have the least distance to travel to an activity centre); dark red respresents the bottom 10 percent of areas having the least desirable values.");
+      $('.leaflet-control-minimap').attr('data-step','2');
+      $('.leaflet-control-minimap').attr('data-intro',"The mini inset map provides a broad-scale view of your location; this can be useful to get your bearings when you are zoomed in close.");
+      $('.leaflet-control-search').attr('data-step','3');
       $('.leaflet-control-search').attr('data-intro',"Type and select a suburb's name using the search tool to display indicator summary information for a particular suburb.");
+      $('#logo').attr('data-step','4');
+      $('#logo').attr('data-intro',"Here you can select to refresh the zoom level and map position for the currently selected city, or return to the national view of all study regions.");
       introJs().start();
     };
 
@@ -1164,7 +1182,7 @@ function load_li_map(locale,year) {
       $('#dropdown').attr('data-step','10')
       $('#dropdown').attr('data-intro','You can logout here when you are done, or if you need to switch users.')
       $("span:contains('Base layer')").attr('data-step', '4');
-      $("span:contains('Base layer')").attr('data-intro', 'Satellite imagery or a plain map theme may be chosen for a base layer.');
+      $("span:contains('Base layer')").attr('data-intro', 'Satellite imagery or an OpenStreetMap (OSM) cartographic map theme may be chosen for a base layer.');
       $("span:contains('Summary scale')").attr('data-step', '5');
       $("span:contains('Summary scale')").attr('data-intro', "Once a city has been selected, you can choose the scale at which to view the indicator here: SA1 (<a href = 'http://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/1270.0.55.001~July%202016~Main%20Features~Statistical%20Area%20Level%201%20(SA1)~10013'  target='_blank' >ABS Statistical Area 1)</a>; Suburb; or Local Government Area (LGA).  Areas are clipped to the residential portions for which data has been measured.  If you hover over one of the highlighted areas its summary information for the selected indicator will displayed here.  Click on an area for more detail, such as summaries of key indicators and link to an ABS community profile.");
       $("span:contains('Boundary lines')").attr('data-step', '6');
@@ -1225,6 +1243,8 @@ function load_li_map(locale,year) {
       };
 
       legend.addTo(map);
+      
+      // Note: introjs items are loaded in the suburb layer loading process
     }
     
     // Toggle logout dropdown
