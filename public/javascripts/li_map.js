@@ -1110,7 +1110,7 @@ function load_li_map(locale,year) {
       
       // Suburb loading process
       $("div.info.legend.leaflet-control").attr('data-step','1');
-      $("div.info.legend.leaflet-control").attr('data-intro',"Indicator summaries for areas at a given scale are divided into ten equal size groupings (deciles) for mapping.  This legend describes an area's performance on the chosen indicator relative to all other areas of that scale for the selected city and timepoint: dark blue represents the top 10 percent of areas (for example, those who have the least distance to travel to an activity centre); dark red respresents the bottom 10 percent of areas having the least desirable values.");
+      $("div.info.legend.leaflet-control").attr('data-intro',"The legend is used to evaluate the variation in performance on a chosen indicator for a selected city and timepoint.  Areas at the chosen scale (LGAs, suburbs or SA1s), are grouped into ten ranks according to their average values: dark blue represents the top 10 percent of areas within that city (for example, those suburbs who have the least distance to travel to an activity centre); dark red respresents the bottom 10 percent of areas having the least desirable values.");
       $('.leaflet-control-minimap').attr('data-step','2');
       $('.leaflet-control-minimap').attr('data-intro',"The mini inset map provides a broad-scale view of your location; this can be useful to get your bearings when you are zoomed in close.");
       $('.leaflet-control-search').attr('data-step','3');
