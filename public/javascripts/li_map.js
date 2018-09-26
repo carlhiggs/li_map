@@ -1,216 +1,36 @@
-function load_li_map() {
-    // Create variable to hold map element, give initial settings to map
-    // Melb coords: -37.8078244,144.9625175
-    // Centered on Black Rock
-
-    // var leadType = Cookies.get('csrftoken');
-    // var target = document.getElementsByName('csrfmiddlewaretoken')[ 0 ];
-    //
-    // target.value = leadType;
-    // alert(target.value);
-    // alert(leadType);
-    // console.log(target.value);
-    // console.log(leadType);
-
-    // Get token from GeoNode for access to geoserver
-    // Load profile page and pilfer access token from link to user layers document
-    // field is 'a' (number 26) - better way to reference???
-    // have to parse out the access token from (example):
-    //         <a href="/capabilities/user/Andrew/?access_token=Un7zy1L5otL7mMbH6pKeGvtBzrNjXZK">
-    // Page is as below, so will have to build from login name??
-    // http://durin.australiasoutheast.cloudapp.azure.com/people/profile/Andrew/?limit=20&offset=0
-
-    //var access_token = x.window.document.getElementsByName('a')[26].value;
-    // ??.document.getElementsByClassName('fa fa-map').getAttribute("href");
-
-    // Build url of profile page to raid for access token
-    var str1, str3, username, access_token_url, token_href, access_token;
-    var button = document.getElementById("login_button")
-
-    button.addEventListener("click", function(){
-      str1 = "/people/profile/";
-      str3 = '/?limit=20&offset=0';
-      username = document.getElementById("id_username").value;
-      access_token_url = str1 + username + str3;
-      alert('access token is: ' + access_token_url);
-    });
-
-    // Raid profile page url for access token
-    $.get(access_token_url, function(data, status) {
-      // do we need to pass in CSRF token and Session token?
-      alert(data)
-      var p = data.document.getElementsByClassName('fa fa-map');
-      token_href = p.getAttribute("href");
-      alert(token_href);
-      // parse href to get access token
-      access_token = token_href.split("=")[1];
-      alert(access_token);
-    })
-
+function init_map() {
     map = L.map('map', {
-       center: [-37.966909, 145.023575],
-       zoom: 10,
-       minZoom: 8,
-       maxZoom: 17,
+          center: [-27.1960144, 133.8354492],
+          zoom: 5,
+          minZoom: 2,
+          maxZoom: 18,
     });
 
     // Define basemaps
     bmap_satellite = 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
     bmap_satellite_attrib = '&copy; <a href="http://www.esri.com/" title="Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community">Esri</a>';
-    bmap_basic = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
-    bmap_basic_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
+    bmap_osm_mono = 'http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png';
+    bmap_osm_mono_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
+    bmap_osm_colour = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    bmap_osmcolour_attrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 
     // add attribution
-    map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>'+' | '+bmap_basic_attrib+' | '+bmap_satellite_attrib);
+    map.attributionControl.addAttribution('Liveability Index &copy; <a href="http://cur.org.au/research-programs/healthy-liveable-cities-group/">Healthy Liveable Cities Group, RMIT</a>'+' | '+bmap_osm_mono_attrib+' | '+bmap_satellite_attrib);
 
     // create underlay basemaps pane; to be kept underneath otherlayers
     map.createPane('underlay');
     map.getPane('underlay').style.zIndex = 0;
     map.getPane('underlay').style.pointerEvents = 'none';
-
-    // // indicator selection menu splitter - NOT WORKING
-    // // based on  http://jsfiddle.net/fgdxcgx3/3/
-    // $(function () { // wait for page to load
-        // var domainDropdown = $("#inddrop"),
-            // indicatorDropdown = $('<select></select>'), // create a indicator dropdown
-            // indicators = []; // ordered list of indicators
-
-        // // parse the nested dropdown
-        // domainDropdown.children().each(function () {
-            // var group = $(this),
-                // indicatorName = group.attr('label'),
-                // option;
-
-            // // create an option for the indicator
-            // option = $('<option></option>').text(indicatorName);
-
-            // // store the associated domain options
-            // option.data('inddrop', group.children());
-
-            // // check if the indicator should be selected
-            // if( group.find(':selected').length > 0 ) {
-                // option.prop('selected', true);
-            // }
-
-            // // add the indicator to the dropdown
-            // indicatorDropdown.append(option);
-        // });
-
-        // // add the indicator dropdown to the page
-        // domainDropdown.before(indicatorDropdown);
-
-        // // this function updates the domain dropdown based on the selected indicator
-        // function updateDomains() {
-            // var indicator = indicatorDropdown.find(':selected');
-            // domainDropdown.empty().append(indicator.data('Domains'));
-        // }
-
-        // // call the function to set the initial Domains
-        // updateDomains();
-
-        // // and add the change handler
-        // indicatorDropdown.on('change', updateDomains);
-    // });
-    ind_desc = ["Liveability (percentile)",
-                "Walkability Index",
-                "Daily Living (/3)",
-                "Dwellings per Ha",
-                "3+ way street connections per km2",
-                "Social infrastructure mix (/16)",
-                "PT access meets policy (%)",
-                "POS &#x2265; 1.5Ha within 400m (%)",
-                "Affordable housing (30/40 rule, SA1 %)",
-                "Live & work w/in SA3 (SA2 %)",
-                "Air quality (rev. Mesh Block NO&#x2082; ppb.)",
-                "Liveability (excl. Air qual.&#59; percentile)"]
-
-    // Indicator selection menu: restyle map and present summary overlay
-    function UpdateIndicatorList() {
-      var selected_ind = document.getElementById("inddrop");
-      var ind_value = selected_ind.options[selected_ind.selectedIndex].value;
-      var strip_val = ind_value.replace(/\D/g,'');
-      var type = [0,11].includes(Number(strip_val)) ? 'P' : 'R';
-      var thresh_code = ind_value.substring(1,2);
-      var pz = 'P'+thresh_code
-      var rz = 'R'+thresh_code
-      var threshold = '';
-      var threshold2 = ', hard threshold';
-      if ([0,1,2,5,6,7,11].indexOf(parseInt(strip_val)) > -1) {
-          threshold  = thresh_code == 'H' ? ', hard threshold' : ', soft threshold';
-          threshold2 = thresh_code == 'H' ? 'hard threshold'   : 'soft threshold';
-      };
-
-      sa1.eachLayer(function(layer) {
-           layer.setStyle({
-               fillColor: getColor(layer.feature.properties[ind_value]),
-               fillOpacity: 0.8,
-               weight: 0.2,
-               color: 'white',
-           });
-           layer.setTooltipContent('SA1: ' + layer.feature.properties.F1 +'<br>Suburb: ' + layer.feature.properties.F2 +'<br>LGA: ' + layer.feature.properties.F3 + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+layer.feature.properties[type + thresh_code +strip_val]+'<br>Range: <i>'+layer.feature.properties['D'+thresh_code+strip_val]+'</i><br>90% of residential lots: <i>'+layer.feature.properties['M'+thresh_code+strip_val]+'</i>');
-           layer.setPopupContent('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + layer.feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + layer.feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + layer.feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + layer.feature.properties[rz+2] + '</td>   <td align="center">' + layer.feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + layer.feature.properties["RH3"] + '</td>   <td align="center">' + layer.feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + layer.feature.properties["RH4"] + '</td>   <td align="center">' + layer.feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + layer.feature.properties[rz+5] + '</td>  <td align="center">' + layer.feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + layer.feature.properties[rz+6] + '</td>   <td align="center">' + layer.feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + layer.feature.properties[rz+7] + '</td><td align="center">' + layer.feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + layer.feature.properties["RH10"] + '</td><td align="center">' + layer.feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + layer.feature.properties["RH8"] + '</td><td align="center">' + layer.feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + layer.feature.properties["RH9"] + '</td><td align="center">' + layer.feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>', {
-             maxWidth: 400
-           });
-       });
-
-
-
-      ssc.eachLayer(function(layer) {
-           layer.setStyle({
-               fillColor: getColor(layer.feature.properties[ind_value]),
-               fillOpacity: 0.8,
-               weight: 0.2,
-               color: 'white',
-           });
-           layer.setTooltipContent('SA1: ' + layer.feature.properties.F1 +'<br>Suburb: ' + layer.feature.properties.F2 +'<br>LGA: ' + layer.feature.properties.F3 + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+layer.feature.properties[type + thresh_code +strip_val]+'<br>Range: <i>'+layer.feature.properties['D'+thresh_code+strip_val]+'</i><br>90% of residential lots: <i>'+layer.feature.properties['M'+thresh_code+strip_val]+'</i>');
-           layer.setPopupContent('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + layer.feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + layer.feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + layer.feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + layer.feature.properties[rz+2] + '</td>   <td align="center">' + layer.feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + layer.feature.properties["RH3"] + '</td>   <td align="center">' + layer.feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + layer.feature.properties["RH4"] + '</td>   <td align="center">' + layer.feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + layer.feature.properties[rz+5] + '</td>  <td align="center">' + layer.feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + layer.feature.properties[rz+6] + '</td>   <td align="center">' + layer.feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + layer.feature.properties[rz+7] + '</td><td align="center">' + layer.feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + layer.feature.properties["RH10"] + '</td><td align="center">' + layer.feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + layer.feature.properties["RH8"] + '</td><td align="center">' + layer.feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + layer.feature.properties["RH9"] + '</td><td align="center">' + layer.feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>', {
-             maxWidth: 400
-           });
-       });
-
-      lga.eachLayer(function(layer) {
-           layer.setStyle({
-               fillColor: getColor(layer.feature.properties[ind_value]),
-               fillOpacity: 0.8,
-               weight: 0.2,
-               color: 'white',
-           });
-           layer.setTooltipContent('SA1: ' + layer.feature.properties.F1 +'<br>Suburb: ' + layer.feature.properties.F2 +'<br>LGA: ' + layer.feature.properties.F3 + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+layer.feature.properties[type + thresh_code +strip_val]+'<br>Range: <i>'+layer.feature.properties['D'+thresh_code+strip_val]+'</i><br>90% of residential lots: <i>'+layer.feature.properties['M'+thresh_code+strip_val]+'</i>');
-           layer.setPopupContent('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + layer.feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + layer.feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + layer.feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + layer.feature.properties[rz+2] + '</td>   <td align="center">' + layer.feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + layer.feature.properties["RH3"] + '</td>   <td align="center">' + layer.feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + layer.feature.properties["RH4"] + '</td>   <td align="center">' + layer.feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + layer.feature.properties[rz+5] + '</td>  <td align="center">' + layer.feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + layer.feature.properties[rz+6] + '</td>   <td align="center">' + layer.feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + layer.feature.properties[rz+7] + '</td><td align="center">' + layer.feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + layer.feature.properties["RH10"] + '</td><td align="center">' + layer.feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + layer.feature.properties["RH8"] + '</td><td align="center">' + layer.feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + layer.feature.properties["RH9"] + '</td><td align="center">' + layer.feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>', {
-             maxWidth: 400
-           });
-       });
-
-      ssc_search.eachLayer(function(layer) {
-           layer.setPopupContent('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + layer.feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + layer.feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(layer.feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + layer.feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + layer.feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + layer.feature.properties[rz+2] + '</td>   <td align="center">' + layer.feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + layer.feature.properties["RH3"] + '</td>   <td align="center">' + layer.feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + layer.feature.properties["RH4"] + '</td>   <td align="center">' + layer.feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + layer.feature.properties[rz+5] + '</td>  <td align="center">' + layer.feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + layer.feature.properties[rz+6] + '</td>   <td align="center">' + layer.feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + layer.feature.properties[rz+7] + '</td><td align="center">' + layer.feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + layer.feature.properties["RH10"] + '</td><td align="center">' + layer.feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + layer.feature.properties["RH8"] + '</td><td align="center">' + layer.feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(layer.feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + layer.feature.properties["RH9"] + '</td><td align="center">' + layer.feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>', {
-             maxWidth: 400
-           });
-       });
-    };
-
-    $(document).ready(function() {
-      $("#inddrop").change(UpdateIndicatorList);
-    });
-
-   $(document).ready(function() {
-      $("#about").click(function(e) {
-         var selected_ind = document.getElementById("inddrop");
-         var ind_value = selected_ind.options[selected_ind.selectedIndex].value;
-         window.location.replace("#"+ind_value);
-      });
-    });
-
-
-    // Add tiles, mini-map, scale bar and legend to map
+        // Add tiles, mini-map, scale bar and legend to map
     var bmap2,
         miniMap,
         legend;
 
     // add mini-map
-    bmap2 = new L.TileLayer(bmap_basic, {
+    bmap2 = new L.TileLayer(bmap_osm_mono, {
         minZoom: 0,
         maxZoom: 13,
-        attribution: bmap_basic_attrib
+        attribution: bmap_osm_mono_attrib
     });
 
     miniMap = new L.Control.MiniMap(bmap2, {
@@ -220,18 +40,143 @@ function load_li_map() {
     // add scale bar
     L.control.scale().addTo(map);
 
-    // define colour schemes
-    coloursets = {
-        'pgrn': ['#276419','#4d9221','#7fbc41','#b8e186','#e6f5d0','#fde0ef','#f1b6da','#de77ae','#c51b7d','#8e0152','#f7f7f7'],
-        'BrBG':['#003c30','#01665e','#35978f','#80cdc1','#c7eae5','#f5f5f5','#f6e8c3','#dfc27d','#bf812d','#8c510a','#543005'],
-         'RdYlBu':['#313695','#4575b4','#74add1','#abd9e9','#e0f3f8','#ffffbf','#fee090','#fdae61','#f46d43','#d73027','#a50026']
-    }
 
-    // initialise colourscheme
-    colourscheme = 'RdYlBu'
 
     // Colour based on percentile
-    function getColor(p) {
+
+
+    // // function to scale a percentile to a quantile (e.g. for quintile, num = 20) -- NOT USED
+    // function requantile(p, num) {
+      // return Math.floor((p - 1) / num) + 1;
+    // }
+
+    // // Style and add legend
+    // legend = L.control({
+        // position: 'bottomright'
+    // });
+
+    // legend.onAdd = function(map) {
+        // var div = L.DomUtil.create('div', 'info legend'),
+        // quantiles = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10],
+        // labels = [],
+        // quantile = ['&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;'];
+      // labels.push('<table style="table-layout:fixed; line-height: 15px;" ><col width="20"><tr><td>High</td></tr>');
+      // for (var i = 0; i < quantiles.length; i++) {
+        // labels.push('<tr><td style="background:' + getColor(quantiles[i]) + '">' + quantile[i] + '</td>');
+      // }
+      // div.innerHTML = labels.join('</tr>') + '</tr><tr><td>Low</td></tr></table>';
+      // return div;
+    // };
+
+    // legend.addTo(map);
+
+    // Construct layer control
+    basemaps = L.control.panelLayers(
+    [
+        {
+            group: "Base layer",
+            collapsed: true,
+            layers:[
+                   {
+                       "name": "Off",
+                       "layer": L.tileLayer('')
+                   }
+                   ]
+        }
+    ],[],{compact: true}
+    ).addTo(map);
+
+    overlays = L.control.panelLayers(
+    [
+          {
+            group: "Summary scale",
+            collapsed: true,
+            layers:[
+                   {
+                       "name": "Off",
+                       "layer": L.tileLayer('')
+                   }
+                   ]
+        }
+    ],[],{compact: true}
+    ).addTo(map);
+
+    //  Ensure that active boundary lines are foregrounded when overlay changes
+    overlays._form.onchange = function() {
+      boundaries._layers.forEach(function (obj) {
+        if (obj.name!="Off" && obj.layer._map!=null){
+          obj.layer.bringToFront();
+        }
+      });
+    };
+
+    boundaries = L.control.panelLayers(
+    [
+          {
+            group: "Boundary lines",
+            collapsed: true,
+            layers: [{
+                       "name": "Off",
+                       "layer": L.tileLayer('').addTo(map)
+                   }]
+        }
+    ],[],{compact: true}
+    ).addTo(map);
+
+
+
+    // add base map layers to layer control
+    basemaps.addBaseLayer({
+        group: "Base layer",
+        collapsed: true,
+	       name:  'Satellite',
+	      layer: L.tileLayer(bmap_satellite).addTo(map),
+          pane: 'underlay',
+        });
+
+    basemaps.addBaseLayer({
+        group: "Base layer",
+        collapsed: true,
+		    name:  'OSM (simple)',
+	      layer: L.tileLayer(bmap_osm_mono),
+          pane: 'underlay',
+        });
+
+
+    basemaps.addBaseLayer({
+        group: "Base layer",
+        collapsed: true,
+		    name:  'OSM (detail)',
+	      layer: L.tileLayer(bmap_osm_colour),
+          pane: 'underlay',
+        });
+    // // add full screen toggle
+    // // NOT CURRENTLY WORKING WITH INDICATOR DROP MENU
+    // map.addControl(new L.Control.Fullscreen());
+
+
+    // // add save to .png functions
+    // var printer = L.easyPrint({
+      // title: 'Download snapshot to png (ctr+alt+s): **this may take some time to process!!**',
+      // tileLayer: basic_tiles,
+      // filename: 'LiveabilityIndexExport',
+      // exportOnly: true,
+      // hideControlContainer: false
+    // }).addTo(map);
+};
+
+// define colour schemes
+coloursets = {
+        'pgrn': ['#276419','#4d9221','#7fbc41','#b8e186','#e6f5d0','#fde0ef','#f1b6da','#de77ae','#c51b7d','#8e0152','#f7f7f7'],
+        'BrBG':['#003c30','#01665e','#35978f','#80cdc1','#c7eae5','#f5f5f5','#f6e8c3','#dfc27d','#bf812d','#8c510a','#543005'],
+        'RdYlBu':['#313695','#4575b4','#74add1','#abd9e9','#e0f3f8','#ffffbf','#fee090','#fdae61','#f46d43','#d73027','#a50026']
+    };
+
+
+// initialise colourscheme
+colourscheme = 'RdYlBu'
+
+function getColor(p) {
       // Decile colours
       // pgrn colour scheme - diverging
         return p > 90 ? coloursets[colourscheme][0]:
@@ -243,39 +188,652 @@ function load_li_map() {
                p > 30 ? coloursets[colourscheme][6]:
                p > 20 ? coloursets[colourscheme][7]:
                p > 10 ? coloursets[colourscheme][8]:
-               p > 0  ? coloursets[colourscheme][9]:
-                        coloursets[colourscheme][10];
+               p >= 0 ? coloursets[colourscheme][9]:
+                        '#00FFFFFF';
+    };
+
+function purge_panelLayer(panel) {
+      for (i = 0; i < panel._layers.length; i++) {
+        panel.clearLayers();
+      }
+      map.removeControl(panel)
+};
+
+// update drop menu with indicator items
+// Following https://stackoverflow.com/questions/22266171/javascript-html-select-add-optgroup-and-option-dynamically
+function add_optgr(sel, lab, opts) {
+    var i,
+        len = opts.length, opt,
+        gr = document.createElement('OPTGROUP');
+
+    gr.label = lab;
+    for (i = 0; i < len; ++i) {
+        opt = document.createElement('OPTION');
+        opt.textContent = opts[i].name;
+        // Here you most likely also want to set .value
+        opt.value = opts[i].value;
+        gr.appendChild(opt);
+    }
+    sel.appendChild(gr);
+    return gr;
+}
+
+/* Build the select.
+ * @wrap: Container where to add finished product.
+ * @size: Size attribute for select.
+ * @opt : Options object.
+ * * * * * * * * * * * * * * * * * * * * * * * * * */
+function build_select(wrap, size, opt) {
+    var sel = document.createElement('SELECT'),
+        prop;
+    size = size || 1;
+    sel.id = 'inddrop';
+    for (prop in opt)
+        if (opt.hasOwnProperty(prop))
+            add_optgr(sel, prop, opt[prop]);
+    wrap.appendChild(sel);
+};
+
+// make info divs for indicators, containing metadata
+function add_ind_info(ind, short_desc, long_desc, datasources, policy) {
+    // remove div with id of ind if already exists
+    if (document.contains(document.getElementById(ind))===false) {
+      // create new div
+      var sel = document.createElement('div'),
+          prop;
+      sel.id = ind;
+      $(sel).attr('class','overlay')
+      sel.innerHTML = '<div class="popup"><h2>'+short_desc+'</h2><a href="#" class="close">&times;</a><div class = "content">'+long_desc+'.<br><br><b>Data sources</b>: '+datasources+'<br><br><b>Policy</b>: '+policy+'.</div></div>';
+      document.body.appendChild(sel);
+    }
+};
+
+
+
+
+// parse json descriptions into a look up table, and also populate info divs
+function json2desc(data) {
+    var  options, domain_lookup, ind_desc, domain, prev_domain, ind_array;
+    options = {};
+    domain_lookup = {'walk': 'Walkability',
+                     'trans': 'Transport',
+                     'pos': 'Public Open Space',
+                     'hous': 'Housing',
+                     'food': 'Food',
+                     'alc': 'Alcohol'
+                     };
+    prev_domain = "";
+    ind_array = [];
+    for (i=0; i < data.features.length; i++) {
+      ind = data.features[i].properties["indicators"];
+      short_desc = data.features[i].properties["short_desc"];
+      long_desc = data.features[i].properties["description"];
+      datasources = (typeof data.features[i].properties["datasources"]!=='undefined') ? data.features[i].properties["datasources"] : '<i>To be added!</i>';
+      policy = data.features[i].properties["Policy"];
+      tags = ind.split('_')
+      domain = domain_lookup[tags[0]]
+      add_ind_info(ind, short_desc, long_desc, datasources, policy)
+      if ((prev_domain != domain)&&(prev_domain=="")) {
+          newvar = {};
+          newvar['name'] = short_desc;
+          newvar['value'] = ind;
+          ind_array.push(newvar);
+      };
+      if ((prev_domain != domain)&&(prev_domain!="")) {
+          options[prev_domain] = ind_array;
+          ind_array = [];
+          newvar = {};
+          newvar['name'] = short_desc;
+          newvar['value'] = ind;
+          ind_array.push(newvar);
+      };
+      if (prev_domain == domain) {
+          newvar = {};
+          newvar['name']  = short_desc;
+          newvar['value'] = ind;
+          ind_array.push(newvar);
+      }
+      // ind_desc.push([data.features[1].properties["indicators"],data.features[1].properties["Description"]]);
+      prev_domain = domain;
+    };
+    return(options)
+};
+
+function get_nested_array_length(data) {
+    var nrows = 0;
+    for (i = 0; i < Object.keys(data).length; i++) {
+        nrows += data[Object.keys(data)[i]].length
+        console.log(nrows)
+    }
+    return nrows;
+};
+
+
+function load_li_map(locale,year) {
+    purge_panelLayer(overlays)
+    purge_panelLayer(boundaries)
+
+    // Construct layer control
+    overlays = L.control.panelLayers(
+    [
+          {
+            group: "Summary scale",
+            collapsed: true,
+            layers:[
+                   {
+                       "name": "Off",
+                       "layer": L.tileLayer('')
+                   }
+                   ]
+        }
+    ],[],{compact: true}
+    ).addTo(map);
+
+    //  Ensure that active boundary lines are foregrounded when overlay changes
+    overlays._form.onchange = function() {
+      boundaries._layers.forEach(function (obj) {
+        if (obj.name!="Off" && obj.layer._map!=null){
+          obj.layer.bringToFront();
+        }
+      });
+    };
+
+    boundaries = L.control.panelLayers(
+    [
+          {
+            group: "Boundary lines",
+            collapsed: true,
+            layers: [{
+                       "name": "Off",
+                       "layer": L.tileLayer('').addTo(map)
+                   }]
+        }
+    ],[],{compact: true}
+    ).addTo(map);
+
+    // var leadType = Cookies.get('csrftoken');
+    // var target = document.getElementsByName('csrfmiddlewaretoken')[ 0 ];
+    //
+    // target.value = leadType;
+    // console.log(target.value);
+    // console.log(leadType);
+    // console.log(target.value);
+    // console.log(leadType);
+
+    var csrf_value = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+    if (!csrf_value) {
+      // User has either never logged in before, or has cleared cookies
+      // Raid GeoNode home page for csrf value
+
+      $.ajax({
+        type: "GET",
+        url: "/account/signup/",
+        dataType: "html",
+        success: function(data) {
+          var re = /csrfmiddlewaretoken' value='\w*\b/;
+          var search = re.exec(data);
+          var csrf_blob = search[0];
+          csrf_value = csrf_blob.split("='")[1];
+          document.getElementsByName("csrfmiddlewaretoken")[0].value = csrf_value;
+          document.getElementsByName("csrfmiddlewaretoken")[1].value = csrf_value;
+        },
+        error: function(data) {
+          console.log("No CSRF value could be found");
+        }
+      });
+    };
+
+    // Get token from GeoNode for access to geoserver
+    // Load profile page and pilfer access token from link to user layers document
+    var selected_locale = document.getElementById("city");
+    var proper_locale = selected_locale.options[selected_locale.selectedIndex].innerHTML.replace('&nbsp;','');
+    var sa1, ssc, lga, ssc_search;
+    // Submit form from here rather than in li_map.jade
+    var username, access_token_url, token_href, access_token;
+    var profile_page_url, status, loggedin_status, session_id;
+
+    var ind_description, li_sa1_url, li_ssc_url, li_lga_url, vic_ugb;
+
+    // For test purposes we define the locale and year here
+    // Later, we will have these selectable from respect lists; perhaps with start default
+
+    var region = "australia"
+    var init_ind = "walk_12"
+    status = document.getElementById("status");
+    loggedin_status = status.getAttribute("data-status");
+    session_id = status.getAttribute("data-session");
+
+    city_coords = {
+        'init'    : [-27.1960144, 133.8354492],
+        'adelaide': [-34.9686870, 138.7353515],
+        'bris'    : [-27.4491810, 153.2270050],
+        'canberra': [-35.3249297, 149.1387177],
+        'darwin'  : [-12.4642346, 130.9731674],
+        'hobart'  : [-42.8777253, 147.3462296],
+        'melb'    : [-37.9176594, 145.0621033],
+        'perth'   : [-32.1343386, 116.0300445],
+        'syd'     : [-33.7603111, 150.9919739]
     }
 
-    // function to scale a percentile to a quantile (e.g. for quintile, num = 20)
-    function requantile(p, num) {
-      return Math.floor((p - 1) / num) + 1;
+    city_zoom = {
+        'init'    : 5,
+        'adelaide': 10,
+        'bris'    : 10,
+        'canberra': 11,
+        'darwin'  : 12,
+        'hobart'  : 11,
+        'melb'    : 10,
+        'perth'   : 10,
+        'syd'     : 10
     }
+
+    region_to_locale = {
+        'Australian Capital Territory':'canberra',
+        'Greater Adelaide'            :'adelaide',
+        'Greater Brisbane'            :'bris'    ,
+        'Greater Darwin'              :'darwin'  ,
+        'Greater Hobart'              :'hobart'  ,
+        'Greater Melbourne'           :'melb'    ,
+        'Greater Perth'               :'perth'   ,
+        'Greater Sydney'              :'syd'
+    }
+
+    locale_to_region = {
+        'init'    : 'init',
+        'canberra': 'Australian Capital Territory',
+        'adelaide': 'Greater Adelaide'            ,
+        'bris'    : 'Greater Brisbane'            ,
+        'darwin'  : 'Greater Darwin'              ,
+        'hobart'  : 'Greater Hobart'              ,
+        'melb'    : 'Greater Melbourne'           ,
+        'perth'   : 'Greater Perth'               ,
+        'syd'     : 'Greater Sydney'
+    }
+
+    if(loggedin_status == 1) {
+      // Logged in - get access token from GeoNode
+
+      // window.location.hash = "observatory";
+
+      $.ajax({
+        type: "GET",
+        url: "/geonode/",
+        dataType: "text",
+        success: function(data) {
+          // get profile page url
+          var re = /"\/people\/profile\/\w*\b/;
+          var search = re.exec(data);
+          var profile_page_url_blob = search[0];
+          profile_page_url = profile_page_url_blob.split('"')[1];
+
+          $.ajax({
+            type:"GET",
+            url: profile_page_url,
+            dataType: "html",
+            success: function(data) {
+              // Get access token
+              re = /\?access_token=[^"]*/;
+              search = re.exec(data);
+              var access_token_blob = search[0];
+              access_token = access_token_blob.split("=")[1];
+
+              // Access to default public group
+              var re_dg = /\/groups\/group\/default\//;
+              var defaultGroup = re_dg.exec(data);
+
+              if (!defaultGroup) {
+                // Join up to default public group
+                $.ajax({
+                  type: "POST",
+                  url: "/groups/group/default/join/",
+                  data: {csrfmiddlewaretoken : csrf_value},
+                  error: function(data) {
+                    console.log("User was not enrolled in default group");
+                  },
+                  complete: function(data) {
+                    // Attempt access regardless of default group status;
+                    geoserverDataRequest();
+                  }
+                })
+              } else {
+                // Already in default group - load public data
+                geoserverDataRequest();
+              };
+            },
+            error: function(data) {
+              console.log("Access token could not be found");
+            }
+          });
+
+        },
+        error: function(data) {
+          console.log("Failure to access profile page");
+        }
+      });
+    } else {
+      // Not logged in - display authentication page
+      window.location.hash = "authenticate";
+      window.reload(true);
+    };
+
+    function geoserverDataRequest() {
+        // load data from GeoServer through multiple ajax calls
+        // WFS data
+        // li_region_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_"+region+"_"+year+"&CQL_FILTER=gccsa_name%20is%20not%20"+locale_to_region[locale]+"&outputFormat=text%2Fjavascript";
+        li_region_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_"+region+"_"+year+"&outputFormat=text%2Fjavascript";
+        ind_description = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:ind_description_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
+        li_sa1_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_sa1_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
+        li_ssc_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_ssc_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
+        li_lga_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:li_map_lga_"+locale+"_"+year+"&CQL_FILTER=r_walk_12 is not null&outputFormat=text%2Fjavascript";
+        // Load additional supplementary layers
+        boundaries_ssc_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:boundaries_ssc_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
+        boundaries_lga_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:boundaries_lga_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
+        // urban_sos_url = "/geoserver/geonode/ows?access_token=" + access_token + "&service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:urban_sos_"+locale+"_"+year+"&outputFormat=text%2Fjavascript";
+        allAjaxCalls();
+    };
+
+
+//    var login = document.getElementById('login_form');
+//    login.addEventListener("submit", function(e) {
+//      e.preventDefault();
+//      submitForm(login);
+//      return false;
+//    }, capture);
+
+//    var register = document.getElementById('signup_form');
+//    register.addEventListener("submit", function(e) {
+//      e.preventDefault();
+//      submitForm(register);
+//      return false;
+//    }, capture);
+
+
+//    function submitForm(form) {
+//      // Pull url and action directly from form
+//      $.ajax({
+//        type: form.attr('method'),
+//        url: form.attr('action'),
+//        contentType: "text/plain",
+//        data: form.FormData(),
+//        complete: function(xhr, textStatus) {
+//          // Can't do anything here due to GeoNode redirect!!!!!
+//        }
+//      });
+//    };
+
+    window.parseResponse_inds = function(data) {
+        // reformat json array to reqd format
+        ind_desc = data;
+        opt = json2desc(data);
+        $(function(){
+             var $select = $('#inddrop');
+             $select.empty(); // remove old options
+             $.each(opt, function(key, value){
+                 var group = $('<optgroup label="' + key + '" />');
+                 $.each(value, function(){
+                     $('<option />').html(this.name).appendTo(group)
+                       .attr("value",this.value);
+                 });
+                 group.appendTo($select);
+             });
+        });
+    };
+
+    map.setView(city_coords[locale],city_zoom[locale])
+
+    $('#logo').change(function() {
+        if ($(this).val()=== 'refreshCountry'){
+          load_li_map('init',2016);
+          $(".leaflet-control-search").remove()
+          $('#city').val('init');
+        }
+        if ($(this).val()=== 'refreshCity') {
+          thislocale = $('#city').val()
+          map.setView(city_coords[thislocale],city_zoom[thislocale])
+        }
+        $('#logo').val('');
+      });
 
     // column graph indicator scale function
     function bgWidth(value){
       return (value/100)*230 +'px'
     }
 
-    // Style and add legend
-    legend = L.control({
-        position: 'bottomright'
-    });
-
-    legend.onAdd = function(map) {
-        var div = L.DomUtil.create('div', 'info legend'),
-        quantiles = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10],
-        labels = [],
-        quantile = ['100 High', '90', '80', '70', '60', '50', '40', '30', '20', '10 Low'];
-      labels.push('<table style="table-layout:fixed;"><col width="20"><col width="8"><col width="80">');
-      for (var i = 0; i < quantiles.length; i++) {
-        labels.push('<tr><td style="background:' + getColor(quantiles[i]) + '"></td><td></td><td>' + quantile[i] + '</td>');
+    // Indicator selection menu: restyle map and present summary overlay
+    function UpdateIndicatorList() {
+      var selected_ind = document.getElementById("inddrop");
+      var ind_value = selected_ind.options[selected_ind.selectedIndex].value;
+      var tags  = ind_value.split('_')
+      var threshold = ', soft threshold';
+      var threshold2 = 'soft thresholding';
+      var thresh_code = '_soft'
+      if (tags.indexOf('hard') > -1) {
+        threshold  = ', hard threshold';
+        threshold2 = 'hard thresholding';
+        thresh_code = '_hard';
       }
-      div.innerHTML = labels.join('</tr>') + '</tr></table>';
-      return div;
+      // if (tags.indexOf('soft') > -1) {
+        // threshold  = ', soft threshold';
+        // threshold2 = 'soft threshold';
+        // thresh_code = '_soft';
+      // }
+      var layer_description = "Residential lots: "+ind_desc.features.find(x => x.properties.indicators === ind_value).properties.short_desc;
+      var ind_units = ind_desc.features.find(x => x.properties.indicators === ind_value).properties.units
+       if (sa1) {
+         sa1.eachLayer(function(layer) {
+           layer.setStyle({
+               fillColor: getColor(layer.feature.properties['p_'+ind_value]),
+               fillOpacity: 0.7,
+               weight: 0.2,
+               color: 'white',
+           });
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average: '+  layer.feature.properties['r_'+ind_value]+' '+ind_units+'<br>Range: '+  layer.feature.properties['d_'+ind_value]+' '+ind_units+'<br>25th to 75th percentile (usual range): '+  layer.feature.properties['m_'+ind_value]+' '+ind_units);
+           layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
+                       '<col width="0"><col width="290"><col width="80"><col width="80">'+
+                       '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
+                       '<tr><td></td><td><b>Suburb: </b>' + layer.feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
+                       '<tr><td></td><td><b>LGA: </b>'    + layer.feature.properties['lga'] + '</td><td></td><td></td></tr>'+
+                       '<tr></tr>'+
+                       '<tr><td></td><td><b>Indicator summary *</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_17'+thresh_code]) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator"><a href="#walk_17'+thresh_code+'">Walkability index score (0 is average)</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_17'+thresh_code] +'</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_17'+thresh_code]+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_14'+thresh_code]) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_14'+thresh_code+'">Daily living score</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_14'+thresh_code]+' / 3</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_14'+thresh_code]+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_16">Dwelling density, gross</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_16']+' / Ha</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_16']+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_15">Street connectivity</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_15']+' / km<sup>2</sup></td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator"><a href="#walk_12">Distance to closest activity centre</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_12']+' km</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_12']+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'trans_6'+thresh_code]) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator"><a href="#trans_6'+thresh_code+'">Regular serviced public transport within 400 m</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'trans_6'+thresh_code]+' %</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'trans_6'+thresh_code]+'</td></tr>'+
+                       '<tr><td></td><td><small>*<a href="#destination_access">Destination accessibility</a> calculated using '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',           {
+             maxWidth: 400
+           });
+         });
+       };
+
+
+       if (ssc) {
+         ssc.eachLayer(function(layer) {
+           layer.setStyle({
+               fillColor: getColor(layer.feature.properties['p_'+ind_value]),
+               fillOpacity: 0.7,
+               weight: 0.2,
+               color: 'white',
+           });
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average: '+  layer.feature.properties['r_'+ind_value]+' '+ind_units+'<br>Range: '+  layer.feature.properties['d_'+ind_value]+' '+ind_units+'<br>25th to 75th percentile (usual range): '+  layer.feature.properties['m_'+ind_value]+' '+ind_units);
+           layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
+                       '<col width="0"><col width="290"><col width="80"><col width="80">'+
+                       '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
+                       '<tr><td></td><td><b>Suburb: </b>' + layer.feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
+                       '<tr><td></td><td><b>LGA: </b>'    + layer.feature.properties['lga'] + '</td><td></td><td></td></tr>'+
+                       '<tr></tr>'+
+                       '<tr><td></td><td><b>Indicator summary *</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_17'+thresh_code]) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator"><a href="#walk_17'+thresh_code+'">Walkability index score (0 is average)</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_17'+thresh_code] +'</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_17'+thresh_code]+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_14'+thresh_code]) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_14'+thresh_code+'">Daily living score</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_14'+thresh_code]+' / 3</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_14'+thresh_code]+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_16">Dwelling density, gross</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_16']+' / Ha</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_16']+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_15">Street connectivity</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_15']+' / km<sup>2</sup></td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator"><a href="#walk_12">Distance to closest activity centre</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_12']+' km</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_12']+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'trans_6'+thresh_code]) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator"><a href="#trans_6'+thresh_code+'">Regular serviced public transport within 400 m</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'trans_6'+thresh_code]+' %</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'trans_6'+thresh_code]+'</td></tr>'+
+                       '<tr><td></td><td><small>*<a href="#destination_access">Destination accessibility</a> calculated using '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',           {
+             maxWidth: 400
+           });
+         });
+       };
+
+
+       if (lga) {
+         lga.eachLayer(function(layer) {
+           layer.setStyle({
+               fillColor: getColor(layer.feature.properties['p_'+ind_value]),
+               fillOpacity: 0.7,
+               weight: 0.2,
+               color: 'white',
+           });
+           layer.setTooltipContent('SA1: ' + layer.feature.properties['sa1'] +'<br>Suburb: ' + layer.feature.properties['suburb'] +'<br>LGA: ' + layer.feature.properties['lga'] + '<br><br><b>'+ layer_description +'</b><br>Average: '+  layer.feature.properties['r_'+ind_value]+' '+ind_units+'<br>Range: '+  layer.feature.properties['d_'+ind_value]+' '+ind_units+'<br>25th to 75th percentile (usual range): '+  layer.feature.properties['m_'+ind_value]+' '+ind_units);
+           layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
+                       '<col width="0"><col width="290"><col width="80"><col width="80">'+
+                       '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
+                       '<tr><td></td><td><b>Suburb: </b>' + layer.feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
+                       '<tr><td></td><td><b>LGA: </b>'    + layer.feature.properties['lga'] + '</td><td></td><td></td></tr>'+
+                       '<tr></tr>'+
+                       '<tr><td></td><td><b>Indicator summary *</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_17'+thresh_code]) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator"><a href="#walk_17'+thresh_code+'">Walkability index score (0 is average)</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_17'+thresh_code] +'</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_17'+thresh_code]+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_14'+thresh_code]) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_14'+thresh_code+'">Daily living score</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_14'+thresh_code]+' / 3</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_14'+thresh_code]+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_16">Dwelling density, gross</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_16']+' / Ha</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_16']+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_15">Street connectivity</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_15']+' / km<sup>2</sup></td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator"><a href="#walk_12">Distance to closest activity centre</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_12']+' km</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_12']+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'trans_6'+thresh_code]) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator"><a href="#trans_6'+thresh_code+'">Regular serviced public transport within 400 m</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'trans_6'+thresh_code]+' %</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'trans_6'+thresh_code]+'</td></tr>'+
+                       '<tr><td></td><td><small>*<a href="#destination_access">Destination accessibility</a> calculated using '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',           {
+             maxWidth: 400
+           });
+         });
+       };
+
+
+       if(ssc_search) {
+         ssc_search.eachLayer(function(layer) {
+             layer.setPopupContent('<table class="g-pop-table" width="450" height="300">'+
+                       '<col width="0"><col width="290"><col width="80"><col width="80">'+
+                       '<tbody><tr><td></td><td><b>SA1: ' + layer.feature.properties['sa1'] + '</b></td><td></td><td></td> </tr>'+
+                       '<tr><td></td><td><b>Suburb: </b>' + layer.feature.properties['suburb'] + '</td><td></td><td></td>  </tr>'+
+                       '<tr><td></td><td><b>LGA: </b>'    + layer.feature.properties['lga'] + '</td><td></td><td></td></tr>'+
+                       '<tr></tr>'+
+                       '<tr><td></td><td><b>Indicator summary *</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in this city:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_17'+thresh_code]) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator"><a href="#walk_17'+thresh_code+'">Walkability index score (0 is average)</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_17'+thresh_code] +'</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_17'+thresh_code]+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_14'+thresh_code]) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_14'+thresh_code+'">Daily living score</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_14'+thresh_code]+' / 3</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_14'+thresh_code]+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_16']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_16">Dwelling density, gross</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_16']+' / Ha</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_16']+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_15']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator">&emsp; - <a href="#walk_15">Street connectivity</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_15']+' / km<sup>2</sup></td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_15']+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'walk_12']) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator"><a href="#walk_12">Distance to closest activity centre</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'walk_12']+' km</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'walk_12']+'</td></tr>'+
+                       '<tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(layer.feature.properties['p_'+'trans_6'+thresh_code]) + '; height: 100% ; background: #ffb3b3;"></div></td>'+
+                       '<td><i class=".subindicator"><a href="#trans_6'+thresh_code+'">Regular serviced public transport within 400 m</a></i></td>'+
+                       '<td align="center">' + layer.feature.properties['r_'+'trans_6'+thresh_code]+' %</td>'+
+                       '<td align="center">' + layer.feature.properties['p_'+'trans_6'+thresh_code]+'</td></tr>'+
+                       '<tr><td></td><td><small>*<a href="#destination_access">Destination accessibility</a> calculated using '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2016/quickstat/'+layer.feature.properties["community_code"]+'?opendocument">ABS 2016 Census QuickStats</a>',           {
+               maxWidth: 400
+             });
+         });
+       };
     };
 
-    legend.addTo(map);
+    $(document).ready(function() {
+      $("#inddrop").change(UpdateIndicatorList);
+    });
+
+    $(document).ready(function() {
+      $("#about").click(function(e) {
+         var selected_ind = document.getElementById("inddrop");
+         var ind_value = selected_ind.options[selected_ind.selectedIndex].value;
+         window.location.replace("#"+ind_value);
+      });
+    });
+
+
+
+    // Define study region border style
+    function region_style(feature) {
+      return {
+        weight: 1.5,
+        color: '#46abbe',
+        fillOpacity: 0.8,
+        opacity: 1
+      };
+    }
+
+    // Define region border style
+    function region_border_style(feature) {
+      return {
+        weight: 2,
+        color: '#c2fce9',
+        fillOpacity: 0,
+        opacity: 0.9
+      };
+    }
 
     // change colour scheme function
     // - NOT FUNCTIONAL YET
@@ -293,35 +851,37 @@ function load_li_map() {
         weight: 0.2,
         color: 'white',
         fillOpacity: 0.7,
-        fillColor: getColor(feature.properties.PH0)
+        fillColor: getColor(feature.properties["p_"+init_ind])
       };
     }
 
-    // Define border style
-    function border_style(feature) {
+    // Define suburb border style
+    function ssc_border_style(feature) {
       return {
         weight: 1.5,
-        color: '#ffff33',
-        fillOpacity: 0
+        color: '#fdf2ff',
+        fillOpacity: 0,
+        opacity: 0.9
       };
     }
 
-    // WFS data
-    var li_sa1_url = "/geoserver/geonode/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_sa1&outputFormat=text%2Fjavascript";
-    var li_ssc_url = "/geoserver/geonode/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_ssc&outputFormat=text%2Fjavascript";
-    var li_lga_url = "/geoserver/geonode/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=geonode:clean_li_map_lga&outputFormat=text%2Fjavascript";
+    // Define lga border style
+    function lga_border_style(feature) {
+      return {
+        weight: 2,
+        color: '#FFF',
+        fillOpacity: 0,
+        opacity: 0.9
+      };
+    }
 
-    // var li_sa1_url = "http://localhost:8080/geoserver/liveability/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=liveability:clean_li_map_sa1&outputFormat=text/javascript";
-    // var li_ssc_url = "http://localhost:8080/geoserver/liveability/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=liveability:clean_li_map_ssc&outputFormat=text/javascript";
-    // var li_lga_url = "http://localhost:8080/geoserver/liveability/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=liveability:clean_li_map_lga&outputFormat=text/javascript";
-    //var vic_ugb    = "http://localhost:8080/geoserver/landuse_vic/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=landuse_vic:vic_plan_ugb_dissolved&outputFormat=text%2Fjavascript";
 
     // a null style function for info and search layers
     function null_style(feature) {
         return {
             weight: 0,
             color: '#d65454',
-            fillOpacity: 0,
+            fillOpacity: 0
         };
     }
 
@@ -354,100 +914,29 @@ function load_li_map() {
     function onEachFeature(feature, layer) {
       var selected_ind = document.getElementById("inddrop");
       var ind_value = selected_ind.options[selected_ind.selectedIndex].value;
-      var strip_val = ind_value.replace(/\D/g,'');
-      var type = [0,11].includes(Number(strip_val)) ? 'P' : 'R';
-      var thresh_code = ind_value[1];
-      var threshold = '';
-      var threshold2 = 'hard threshold';
-      var pz = 'P'+thresh_code
-      var rz = 'R'+thresh_code
-      if ([0,1,2,5,6,7,11].indexOf(strip_val) > -1) {
-          threshold = thresh_code == 'H' ? ', hard threshold' : ', soft threshold';
-          threshold2 = thresh_code == 'H' ? 'hard threshold' : 'soft threshold';
-      };
-      layer.bindTooltip('SA1: ' + feature.properties.F1 +'<br>Suburb: ' + feature.properties.F2 +'<br>LGA: ' + feature.properties.F3 + '<br><br><b>'+ind_desc[strip_val]+threshold+'</b><br>Average:'+feature.properties[type + thresh_code +strip_val]+'<br>Range: <i>'+feature.properties['D'+thresh_code+strip_val]+'</i><br>90% of residential lots: <i>'+feature.properties['M'+thresh_code+strip_val]+'</i>');
-      if (threshold == '') {
-          threshold = ', hard threshold';
-      };
+      var tags  = ind_value.split('_')
+      var threshold = threshold2 = ''
+      if (tags.indexOf('hard') > -1) {
+        threshold  = ', hard threshold'
+        threshold2 = 'hard threshold'
+      }
+      if (tags.indexOf('soft') > -1) {
+        threshold  = ', soft threshold'
+        threshold2 = 'soft threshold'
+      }
+      layer.bindTooltip('',{className:'feature_tooltip'});
       layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight
       });
-      layer.bindPopup('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + feature.properties[rz+2] + '</td>   <td align="center">' + feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + feature.properties["RH3"] + '</td>   <td align="center">' + feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + feature.properties["RH4"] + '</td>   <td align="center">' + feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + feature.properties[rz+5] + '</td>  <td align="center">' + feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + feature.properties[rz+6] + '</td>   <td align="center">' + feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + feature.properties[rz+7] + '</td><td align="center">' + feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + feature.properties["RH10"] + '</td><td align="center">' + feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + feature.properties["RH8"] + '</td><td align="center">' + feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + feature.properties["RH9"] + '</td><td align="center">' + feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>', {
-        maxWidth: 400
+      layer.bindPopup('',{
+          maxWidth: 400
       });
     }
 
-    // Construct layer control
-    overlays = L.control.panelLayers(
-    [
-          {
-            group: "Summary scale",
-            collapsed: true,
-            layers:[
-                   {
-                       "name": "Off",
-                       "layer": L.tileLayer('')
-                   }
-                   ]
-        }
-    ],[],{compact: true}
-    ).addTo(map);
-
-    boundaries = L.control.panelLayers(
-    [
-          {
-            group: "Boundary lines",
-            collapsed: true,
-            layers: [{
-                       "name": "Off",
-                       "layer": L.tileLayer('').addTo(map)
-                   }]
-        }
-    ],[],{compact: true}
-    ).addTo(map);
-
-    basemaps = L.control.panelLayers(
-    [
-        {
-            group: "Base layer",
-            collapsed: true,
-            layers:[
-                   {
-                       "name": "Off",
-                       "layer": L.tileLayer('')
-                   }
-                   ]
-        }
-    ],[],{compact: true}
-    ).addTo(map);
-
-    // add base map layers to layer control
-    basemaps.addBaseLayer({
-        group: "Base layer",
-        collapsed: true,
-	       name:  'Satellite',
-	      layer: L.tileLayer(bmap_satellite).addTo(map),
-          pane: 'underlay',
-        });
-
-    basemaps.addBaseLayer({
-        group: "Base layer",
-        collapsed: true,
-		    name:  'Basic',
-	      layer: L.tileLayer(bmap_basic),
-          pane: 'underlay',
-        });
-
-    //  Ensure that active boundary lines are foregrounded when overlay changes
-    overlays._form.onchange = function() {
-     boundaries._layers.forEach(function (obj) {
-       if (obj.name!="Off" && obj.layer._map!=null){
-         obj.layer.bringToFront();
-         }
-    });
-    };
-
+    function regionFilter(feature) {
+      if (feature.properties.gccsa_name !== locale_to_region[locale]) return true
+    }
 
     // Parse SA1 geojson data, adding to map
     window.parseResponseSA1 = function(data) {
@@ -457,7 +946,7 @@ function load_li_map() {
           onEachFeature: onEachFeature
         });
       overlays.addBaseLayer({
-        group: "Summary scale", //note: this is not working yet
+        group: "Summary scale",
         collapsed: true,
 		    name:  'SA1',
 	      layer: sa1
@@ -465,46 +954,145 @@ function load_li_map() {
       UpdateIndicatorList();
     };
 
+    // function highlightRegion(e) {
+      // var layer = e.target;
 
-    $.ajax({
-      url: li_sa1_url,
-      maxFeatures: 20,
-      dataType: 'jsonp',
-      outputFormat: 'text/javascript',
-      jsonp: 'format_options',
-      jsonpCallback: 'callback:parseResponseSA1'
-    });
+      // layer.setStyle({
+        // weight: 3,
+        // color: '#d65454',
+      // });
+
+      // if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        // layer.bringToFront();
+      // }
+    // }
+
+    function resetRegion(e) {
+       var layer = e.target;
+       layer.setStyle({
+          weight: 1.5,
+          color: '#46abbe',
+          fillOpacity: 0.8,
+          opacity: 1
+       });
+       if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToBack();
+      }
+    }
+
+    function onEachRegion(feature, layer) {
+          layer.on({
+              mouseover: highlightFeature,
+              mouseout:  resetRegion,
+              click:  clickedgeojson
+          });
+          layer.bindTooltip(feature.properties['gccsa_name'],{className: 'regiontext'});
+    }
+
+    //clickedgeojson function
+    function clickedgeojson(e) {
+         var layer = e.target;
+        var region = layer.feature.properties['gccsa_name'];
+        var city = region_to_locale[region];
+        if (city!=locale){
+         console.log(e)
+         L.DomEvent.stopPropagation(e);
+    	  $('#city').val(city);
+         load_li_map(city,2016);
+        }
+    };
+
+    function allAjaxCalls() {
+    // All ajax calls to be run once we have user's access token
+
+        $.ajax({
+          url: li_region_url,
+          maxFeatures: 8,
+          dataType: 'jsonp',
+          outputFormat: 'text/javascript',
+          jsonp: 'format_options',
+          jsonpCallback: 'callback:parseResponse_region'
+        });
+
+       $.ajax({
+        url: ind_description,
+        maxFeatures: 20,
+        dataType: 'jsonp',
+        outputFormat: 'text/javascript',
+        jsonp: 'format_options',
+        jsonpCallback: 'callback:parseResponse_inds'
+      });
+
+      $.ajax({
+        url: li_sa1_url,
+        maxFeatures: 20,
+        dataType: 'jsonp',
+        outputFormat: 'text/javascript',
+        jsonp: 'format_options',
+        jsonpCallback: 'callback:parseResponseSA1'
+      });
+
+      $.ajax({
+        url: li_ssc_url,
+        maxFeatures: 20,
+        dataType: 'jsonp',
+        outputFormat: 'text/javascript',
+        jsonp: 'format_options',
+        jsonpCallback: 'callback:parseResponseSSC'
+      });
+
+      $.ajax({
+        url: li_lga_url,
+        maxFeatures: 31,
+        dataType: 'jsonp',
+        outputFormat: 'text/javascript',
+        jsonp: 'format_options',
+        jsonpCallback: 'callback:parseResponseLGA'
+      });
+
+      $.ajax({
+        url: boundaries_ssc_url,
+        maxFeatures: 20,
+        dataType: 'jsonp',
+        outputFormat: 'text/javascript',
+        jsonp: 'format_options',
+        jsonpCallback: 'callback:parseResponse_bSSC'
+      });
+
+      $.ajax({
+        url: boundaries_lga_url,
+        maxFeatures: 31,
+        dataType: 'jsonp',
+        outputFormat: 'text/javascript',
+        jsonp: 'format_options',
+        jsonpCallback: 'callback:parseResponse_bLGA'
+      });
+
+      // $.ajax({
+        // url: urban_sos_url,
+        // maxFeatures: 31,
+        // dataType: 'jsonp',
+        // outputFormat: 'text/javascript',
+        // jsonp: 'format_options',
+        // jsonpCallback: 'callback:parseResponse_urban'
+      // });
+
+    };
+
 
     // Parse Suburb geojson data, adding to map
     window.parseResponseSSC = function(data) {
-      // test move of CSRF get function
-      // var leadType = Cookies.get('csrftoken');
-      //         var target = document.getElementsByName('csrfmiddlewaretoken')[ 0 ];
-      //         target.value = leadType;
-      //         alert(leadType);
-      //******************
         ssc = L.geoJson(data, {
                id: 'ind',
                style: li_style,
                onEachFeature: onEachFeature
           }).addTo(map);
         overlays.addBaseLayer({
-          group: "Summary scale", //note: this is not working yet
+          group: "Summary scale",
           collapsed: true,
 		      name:  'Suburb',
 	        layer: ssc
           });
-        boundaries.addBaseLayer({
-          group: "Boundary lines", //note: this is not working yet
-		      name:  'Suburb',
-	        layer: L.geoJson(data, {
-               id: 'ind',
-               style: border_style,
-               interactive: false
-          })
-        });
-
-        UpdateIndicatorList();
 
         // include layer for suburb search
         ssc_search = L.geoJson(data, {
@@ -514,25 +1102,29 @@ function load_li_map() {
           onEachFeature: function(feature, layer) {
             var selected_ind = document.getElementById("inddrop");
             var ind_value = selected_ind.options[selected_ind.selectedIndex].value;
-            var strip_val = ind_value.replace(/\D/g,'');
-            var type = [0,11].includes(Number(strip_val)) ? 'P' : 'R';
-            var thresh_code = ind_value[1];
-            var threshold2 = ', hard threshold';
-            var pz = 'P'+thresh_code
-            var rz = 'R'+thresh_code
-            if ([0,1,2,5,6,7,11].indexOf(strip_val) > -1) {
-                threshold2 = thresh_code == 'H' ? ', hard threshold' : ', soft threshold';
-            };
-            layer.bindPopup('<table class="g-pop-table" width="400" height="300"><col width="0"><col width="240"><col width="80"><col width="80"><tbody><tr><td></td><td><b>SA1: ' + feature.properties.F1 + '</b></td><td></td><td></td> </tr>    <tr><td></td><td><b>Suburb: </b>' + feature.properties.F2 + '</td><td></td><td></td>  </tr><tr><td></td><td><b>LGA: </b>' + feature.properties.F3 + '</td><td></td><td></td></tr><tr></tr><tr><td></td><td><b>Indicator</b></td><td align="center"><div class="tooltip">Average<span class="tooltiptext">Mean value of the raw indicator in its original units for the selected area</span></div></td><td align="center"><div class="tooltip">Percentile<span class="tooltiptext">Rank of the selected area relative to all others in Melbourne:<br>100 (high) <br>50 (average)<br>0 (low)</span></div></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(feature.properties[pz+0]) + ';"></div></td><td><i><b>Liveability Index*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + feature.properties[pz+0] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-main" style="width:' + bgWidth(feature.properties[pz+11]) + ';"></div></td><td><i><b>Liveability Index (excluding Air quality)*</b></i></td><td align="center"><b></b></td>   <td align="center"><b>' + feature.properties[pz+11] + '</b></td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+1]) + ';"></div></td><td><i>&emsp;Walkability Index*</i></td><td align="center"></td>   <td align="center">' + feature.properties[pz+1] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties[pz+2]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Daily Living (/3*)</i></td><td align="center">' + feature.properties[rz+2] + '</td>   <td align="center">' + feature.properties[pz+2] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties["PH3"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- Dwellings per Ha</i></td><td align="center">' + feature.properties["RH3"] + '</td>   <td align="center">' + feature.properties["PH3"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-alt" style="width:' + bgWidth(feature.properties["PH4"]) + '; height: 100% ; background: #ffb3b3;"></div></td><td><i class=".subindicator">&emsp;&emsp;- 3+ way street connections per km<sup>2</sup></i></td><td align="center">' + feature.properties["RH4"] + '</td>   <td align="center">' + feature.properties["PH4"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+5]) + ';"></div></td><td><i>&emsp;Social infrastructure mix (/16*)</i></td><td align="center">' + feature.properties[rz+5] + '</td>  <td align="center">' + feature.properties[pz+5] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+6]) + ';"></div></td><td><i>&emsp;PT access meets policy (%*)</i></td><td align="center">' + feature.properties[rz+6] + '</td>   <td align="center">' + feature.properties[pz+6] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties[pz+7]) + ';"></div></td><td><i>&emsp;POS &ge; 1.5Ha within 400m (%*)</i></td><td align="center">' + feature.properties[rz+7] + '</td><td align="center">' + feature.properties[pz+7] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties["PH10"]) + ';"></div></td><td><i>&emsp;Air quality (rev. Mesh Block NO&#x2082; ppb.)</i></td><td align="center">' + feature.properties["RH10"] + '</td><td align="center">' + feature.properties["PH10"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties["PH8"]) + ';"></div></td><td><i>&emsp;Affordable housing (30/40 rule, SA1 %)</i></td><td align="center">' + feature.properties["RH8"] + '</td><td align="center">' + feature.properties["PH8"] + '</td></tr><tr><td style="position: relative;"><div class="g-ind-sub" style="width:' + bgWidth(feature.properties["PH9"]) + ';"></div></td><td><i>&emsp;Live & work w/in SA3 (SA2 %)</i></td><td align="center">' + feature.properties["RH9"] + '</td><td align="center">' + feature.properties["PH9"] + '</td></tr><tr><td></td><td><small>* '+threshold2+'</small></td></tr></tbody></table>More about this community: <a target="_blank" href="http://www.censusdata.abs.gov.au/census_services/getproduct/census/2011/quickstat/'+layer.feature.properties["COMMUNITY_"]+'?opendocument">ABS 2011 Census QuickStats</a>', {
-          maxWidth: 400,
+            var threshold = threshold2 = ''
+            var tags  = ind_value.split('_')
+            if (tags.indexOf('hard') > -1) {
+              threshold  = ', hard threshold'
+              threshold2 = 'hard threshold'
+            }
+            if (tags.indexOf('soft') > -1) {
+              threshold  = ', soft threshold'
+              threshold2 = 'soft threshold'
+            }
+            layer.bindPopup('',
+              {
+                maxWidth: 400,
               });
             }
         });
 
+        UpdateIndicatorList();
+
         // Include a search box to jump to suburb
         var searchControl = new L.Control.Search({
           layer: ssc_search,
-          propertyName: 'F2',
+          propertyName: 'suburb',
           marker: false,
           moveToLocation: function(latlng, title, map) {
             //map.fitBounds( latlng.layer.getBounds() );
@@ -540,6 +1132,7 @@ function load_li_map() {
             map.setView(latlng, zoom); // access the zoom
           }
         });
+
         searchControl.on('search:locationfound', function(e) {
           e.layer.setStyle({
             fillColor: "white",
@@ -547,28 +1140,36 @@ function load_li_map() {
             weight: 4,
             fillOpacity: 0.3
           });
+
           if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
             e.layer.bringToFront();
           }
-          if (e.layer._popup)
+          if (e.layer._popup) {
             e.layer.openPopup();
-        }).on('search:collapsed', function(e) {
+          }
+
+          }).on('search:collapsed', function(e) {
+        //});
+        //searchControl.on('search:collapsed', function(e) {
           ssc_search.eachLayer(function(layer) { //restore feature color
             ssc_search.resetStyle(layer);
           });
         });
 
-        map.addControl(searchControl); //inizialize search control
-        };
+      map.addControl(searchControl); //inizialize search control
 
-    $.ajax({
-      url: li_ssc_url,
-      maxFeatures: 20,
-      dataType: 'jsonp',
-      outputFormat: 'text/javascript',
-      jsonp: 'format_options',
-      jsonpCallback: 'callback:parseResponseSSC'
-    });
+      // Suburb loading process
+      $("div.info.legend.leaflet-control").attr('data-step','1');
+      $("div.info.legend.leaflet-control").attr('data-intro',"The legend is used to evaluate the variation in performance on a chosen indicator for a selected city and timepoint.  Areas at the chosen scale (LGAs, suburbs or SA1s), are grouped into ten ranks according to their average values: dark blue represents the top 10 percent of areas within that city (for example, those suburbs who have the least distance to travel to an activity centre); dark red respresents the bottom 10 percent of areas having the least desirable values.");
+      $('.leaflet-control-minimap').attr('data-step','2');
+      $('.leaflet-control-minimap').attr('data-intro',"The mini inset map provides a broad-scale view of your location; this can be useful to get your bearings when you are zoomed in close.");
+      $('.leaflet-control-search').attr('data-step','3');
+      $('.leaflet-control-search').attr('data-intro',"Type and select a suburb's name using the search tool to display indicator summary information for a particular suburb.");
+      $('#logo').attr('data-step','4');
+      $('#logo').attr('data-intro',"Here you can select to refresh the zoom level and map position for the currently selected city, or return to the national view of all study regions.");
+      introJs().start();
+    };
+
 
     // Parse LGA geojson data, adding to map
     window.parseResponseLGA = function(data) {
@@ -578,80 +1179,167 @@ function load_li_map() {
           onEachFeature: onEachFeature
         });
       overlays.addBaseLayer({
-        group: "Summary scale", //note: this is not working yet
+        group: "Summary scale",
         collapsed: true,
 		    name:  'LGA',
 	      layer: lga
         });
-      boundaries.addBaseLayer({
-          group: "Boundary lines", //note: this is not working yet
-		       name:  'LGA',
-	           layer: L.geoJson(data, {
-               id: 'ind',
-               style: border_style,
-               interactive: false
-          })
-        });
       UpdateIndicatorList();
     }
 
-    $.ajax({
-      url: li_lga_url,
-      maxFeatures: 31,
-      dataType: 'jsonp',
-      outputFormat: 'text/javascript',
-      jsonp: 'format_options',
-      jsonpCallback: 'callback:parseResponseLGA'
-    });
 
-    // add in Urban Growth Boundary (2018)
-    window.parseResponseUGB = function(data) {
+    // add in boundary layers
+    window.parseResponse_bSSC = function(data) {
       boundaries.addBaseLayer({
-          group: "Boundary lines", //note: this is not working yet
-		       name:  'UGB (2018)',
-	           layer: L.geoJson(data, {
+            group: "Boundary lines",
+		    name:  'Suburb',
+	        layer: L.geoJson(data, {
                id: 'ind',
-               style: border_style,
+               style: ssc_border_style,
                interactive: false
           })
         });
-      UpdateIndicatorList();
     }
 
-    $.ajax({
-      url: vic_ugb,
-      maxFeatures: 31,
-      dataType: 'jsonp',
-      outputFormat: 'text/javascript',
-      jsonp: 'format_options',
-      jsonpCallback: 'callback:parseResponseUGB'
-    });
+    window.parseResponse_bLGA = function(data) {
+      boundaries.addBaseLayer({
+            group: "Boundary lines",
+		    name:  'LGA',
+	        layer: L.geoJson(data, {
+               id: 'ind',
+               style: lga_border_style,
+               interactive: false
+          })
+        });
+    }
 
+    if(locale=='init'){
+      window.parseResponse_region = function(data) {
+          regions = L.geoJson(data, {
+              id: 'region',
+              style: region_style,
+              onEachFeature: onEachRegion
+            }).addTo(map);
+      };
 
-	// // add full screen toggle
-    // // NOT CURRENTLY WORKING WITH INDICATOR DROP MENU
-    // map.addControl(new L.Control.Fullscreen());
+      // programmatically add intro attributes to dynamic elements
+      $('#city').attr('data-step','1')
+      $('#city').attr('data-intro','To get started, select a city and time point to zoom and load indicator map data for this region.')
+      $('#inddrop').attr('data-step','2')
+      $('#inddrop').attr('data-intro','Select indicator of interest from this list.')
+      $('#about').attr('data-step','3')
+      $('#about').attr('data-intro','Click here for more information about an indicator: what it means, how it was calculated and the policy it relates to.')
+      $('#dropdown').attr('data-step','10')
+      $('#dropdown').attr('data-intro','You can logout here when you are done, or if you need to switch users.')
+      $("span:contains('Base layer')").attr('data-step', '4');
+      $("span:contains('Base layer')").attr('data-intro', 'Satellite imagery or an OpenStreetMap (OSM) cartographic map theme may be chosen for a base layer.');
+      $("span:contains('Summary scale')").attr('data-step', '5');
+      $("span:contains('Summary scale')").attr('data-intro', "Once a city has been selected, you can choose the scale at which to view the indicator here: SA1 (<a href = 'http://www.abs.gov.au/ausstats/abs@.nsf/Lookup/by%20Subject/1270.0.55.001~July%202016~Main%20Features~Statistical%20Area%20Level%201%20(SA1)~10013'  target='_blank' >ABS Statistical Area 1)</a>; Suburb; or Local Government Area (LGA).  Areas are clipped to the residential portions for which data has been measured.  If you hover over one of the highlighted areas its summary information for the selected indicator will displayed here.  Click on an area for more detail, such as summaries of key indicators and link to an ABS community profile.");
+      $("span:contains('Boundary lines')").attr('data-step', '6');
+      $("span:contains('Boundary lines')").attr('data-intro', 'The full ABS-sourced boundary lines for suburbs and LGAs may be displayed on top of the indicator summary layer; for example, you may display LGA boundary lines while viewing SA1 level indicator estimates to visualise how a particular indicator varies across an LGA.');
+    };
 
+    if(locale!='init'){
+      map.removeLayer(regions);
+      window.parseResponse_region = function(data) {
+        boundaries.addBaseLayer({
+              group: "Boundary lines",
+	  	    name:  'GCCSA',
+	          layer: L.geoJson(data, {
+                 id: 'region',
+                 style: region_border_style,
+                 interactive: false
+            })
+          });
+      };
 
-    // // add save to .png functions
-    // var printer = L.easyPrint({
-      // title: 'Download snapshot to png (ctr+alt+s): **this may take some time to process!!**',
-      // tileLayer: basic_tiles,
-      // filename: 'LiveabilityIndexExport',
-      // exportOnly: true,
-      // hideControlContainer: false
-    // }).addTo(map);
+      // programmatically add intro attributes to dynamic elements
+      $('#city').removeAttr('data-step');
+      $('#city').removeAttr('data-intro');
+      $('#inddrop').removeAttr('data-step');
+      $('#inddrop').removeAttr('data-intro');
+      $('#about').removeAttr('data-step');
+      $('#about').removeAttr('data-intro');
+      $('#dropdown').removeAttr('data-step');
+      $('#dropdown').removeAttr('data-intro');
+      $("span:contains('Base layer')").removeAttr('data-step');
+      $("span:contains('Base layer')").removeAttr('data-intro');
+      $("span:contains('Summary scale')").removeAttr('data-step');
+      $("span:contains('Summary scale')").removeAttr('data-intro');
+      $("span:contains('Boundary lines')").removeAttr('data-step');
+      $("span:contains('Boundary lines')").removeAttr('data-intro');
 
-    // programmatically add intro attributes to dynamic elements
-    $('leaflet-control-search leaflet-control').attr('data-step', "3")
-    $('leaflet-control-search leaflet-control').attr('data-intro', "Search for a suburb here to locate and display its summary information for all indicators.")
-    $('#sa1_overlay').attr('data-step', '4');
-    $('#sa1_overlay').attr('data-intro', 'The currently selected map is displayed here --- the Liveability Index, for SA1 areas (an ABS definition, like a local neighbourhood).  If you hover over one of the highlighted areas its value for this indicator will displayed here.  Click on an area for more detail.');
-    // $('#info_overlay').attr('data-step', '5');
-    // $('#info_overlay').attr('data-intro', 'Summary information can be retrieved either at the SA1 or Suburb level');
-    // $('#bmap_overlay').attr('data-step', '6');
-    // $('#bmap_overlay').attr('data-intro', 'The background map can be toggled between a basic gray scale map, or a satellite view.  The latter may be useful to examine local built environment in light of the displayed indicators.');
-    // $('a.leaflet-control-layers-toggle').attr('data-step', '7');
-    // $('a.leaflet-control-layers-toggle').attr('data-intro', 'The displayed map elements summarised above can be changed here; hover over this icon to display the options.  For example, you could select to view the "Walkability Index" at the suburb level.');
+      // remove layers and overlay panels if they exist
+      $(".leaflet-control-search").remove()
+      $("div.info.legend.leaflet-control").remove()
 
-  }
+      // Add legend with city name annotated to emphasise its relative scale
+      // Style and add legend
+      legend = L.control({
+          position: 'bottomright'
+      });
+
+      legend.onAdd = function(map) {
+          var div = L.DomUtil.create('div', 'info legend'),
+          quantiles = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10],
+          labels = [],
+          quantile = ['&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;', '&nbsp;'];
+        labels.push('<b>'+proper_locale+'</b><table style="table-layout:fixed; line-height: 15px;" ><col width="20"><tr><td>High</td></tr>');
+        for (var i = 0; i < quantiles.length; i++) {
+          labels.push('<tr><td style="background:' + getColor(quantiles[i]) + '">' + quantile[i] + '</td>');
+        }
+        div.innerHTML = labels.join('</tr>') + '</tr><tr><td>Low</td></tr></table>';
+        return div;
+      };
+
+      legend.addTo(map);
+
+      // Note: introjs items are loaded in the suburb layer loading process
+    }
+
+    // Toggle logout dropdown
+    var logoutToggle = document.getElementById("dropdown");
+    logoutToggle.onclick = function(event) {
+      //toggle dropdown list
+      document.getElementById("myDropdown").classList.toggle("show");
+    };
+
+    // Logout
+    logout = document.getElementById('logout');
+    logout.onclick = function() {
+      // Post logout form to GeoNode
+      var csrftoken = Cookies.get('csrftoken');
+
+      $.ajax({
+        type: "POST",
+        url: "/geonode/account/logout/",
+        data: {csrfmiddlewaretoken : csrftoken},
+        success: function(data) {
+          // Log out of GeoServer and return to home page
+          $.ajax({
+            type: "POST",
+            url: "/geoserver/j_spring_security_logout",
+            success: function(data) {
+              window.location.hash = "authenticate";
+            },
+            error: function(data) {
+              $.ajax({
+                type: "POST",
+                url: "/geoserver/j_spring_security_logout",
+                success: function(data) {
+                  // GeoServer bug means we have to log out twice!
+                  window.location.hash = "authenticate";
+                },
+                error: function(data) {
+                  console.log("failed to log out of GeoServer");
+                }
+              });
+            }
+          });
+        },
+        error: function(data) {
+          console.log("logout failure");
+        }
+      });
+    };
+}
