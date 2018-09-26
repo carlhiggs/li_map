@@ -23,8 +23,10 @@ block content
       
     p.
       #[a(href="../li_map#authenticate") Login or sign-up to load the pilot Liveability Index map visualisation.]
-
-      
+    li
+        a(href='/people/profile/test')
+    form
+        input(type='hidden', name='csrfmiddlewaretoken', value='thisisnotacsrftoken')
 block footer
   .footer
       p &copy; Health Liveable Cities Group, RMIT 2017

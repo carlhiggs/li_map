@@ -2,58 +2,52 @@ extends layout_map
 
 block content
     img.center(src='/images/loading_spinner.gif')
-    select#inddrop(data-step='1', data-intro='Select indicator or composite index of interest from this list.  Indicators are grouped according to liveability domain.')
-      optgroup(label='Liveability')
-        option(value='PH0') &#xf1d1; Liveability index (hard)
-        | 
-        option(value='PS0') &#xf1d1; Liveability index (soft)
-        | 
-        option(value='PH11') &#xf1d1; Liveability index (hard; excl. air qual.)
-        | 
-        option(value='PS11') &#xf1d1; Liveability index (soft; excl. air qual.)
-        | 
-      optgroup(label='Walkability')
-        option(value='PH1') &#xf21d; Walkability index (hard)
-        |   
-        option(value='PS1') &#xf21d; Walkability index (soft)
-        |                          
-        option(value='PH2')        - Daily living score (hard)
-        |                          
-        option(value='PS2')        - Daily living score (soft)  
-        |   
-        option(value='PH3')        - Dwelling density  
-        |   
-        option(value='PH4')        - Street connectivity  
-        |   
-      optgroup(label="Social Infrastructure")
-        option(value='PH5') &#xf0f8; Social infrastructure mix (hard) 
-        |   
-        option(value='PS5') &#xf0f8; Social infrastructure mix (soft)
-        |   
-      optgroup(label="Transportation")
-        option(value='PH6') &#xf239; PT access meets policy (hard %)
-        |  
-        option(value='PS6') &#xf239; PT access meets policy (soft %)
-        |    
-      optgroup(label="Green Infrastructure")   
-        option(value='PH7') &#xf1bb; POS ≥ 1.5Ha within 400m (hard %)  
-        |      
-        option(value='PS7') &#xf1bb; POS ≥ 1.5Ha within 400m (soft %)  
-        |      
-      optgroup(label="Housing")
-        option(value='PH8') &#xf015; Affordable housing
-        |      
-      optgroup(label="Employment")
-        option(value='PH9') &#xf0c0; Live & work in local area
-        |      
-      optgroup(label="Ambient Environment")
-        option(value='PH10') &#xf0e4; Air quality 
+    select#logo 
+        option(value='')
+        |         
+        option(value='refreshCity') Refresh zoom level for current city
+        |         
+        option(value='refreshCountry') Return to national study region view
+    select#city
+        option(value='init') City:
+        |         
+        option(value='adelaide') &nbsp;Adelaide
+        |             
+        option(value='bris') &nbsp;Brisbane
+        |             
+        option(value='canberra') &nbsp;Canberra
+        |             
+        option(value='darwin') &nbsp;Darwin
+        |             
+        option(value='hobart') &nbsp;Hobart
+        |             
+        option(value='melb') &nbsp;Melbourne
+        |             
+        option(value='perth') &nbsp;Perth
+        |             
+        option(value='syd') &nbsp;Sydney
+    select#year
+        option(value='2016') Timepoint:
+        |         
+        option(value='2016', selected="") &nbsp;2016
         
-    #about(data-step='2', data-intro='Click here for more information about an indicator and its interpretation.') &#xf05a;
+    select#inddrop
+      optgroup(label='')
+        option(value='unloaded') Please select a city to load and view its list of available indicators...
         
+    #about &#xf05a;
+      
     #map
       
     // Define popup info boxes  
+    #unloaded.overlay
+      .popup
+        h2 Please select a city...
+        |     &#x9;&#x9;
+        a.close(href='#') &times;
+        |     &#x9;&#x9;
+        .content
+          | The Observatory hosts sets of indicators for cities around Australia.  Please select a city and year from the drop down menus in the upper left of the screen to load and view the available indicators for that region and timepoint.
     #popup_satellite.overlay
       .popup
         h2 Satellite basemap
@@ -70,30 +64,33 @@ block content
         |     &#x9;&#x9;
         .content
           | The basic map layer provides a simplified view of the region's topology.
-    #puli.overlay
+    #observatory.overlay
       .popup
-        h2 Pilot Urban Liveability Index
+        h2 Australian national liveability indicator observatory
         |     &#x9;&#x9;
         a.close(href='#' onclick='introJs().start()') &times;
         |     &#x9;&#x9;
         .content
-          | Pilot Urban Liveability Index (PULI) has been developed by the Healthy Liveable Cities group in the Centre for Urban Research at RMIT University as a policy relevant composite indicator of urban liveability, based on a socio-ecological model of health and wellbeing.  It focuses on the state of Liveability for Melbourne in 2011.
-          p.
-            The liveability index is comprised of a selection of indicators from each of these domains which our research has identified as supporting health and wellbeing: <a href="#PH1">Walkability index</a>, <a href="#PH5">Social Infrastructure mix</a>, <a href="#PH6">PT access meets policy</a>, <a href="#PH7">	 POS ≥ 1.5Ha within 400m</a>, <a href="#PH10">Air quality</a>, <a href="#PH8">Affordable housing</a> and <a href="#PH9">Live and work in local area</a>.   It can be used to interogate and visualise spatial variation in liveability across a range of spatial scales, and may be linked to other data such as the Australian Bureau of Statistics community profiles for greater insight into local area contexts.
-          p.
-            It is envisaged as a useful tool for planners, policy makers, researchers and the broader public for evaluating the current state of our urban environment.
-    #authenticate.overlay
+          | The RMIT Urban Observatory is a portal currently under development at RMIT that enables policy makers, planners and members of the general community to access a wide range of indicators relating to the built environment.  
+
+          p. 
+            The indicators currently available for all Australian capital cities span domains including walkability, transport, public open space, housing affordability, employment, and food and alcohol environments.  Each indicator has been chosen because it either has been shown to have an association with a health outcome, or because it reflects a government policy.  
+          
+          p. 
+            Different groups can be granted access to information summarised at different levels; for example, planners might need access to indicators at individual household level whereas members of the general community would be provided with suburb-level data.  The Observatory is built on open-source software so that other cities worldwide can leverage the pioneering work being undertaken in Melbourne by the Healthy Liveable Cities group.  
+          
+          p. 
+            Plans for the future include capabilities to visualise trends in indicators across time, and allowing users to explore what-if scenarios interactively – that is, making changes to policy settings and seeing how this changes predicted outcomes.
+    #authenticate.overlay.toggle-transition
       .popup
         h1 Sign in
         |     &#x9;&#x9;
         a.close(href='/') &times;
         |     &#x9;&#x9;
         .main.container
-          //- form.form-signin(role='form', action='http://durin.australiasoutheast.cloudapp.azure.com/account/login/?next=/li_map', method='post')
-          //form#login_form(role='form' action='/login_response' method='post')
-          form(role='form' action='/account/login/?next=/li_map' method='post')
+          #status(data-status!=loginStatus, data-session!=sessionID, type='hidden')
+          form#login_form(role='form', action='/geonode/account/login/?next=/#observatory' method='post')
             .modal-body
-              //input(name='csrfmiddlewaretoken', value='DMuKAgWNRXQtYdd3qR8g0rWI8MUMnZrO', type='hidden')
               input(name='csrfmiddlewaretoken' value!=csrf_value type='hidden')
               div.form-group
                 label.sr-only(for='id_username') Username:
@@ -104,21 +101,21 @@ block content
               label.checkbox
                 input(type='checkbox')
                 |  Remember Me
-              button#login_button.submit(type='submit') Sign in            
-          h3
-            a.close(href='#register') Register
-    #register.overlay
+              button#login_button.submit(type='submit') Sign in
+        h3
+          a.toggle(href='#register') Register
+    #register.overlay.toggle-transition
       .popup
+        h1
+          a.toggle(href='#authenticate') Sign In
         h1 Register
         |     &#x9;&#x9;
         a.close(href='/') &times;
         |     &#x9;&#x9;
         .main.container
-        .row
-          p Create a new local account
-          form#signup_form(method='post', action='/account/signup/', autocapitalize='off')
-            fieldset
-              input(name='csrfmiddlewaretoken', value='6Jr5k902QdBSud0PNuzTfRaXUBUWRKAQ', type='hidden')
+          form#signup_form(method='post', action='/geonode/account/signup/?next=/#observatory', autocapitalize='off')
+            .modal-body
+              input(name='csrfmiddlewaretoken', value!=csrf_value, type='hidden')
               #div_id_email.form-group
                 label.control-label.required-field(for='id_email')
                   | E-mail
@@ -141,158 +138,7 @@ block content
                   input#id_password2.form-control(name='password2', placeholder='Password (again)', type='password')
               .form-actions
                 button.submit(type='submit') Register
-    #PH0.overlay
-      .popup
-        h2 &#xf1d1; Liveability index (hard)
-        |     &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | The Liveability Index provides a percentile ranking of an area's liveability out of 100, where a rating of 50 may be considered average relative to all other such areas across the city. The Index is based on a composite score derived from indicators of the following domains: <a href="#PH1">Walkability</a>, <a href="#PH5">Social Infrastructure</a>, <a href="#PH6">Transportation</a>, <a href="#PH7">Public Open Space</a>, <a href="#PH10">Environmental Sustainability</a>, <a href="#PH8">Housing</a> and, <a href="#PH9">Employment</a>.  This version of the liveability index is calculated using hard-threshold indicators of <a href="#destination_access">destination access</a>.
-    #PS0.overlay
-      .popup
-        h2 &#xf1d1; Liveability index (soft)
-        |     &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | The Liveability Index provides a percentile ranking of an area's liveability out of 100, where a rating of 50 may be considered average relative to all other such areas across the city. The Index is based on a composite score derived from indicators of the following domains: <a href="#PH1">Walkability</a>, <a href="#PH5">Social Infrastructure</a>, <a href="#PH6">Transportation</a>, <a href="#PH7">Public Open Space</a>, <a href="#PH10">Environmental Sustainability</a>, <a href="#PH8">Housing</a> and, <a href="#PH9">Employment</a>.  This version of the liveability index is calculated using soft-threshold indicators of <a href="#destination_access">destination access</a>.
-    #PH11.overlay
-      .popup
-        h2 &#xf1d1; Liveability index (hard; excl. air qual.)
-        |     &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | The Liveability Index provides a percentile ranking of an area's liveability out of 100, where a rating of 50 may be considered average relative to all other such areas across the city. The Index is based on a composite score derived from indicators of the following domains: <a href="#PH1">Walkability</a>, <a href="#PH5">Social Infrastructure</a>, <a href="#PH6">Transportation</a>, <a href="#PH7">Public Open Space</a>, <a href="#PH8">Housing</a> and, <a href="#PH9">Employment</a>.  This version of the liveability index is calculated using hard-threshold indicators of <a href="#destination_access">destination access</a> and does not include the air quality measure which has a strong negative correlation with walkability; a reflection of the trend that built up city regions tend to have improved street connectivity and destination accessibility, with higher walkability and car traffic while out areas have fewer destinations hence lower traffic and improved air quality (lower NO2, an indicator of traffic emissions).  Air quality was not included in the original conception of the ULI, being considered a distal determinant of liveability (impacted by walking choice behaviours through shift in mode of transport tendencies away from car usage).
-    #PS11.overlay
-      .popup
-        h2 &#xf1d1; Liveability index (soft; excl. air qual.)
-        |     &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | The Liveability Index provides a percentile ranking of an area's liveability out of 100, where a rating of 50 may be considered average relative to all other such areas across the city. The Index is based on a composite score derived from indicators of the following domains: <a href="#PH1">Walkability</a>, <a href="#PH5">Social Infrastructure</a>, <a href="#PH6">Transportation</a>, <a href="#PH7">Public Open Space</a>, and <a href="#PH8">Housing</a> and, <a href="#PH9">Employment</a>.  This version of the liveability index is calculated using soft-threshold indicators of <a href="#destination_access">destination access</a> and does not include the air quality measure which has a strong negative correlation with walkability; a reflection of the trend that built up city regions tend to have improved street connectivity and destination accessibility, with higher walkability and car traffic while out areas have fewer destinations hence lower traffic and improved air quality (lower NO2, an indicator of traffic emissions).  Air quality was not included in the original conception of the ULI, being considered a distal determinant of liveability (impacted by walking choice behaviours through shift in mode of transport tendencies away from car usage).
-    #PH1.overlay
-      .popup
-        h2 &#xf21d; Walkability index (hard)
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | Walkability is calculated using standardised measures of <a href="#PH2">daily living score</a>, <a href="#PH3">dwelling density</a>, <a href="#PH4">street connectivity</a>.  This version of the walkability index is calculated using hard-threshold indicators of <a href="#destination_access">destination access</a>.
-    #PS1.overlay
-      .popup
-        h2 &#xf21d; Walkability index (soft)
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | Walkability is calculated using standardised measures of <a href="#PS2">daily living score</a>, <a href="#PH3">dwelling density</a>, <a href="#PH4">street connectivity</a>. This version of the walkability index is calculated using soft-threshold indicators of <a href="#destination_access">destination access</a>.
-    #PH2.overlay
-      .popup
-        h2 &#xf21d; Daily living score (hard)
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | The daily living score is an indicator of land use mix, based on access to at least one public transport stop, a convenience destination (such as a newsagency, or convenience store) and a supermarket.  
-    #PS2.overlay
-      .popup
-        h2 &#xf21d; Daily living score (soft)
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | The daily living score is an indicator of land use mix, based on access to at least one public transport stop, a convenience destination (such as a newsagency, or convenience store) and a supermarket.  This version of the daily living score is calculated using soft-threshold indicators of <a href="#destination_access">destination access</a>.
-    #PH3.overlay
-      .popup
-        h2 &#xf21d; Dwelling density
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | Dwelling density is the ratio of the total number of dwellings located in Mesh Blocks intersecting each residential address point's 1600m buffer divided by the buffer size in hectares.
-    #PH4.overlay
-      .popup
-        h2 &#xf21d; Street connectivity
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | Street connectivity is the ratio of the count of intersections with 3 or more directions intersecting a participants’ 1600m buffer divided by the buffer size in square kilometres  
-    #PH5.overlay
-      .popup
-        h2 &#xf0f8; Social infrastructure mix (hard)
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | A social infrastructure mix score was created by assessing access to 15 different types of destinations including community centres, neighbourhood houses, museums and art galleries, cinemas and theatres, libraries, childcare, childcare (out of school hours), maternal child health,  government primary and secondary schools, aged care, community health centres, dentists, General Practitioner clinics, pharmacies, swimming pools and sport and recreation facilities. 
-    #PS5.overlay
-      .popup
-        h2 &#xf0f8; Social infrastructure mix (soft)
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | A social infrastructure mix score was created by assessing access to 15 different types of destinations including community centres, neighbourhood houses, museums and art galleries, cinemas and theatres, libraries, childcare, childcare (out of school hours), maternal child health,  government primary and secondary schools, aged care, community health centres, dentists, General Practitioner clinics, pharmacies, swimming pools and sport and recreation facilities.   This version of the social infrastructure mix indicator is calculated using soft-thresholds to measure <a href="#destination_access">destination access</a>.
-    #PH6.overlay
-      .popup
-        h2 &#xf239; PT access meets policy (hard)
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | A policy-informed access to public transport measure was developed based on Victorian planning guidelines stipulating access to a either a bus stop within 400m, a tram stop within 600m or a train station within 800m. 
-    #PS6.overlay
-      .popup
-        h2 &#xf239; PT access meets policy (soft)
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | A policy-informed access to public transport measure was developed based on Victorian planning guidelines stipulating access to a either a bus stop within 400m, a tram stop within 600m or a train station within 800m.   This version of the public transport access indicator is calculated using soft-thresholds to measure <a href="#destination_access">destination access</a>.
-    #PH7.overlay
-      .popup
-        h2 &#xf1bb; POS ≥ 1.5Ha within 400m (hard)
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | Access to Public Open Space is based on a policy recommendation that large public open space should be available within 400m of a residence. Access to large Public Open Space is defined as areas greater than > 1.5 hectares within 400m of households and is associated with greater health benefits than smaller Public Open Space areas. 
-    #PS7.overlay
-      .popup
-        h2 &#xf1bb; POS ≥ 1.5Ha within 400m (soft)
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | Access to Public Open Space is based on a policy recommendation that large public open space should be available within 400m of a residence. Access to large Public Open Space is defined as areas greater than > 1.5 hectares within 400m of households and is associated with greater health benefits than smaller Public Open Space areas.  This version of the public open space access indicator is calculated using <a href="#destination_access">soft-thresholds</a>.
-    #PH10.overlay
-      .popup
-        h2 &#xf0e4; Air quality
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | An indicator of air quality was calculated using a reverse scale of small area (Mesh Block) <a href="http://www.sciencedirect.com/science/article/pii/S0013935114003156">prediction of the annual average nitrogen dioxide (NO&#x2082;) levels for 2011</a>.  NO&#x2082; is an important indicator of air pollution, in particular road traffic emissions.  The Victorian Environmental Protection Authority recommend an annual average exposure to NO2 not exceed a threshold of 30 ppb.
-    #PH8.overlay
-      .popup
-        h2 &#xf015; Housing
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | The Australian Bureau of Statistics (ABS) defines an area as having affordable housing if the lowest 40% of household incomes in a given area spend < 30% of their gross incomes on mortgage/rental payments. This is commonly referred to as the 30/40 rule, and is included in the PULI as an indicator of affordable housing.
-    #PH9.overlay
-      .popup
-        h2 &#xf0c0; Live and work in local area
-        |    &#x9;&#x9;
-        a.close(href='#') &times;
-        |     &#x9;&#x9;
-        .content
-          | An indicator of local opportunities for employment was calculated as the proportion of employed people who live and work in same Statistical Area Level 3 (SA3) when measured at the smaller area of Statistical Area Level 2 (SA2). The area of SA3 generally refers to clusters of related suburbs around commercial and transport hubs in major urban areas.   
+
     #destination_access.overlay
       .popup
         h2 &#xf0c0; Destination access
@@ -302,5 +148,18 @@ block content
         .content
           | Binary indicators of destination access were based on current urban policies or the literature if urban planning policies did not exist. While binary indicators are a natural way to express whether a policy has been achieved (or not), it is not intuitive that, for example, living within 390m from a bus stop gives a person full benefit of this proximity while living at 410m the resident receives zero benefit. This binary threshold can be referred to as a ‘hard threshold’, in contrast to ‘soft threshold’ indicators calculated using a logistic decay function yielding for each destination type a continuous access score ranging from 0 to 1.  
           img.popimg(src='/images/cutoffs_access_diagram.png')
+    .button#dropdown.submit &#xf2be;
+      #myDropdown.dropdown-content
+        a(href='..') Home
+        a(href='#') Contact
+        hr
+        a#logout() Logout
+    
     script.
-      load_li_map()
+      var layer_description,city,locale;
+      init_map();
+      load_li_map('init','2016');
+      $('#city').change(function() {
+         load_li_map($(this).val(),2016);
+      });
+
