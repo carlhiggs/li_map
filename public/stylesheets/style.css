@@ -1,23 +1,185 @@
 body {
   padding: 0;
   margin: 0;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 1em "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: rgb(255, 249, 232); 
 }
 
 a {
   color: #00B7FF;
 }
 
-html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
+html, body { position:absolute; top:0; bottom:0; width:100%; }
 
-.info { 
-  padding: 6px 8px; 
+
+nav {
+  height: 50px;
+  width: 100%;
+  /* overflow: hidden; */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.regiontext {
+    text-align:center;
+    background: transparent;
+}
+
+select#logo {
+  margin: 0px;
+  /* background: rgb(255, 249, 232);     /* For browsers that don't support rgba */ 
+  /*background-color: rgb(255, 249, 232);   Transparent background color */
+  background:url('../images/ahalo_logo_sm.png') no-repeat !important;
+  width: 50px;
+  padding: 5px 5px 5px 5px;
+  font-size: 1.3em;
+  color: #46abbe;
+  border: 1px solid #ccc;
+  height: 50px;
+  appearance: none;
+  /* position: relative; */
+  float: left;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  /* top: 0px; */
+  /* left: 0px; */
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
+}
+
+select#city {
+  margin: 0px;
+  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+  /*background-color: rgb(255, 249, 232);   Transparent background color */
+  width: 110px;
+  padding: 5px 5px 5px 5px;
+  font-size: 1.3em;
+  color: #46abbe;
+  border: 1px solid #ccc;
+  height: 50px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* float: left; */
+  position: absolute;
+  top: 0px;
+  left: 50px;
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
+}
+
+select#year {
+  margin: 0px;
+  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+  /*background-color: rgb(255, 249, 232);   Transparent background color */
+  width: 110px;
+  padding: 5px 5px 5px 5px;
+  font-size: 1.3em;
+  color: #46abbe;
+  border: 1px solid #ccc;
+  height: 50px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* float: left; */
+  position: absolute;
+  top: 0px;
+  left: 160px;
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
+}
+
+select#inddrop {
+  margin: 0px;
+  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+  /*background-color: rgb(255, 249, 232);   Transparent background color */
+  width: calc(100% - 270px);
+  padding: 5px 5px 5px 50px;
+  font-size: 1.3em;
+  color: #46abbe;
+  border: 1px solid #ccc;
+  min-height: 50px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  position: fixed;
+  top: 0px;
+  left: 270px;
+  /* left: 270px; */
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
+  /* wrap text in compatible browsers */
+  -moz-white-space:pre-wrap; 
+  -o-white-space:pre-wrap; 
+  white-space:pre-wrap; 
+
+  /* hide text that can't wrap with an ellipsis */
+  overflow: hidden;
+  text-overflow:ellipsis;
+
+  /* add border after every option */
+  border-bottom: 1px solid #DDD;
+}
+
+
+/* CAUTION: IE hackery ahead */
+select::-ms-expand {
+    background: FFFFFF;
+    opacity: 0.2;
+
+}
+
+select: hover {
+    display: none; /* remove default arrow on ie10 and ie11 */
+}
+
+#about {
+  margin: 0px;
+  background: transparent;
+  padding: 0px 0px 0px 0px;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 1.3em;
+  color: #46abbe;
+  position: fixed;
+  top: 0px;
+  left: 270px;
+  opacity: 1;
+  z-index: 999;
+  font-family: 'FontAwesome', 'Lucida Grande';
+  cursor: pointer;
+}
+
+
+
+ #map {
+  position:absolute;
+  /* 50 px for  header; or 0 without */
+  /* top: 50px; */
+  top: 50px;
+  bottom:0;
+  width:100%; }
+
+.info {
+  padding: 6px 8px;
   /* font: 14px/16px Arial, Helvetica, sans-serif;  */
-  background: white; 
-  background: rgba(255,255,255,0.8); 
-  box-shadow: 0 0 15px rgba(0,0,0,0.2); 
-  border-radius: 5px; 
-} 
+  background: white;
+  background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+  background-color: rgb(255, 249, 232,0.5);   Transparent background color */
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+}
 
 .dynamicOverlay  {
     position:absolute;
@@ -32,10 +194,10 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
 .info h4 { margin: 0 0 5px; color: #777; }
 
 .summarybox {
-  width: 510px; 
+  width: 510px;
 }
 
-.holder-table{width:490px; padding:0px;} 
+.holder-table{width:490px; padding:0px;}
 .radio-table{width:8px; height:300px;  padding : 0px;}
 .radio-table tr td {height:20px; padding : 0px;}
 .ind-table {
@@ -48,9 +210,19 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
 }
 
 
-.legend { text-align: left; line-height: 15px; color: #555; } 
+.legend { 
+  text-align: left; 
+  line-height: 15px; 
+  /* color: #555;  */
+  }
 
-.legend i { width: 15px; height: 15px; float: left; margin-right: 8px; opacity: 0.7; }
+.legend i { 
+width: 15px; 
+height: 15px; 
+float: left; 
+margin-right: 8px; 
+opacity: 0.7; 
+}
 
 .manualButton {
   padding:15px 30px;
@@ -62,17 +234,19 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
   text-transform:uppercase;
   transition: background-color .5s;
   border: none;
-  border-radius: 2px;     
+  border-radius: 2px;
   cursor: pointer;
 }
-  
+
 .header {
   background: url("../images/aerial_image_of_christchurch_suburbs_-_flickr_-_nz_defence_force-1800x1012.jpg");
   background-position: center top;
 }
+
 .header .page-title {
   font-weight: 100;
   font-size: 40px;
+  font-family: 'Lucida Grande', Helvetica, Arial, sans-serif;
   text-align: center;
   padding: 15px;
   text-transform: capitalize;
@@ -81,23 +255,19 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
   margin: 0;
 }
 
-.nav {
-  background: #000;
-  text-align: center;
-}
-.nav li {
-  display: inline-block;
-}
-.nav a {
-  display: inline-block;
-  padding: 20px;
+.header .page-title2 {
+  font-size: 1.4em;
+  text-align: left;
+  padding: 0.6em;
+  text-transform: capitalize;
   color: #fff;
-  text-decoration: none;
+  position: relative;
+  opacity: .8;
+  left:0;
+  top: 0;
+  margin: 0;
 }
-.nav a:hover {
-  background-color: #3ab795;
-  text-decoration: underline;
-}
+
 .center {
     display: inline-block;
     vertical-align: middle;
@@ -105,7 +275,8 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
 }
 .main-content {
   margin: 50px auto;
-  max-width: 600px;
+  max-width: 850px;
+  /* max-width: 600px; */
 }
 .main-content p {
   line-height: 1.6;
@@ -113,13 +284,14 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
 }
 .footer {
   margin: 50px auto;
-  max-width: 600px;
+  max-width: 850px;
+  /* max-width: 600px; */
   border-top: 1px solid #444;
   padding: 20px 0;
 }
 .footer p {
   color: #444;
-  font-size: 12px;
+  font-size: 1em;
 }
 
 .g-ind-main {
@@ -127,7 +299,7 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
   position: absolute;
   left: 0px;
   top: 0px;
-  height: 100% ; 
+  height: 100% ;
   background: #d65454;
 }
 
@@ -136,7 +308,7 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
   position: absolute;
   left: 0px;
   top: 0px;
-  height: 100% ; 
+  height: 100% ;
   background: #d65454;
 }
 
@@ -145,8 +317,9 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
   position: absolute;
   left: 0px;
   top: 0px;
-  height: 100% ; 
+  height: 100% ;
   background: #ffb3b3;
+  pointer-events: none;
 }
 .g-popup {
   background-color: white;
@@ -155,6 +328,10 @@ html, body, #map { position:absolute; top:0; bottom:0; width:100%; }
   border: 1px solid rgba(0, 0, 0, 0.1);
   z-index: 100;
   width: 220px;
+}
+
+.g-pop-table{
+  font-size: 1em;
 }
 
 input[type=radio] {
@@ -169,6 +346,7 @@ input[type=radio] {
 
 .leaflet-fade-anim .leaflet-popup {
   transition: none;
+  width: 460px;
 }
 
 #suburb_hover, #lga_hover, #sa1_overlay, #ssc_overlay
@@ -189,9 +367,9 @@ input[type=radio] {
     width: 10em;
     height: 10em;
 }
-.loader {            
+.loader {
     margin: 60px auto;
-    font-size: 10px;
+    font-size: 1em;
     position: relative;
     text-indent: -9999em;
     border-top: 1.1em solid rgba(255, 255, 255, 0.2);
@@ -233,3 +411,644 @@ input[type=radio] {
     background-color:#000;
 }
 
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 100ms;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 9999;
+}
+
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  margin: 70px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  width: 800px;
+  position: relative;
+  transition: all 1s ease-in-out;
+}
+   
+.popup h2 {
+  margin-top: 0;
+  color: #46abbe;
+  font-family: 'FontAwesome', 'Lucida Grande'
+}
+
+
+.popup h1 {
+  margin-top: 5px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  color: black;
+  text-align: left;
+  font-size: 1.25em;
+  position: relative;
+  border-bottom-style: solid;
+  border-bottom-color: LightGray;
+  border-bottom-width: thin;
+}
+
+.popup h3 {
+  margin-bottom: 1px;
+  margin-top: 10px;
+  padding-top: 5px;
+  color: black;
+  text-align: left;
+  font-size: 1.25em;
+  position: relative;
+  border-top-style: solid;
+  border-top-color: LightGray;
+  border-top-width: thin;
+}
+
+input.form-control {
+  text-align: left;
+  font-size: 0.85em;
+  width: 90%;
+  padding: 7px 5px;
+  margin: 5px 10px;
+  box-sizing: border-box;
+  border-radius: 3px;
+  border-style: solid;
+  border-width: thin;
+}
+
+label.control-label {
+  text-align: left;
+  font-size: 1em;
+}
+
+button.submit {
+  background-color: #46abbe;
+  color: white;
+  text-align: center;
+  width: 90%;
+  font-size: 0.85em;
+  margin: auto;
+  display: block;
+  border-radius: 3px;
+  border-style: none;
+  padding: 5px 80px;
+  margin-top: 10px;
+  margin-bottom: 40px;
+}
+
+a.toggle {
+  text-decoration: none;
+  color: black;
+}
+
+.toggle-transition{
+  -webkit-transition: all 0.5s ease;
+  -moz-transition:all 0.5s ease;
+  -o-transition:all 0.5s ease;
+  transition:all 0.5s ease;
+}
+
+
+label.checkbox {
+  vertical-align: middle;
+  text-align: left;
+  float: left;
+  padding-left: 10px;
+  margin-top: 0.3em;
+  font-size: 0.75em;
+  margin-bottom: 10px;
+  color: grey;
+}
+
+.popup .close {
+  position: absolute;
+  top: 12px;
+  right: 30px;
+  transition: all 200ms;
+  font-size: 30px;
+  font-weight: normal;
+  text-decoration: none;
+  color: LightGray;
+}
+.popup .close:hover {
+  color: #46abbe;
+}
+.popup .content {
+  max-height: 30%;
+  overflow: auto;
+}
+
+.popimg {
+    max-width: 100%
+}
+
+
+.leaflet-top leaflet-right {
+}
+
+.leaflet-panel-layers-list {
+  width: 130px;
+}
+
+.leaflet-panel-layers-title {
+  font-size: 1.3em;
+}
+
+.leaflet-panel-layers-overlays {
+  background-color: rgba(255, 0, 0, 0.4);
+}
+
+input[type='radio']{
+    vertical-align: middle;
+    margin-top: 0.5em;
+ }
+
+input[type='checkbox']{
+    vertical-align: middle;
+    margin-top: 0.3em;
+ }
+
+.feature_tooltip {
+    width: 400px;
+    /*min-width: 120px;*/
+    max-width: 400px;
+    white-space: normal;
+}
+
+/* .feature_tooltip{ */
+    /* width: 400px; */
+    /* /*min-width: 120px;*/ */
+    /* max-width: 400px; */
+    /* white-space: normal; */
+/* } */
+
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+/* Dropdown Button */
+.dropbtn {
+   background-color: #3498DB;
+   color: white;
+   padding: 16px;
+   font-size: 16px;
+   border: none;
+   cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+   background-color: #2980B9;
+}
+
+/* The container <div> - needed to position the dropdown content */
+#dropdown {
+   margin: 0px;
+   background: transparent;
+   padding: 0px 0px 0px 0px;
+   width: 50px;
+   height: 50px;
+   text-align: center;
+   font-size: 1.3em;
+   color: #46abbe;
+   position: fixed;
+   top: 62px;
+   left: 40px;
+   opacity: 1;
+   z-index: 999;
+   font-family: 'FontAwesome', 'Lucida Grande';
+   cursor: pointer;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  border-radius: 4px;
+  display: none;
+  position: relative;
+  top: 3px; left: 12px;
+  background-color: rgba(255, 255, 255, 0.8);
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+  z-index: 1;
+  font-size: 0.8em;
+  padding: 4px 4px;
+  opacity: inherit;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 4px 4px;
+  text-decoration: none;
+  display: block;
+  font-size: 0.8em;
+  text-align: left;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 0.25em 0;
+    padding: 0;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #46abbe}
+/* .dropdown-content a:hover {background-color: #308ba2} */
+
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display: block;}
+ 
+/* Hide red number from introJs guide boxes */ 
+span.introjs-helperNumberLayer {
+     visibility: hidden;
+ }
+ 
+@media screen and (max-width: 1000px) {
+  .box{
+    width: 80%;
+  }
+  .popup{
+    width: 80%;
+  }
+  #map {
+  position:absolute;
+  /* 50 px for  header; or 0 without */
+  /* top: 50px; */
+  top: 100px;
+  bottom:0;
+  width:100%; }
+
+  select {
+      margin: 0px;
+      background: transparent;
+      padding: 5px 5px 5px 5px;
+      font-size: 1.3em;
+      color: #46abbe;
+      border: 1px solid #ccc;
+      height: 50px;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background: url(../favicon.ico) 96% / 15% no-repeat #eee;
+      position: absolute;
+      top: 12px;
+      left: 50px;
+      opacity: 1;
+      z-index: 998;
+      font-family: 'FontAwesome', 'Lucida Grande';
+      -webkit-appearance: none;
+  }
+  
+  
+  select#logo {
+    margin: 0px;
+    /* background: rgb(255, 249, 232);     /* For browsers that don't support rgba */ 
+    /*background-color: rgb(255, 249, 232);   Transparent background color */
+    background:url('../images/ahalo_logo_sm.png') no-repeat !important;
+    width: 100%;
+    padding: 5px 5px 5px 5px;
+    font-size: 1.3em;
+    color: #46abbe;
+    border: 1px solid #ccc;
+    height: 50px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    opacity: 1;
+    z-index: 999;
+    font-family: 'FontAwesome', 'Lucida Grande';
+    cursor: pointer;
+  }
+  
+  select#city {
+    margin: 0px;
+    background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+    /*background-color: rgb(255, 249, 232);   Transparent background color */
+    width: 110px;
+    padding: 5px 5px 5px 5px;
+    font-size: 1.3em;
+    color: #46abbe;
+    border: 1px solid #ccc;
+    height: 50px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    top: 0px;
+    left: 50px;
+    opacity: 1;
+    z-index: 999;
+    font-family: 'FontAwesome', 'Lucida Grande';
+    cursor: pointer;
+  }
+
+  select#year {
+    margin: 0px;
+    background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+    /*background-color: rgb(255, 249, 232);   Transparent background color */
+    width: 110px;
+    padding: 5px 5px 5px 5px;
+    font-size: 1.3em;
+    color: #46abbe;
+    border: 1px solid #ccc;
+    height: 50px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    top: 0px;
+    left: 160px;
+    opacity: 1;
+    z-index: 999;
+    font-family: 'FontAwesome', 'Lucida Grande';
+    cursor: pointer;
+  }
+  
+  select#inddrop {
+    margin: 0px;
+    background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+    /*background-color: rgb(255, 249, 232);   Transparent background color */
+    width: 100%;
+    min-height: 60px;
+    padding: 5px 5px 5px 50px;
+    font-size: 1.3em;
+    color: #46abbe;
+    border: 1px solid #ccc;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    opacity: 1;
+    z-index: 999;
+    font-family: 'FontAwesome', 'Lucida Grande';
+    cursor: pointer;
+    /* wrap text in compatible browsers */
+    -moz-white-space:pre-wrap; 
+    -o-white-space:pre-wrap; 
+    white-space:pre-wrap; 
+   
+    /* hide text that can't wrap with an ellipsis */
+    /* overflow: hidden; */
+    text-overflow:ellipsis;
+   
+    /* add border after every option */
+    border-bottom: 1px solid #DDD;
+  }
+  
+  #about {
+    margin: 0px;
+    background: transparent;
+    padding: 0px 0px 0px 0px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 1.3em;
+    color: #46abbe;
+    position: fixed;
+    top: 55px;
+    left: 0px;
+    opacity: 1;
+    z-index: 999;
+    font-family: 'FontAwesome', 'Lucida Grande';
+    cursor: pointer;
+  }
+  /* The container <div> - needed to position the dropdown content */
+  #dropdown {
+     margin: 0px;
+     background: transparent;
+     padding: 0px 0px 0px 0px;
+     width: 50px;
+     height: 50px;
+     text-align: center;
+     font-size: 1.3em;
+     color: #46abbe;
+     position: fixed;
+     top: 112px;
+     left: 40px;
+     opacity: 1;
+     z-index: 999;
+     font-family: 'FontAwesome', 'Lucida Grande';
+     cursor: pointer;
+  }
+   } 
+ 
+ 
+@media screen and (max-width: 480px){
+  .box{
+    width: 80%;
+  }
+  .popup{
+    width: 80%;
+  }
+  #map {
+  position:absolute;
+  /* 50 px for  header; or 0 without */
+  /* top: 50px; */
+  top: 100px;
+  bottom:0;
+  width:100%; }
+
+  /* select { */
+      /* margin: 0px; */
+      /* background: transparent; */
+      /* padding: 5px 5px 5px 5px; */
+      /* font-size: 1.3em; */
+      /* color: #46abbe; */
+      /* border: 1px solid #ccc; */
+      /* height: 50px; */
+      /* -webkit-appearance: none; */
+      /* -moz-appearance: none; */
+      /* appearance: none; */
+      /* background: url(../favicon.ico) 96% / 15% no-repeat #eee; */
+      /* position: absolute; */
+      /* top: 12px; */
+      /* left: 50px; */
+      /* opacity: 1; */
+      /* z-index: 998; */
+      /* font-family: 'FontAwesome', 'Lucida Grande'; */
+      /* -webkit-appearance: none; */
+  /* } */
+  
+  
+  select#logo {
+    margin: 0px;
+    /* background: rgb(255, 249, 232);     /* For browsers that don't support rgba */ 
+    /*background-color: rgb(255, 249, 232);   Transparent background color */
+    background:url('../images/ahalo_logo_sm.png') no-repeat !important;
+    width: 100%;
+    padding: 5px 5px 5px 5px;
+    font-size: 1.3em;
+    color: #46abbe;
+    border: 1px solid #ccc;
+    height: 50px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    opacity: 1;
+    z-index: 999;
+    font-family: 'FontAwesome', 'Lucida Grande';
+    cursor: pointer;
+  }
+  
+  select#city {
+    margin: 0px;
+    background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+    /*background-color: rgb(255, 249, 232);   Transparent background color */
+    width: 110px;
+    padding: 5px 5px 5px 5px;
+    font-size: 1.3em;
+    color: #46abbe;
+    border: 1px solid #ccc;
+    height: 50px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    top: 0px;
+    left: 50px;
+    opacity: 1;
+    z-index: 999;
+    font-family: 'FontAwesome', 'Lucida Grande';
+    cursor: pointer;
+  }
+
+  select#year {
+    margin: 0px;
+    background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+    /*background-color: rgb(255, 249, 232);   Transparent background color */
+    width: 110px;
+    padding: 5px 5px 5px 5px;
+    font-size: 1.3em;
+    color: #46abbe;
+    border: 1px solid #ccc;
+    height: 50px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    top: 0px;
+    left: 160px;
+    opacity: 1;
+    z-index: 999;
+    font-family: 'FontAwesome', 'Lucida Grande';
+    cursor: pointer;
+  }
+  
+  select#inddrop {
+    margin: 0px;
+    background: rgb(255, 249, 232);     /* For browsers that don't support rgba */
+    /*background-color: rgb(255, 249, 232);   Transparent background color */
+    width: 100%;
+    min-height: 60px;
+    vertical-align: text-top;
+    padding: 5px 5px 5px 50px;
+    font-size: 1.3em;
+    color: #46abbe;
+    border: 1px solid #ccc;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    top: 50px;
+    left: 0px;
+    opacity: 1;
+    z-index: 999;
+    font-family: 'FontAwesome', 'Lucida Grande';
+    cursor: pointer;
+    /* wrap text in compatible browsers */
+    -moz-white-space:pre-wrap; 
+    -o-white-space:pre-wrap; 
+    white-space:pre-wrap; 
+   
+    /* hide text that can't wrap with an ellipsis */
+    overflow: hidden;
+    text-overflow:ellipsis;
+   
+    /* add border after every option */
+    border-bottom: 1px solid #DDD;
+  }
+  
+  #about {
+    margin: 0px;
+    background: transparent;
+    padding: 0px 0px 0px 0px;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 1.3em;
+    color: #46abbe;
+    position: fixed;
+    top: 55px;
+    left: 0px;
+    opacity: 1;
+    z-index: 999;
+    font-family: 'FontAwesome', 'Lucida Grande';
+    cursor: pointer;
+  }
+  /* The container <div> - needed to position the dropdown content */
+  #dropdown {
+     margin: 0px;
+     background: transparent;
+     padding: 0px 0px 0px 0px;
+     width: 50px;
+     height: 50px;
+     text-align: center;
+     font-size: 1.3em;
+     color: #46abbe;
+     position: fixed;
+     top: 112px;
+     left: 40px;
+     opacity: 1;
+     z-index: 999;
+     font-family: 'FontAwesome', 'Lucida Grande';
+     cursor: pointer;
+  }
+}

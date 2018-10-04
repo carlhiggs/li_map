@@ -2,8 +2,10 @@ doctype html
 html
   head
     title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
     // using leaflet 1.1.0 (current 27 June 2017)
     link(rel='stylesheet', href='/stylesheets/leaflet.css')
+    link(rel='stylesheet', href='/stylesheets/leaflet-panel-layers.min.css')
     link(rel='stylesheet', href='/stylesheets/leaflet.groupedlayercontrol.min.css')
     link(rel='stylesheet', href='/stylesheets/Control.MiniMap.min.css')
     link(rel='stylesheet', href='/stylesheets/leaflet.fullscreen.css')
@@ -11,8 +13,8 @@ html
     link(rel='stylesheet', href='/stylesheets/leaflet-search.min.css')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',type='text/css')
     link(rel='stylesheet', href='/stylesheets/introjs.min.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='javascripts/leaflet.js')
+    script(src='/javascripts/leaflet-panel-layers.min.js')
     script(src='/javascripts/leaflet.groupedlayercontrol.min.js')
     script(src='/javascripts/Control.MiniMap.min.js')
     script(src='/javascripts/Leaflet.fullscreen.min.js')
@@ -22,9 +24,10 @@ html
     script(src='https://d3js.org/d3.v4.min.js')
     script(src='https://code.jquery.com/jquery-2.1.1.min.js')
     script(src='/javascripts/intro.min.js')
+    script(src='/javascripts/leaflet-wfst.src.js')
+    script(src='/javascripts/li_map.js')
+    
   body
     .header
-       h1.page-title Pilot Victorian Liveability Index
+      h1.page-title Pilot Urban Liveability Index
     block content 
-    .footer
-      p &copy; Health Liveable Cities Group, RMIT 2017

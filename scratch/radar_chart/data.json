@@ -1,0 +1,138 @@
+[  
+  {  
+    "key":"SA1",
+    "values":[  
+      {  
+        "reason":"&#xf1d1;",
+        "device":"SA1",
+        "value":0.22
+        
+      },
+      {  
+        "reason":"Walkability",
+        "device":"SA1",
+        "value":0.28
+      },
+      {  
+        "reason":"Dwelling Density",
+        "device":"SA1",
+        "value":0.29
+      },
+      {  
+        "reason":"Street Connectivity",
+        "device":"SA1",
+        "value":0.17
+      },
+      {  
+        "reason":"Social Infrastructure",
+        "device":"SA1",
+        "value":0.22
+      },
+      {  
+        "reason":"Public Open Space",
+        "device":"SA1",
+        "value":0.02
+      },
+      {  
+        "reason":"Housing",
+        "device":"SA1",
+        "value":0.21
+      },
+      {  
+        "reason":"Employment",
+        "device":"SA1",
+        "value":0.50
+      }
+    ]
+  },
+  {  
+    "key":"Suburb",
+    "values":[  
+      {  
+        "reason":"&#xf1d1;",
+        "device":"Suburb",
+        "value":0.27
+      },
+      {  
+        "reason":"Walkability",
+        "device":"Suburb",
+        "value":0.16
+      },
+      {  
+        "reason":"Dwelling Density",
+        "device":"Suburb",
+        "value":0.35
+      },
+      {  
+        "reason":"Street Connectivity",
+        "device":"Suburb",
+        "value":0.13
+      },
+      {  
+        "reason":"Social Infrastructure",
+        "device":"Suburb",
+        "value":0.20
+      },
+      {  
+        "reason":"Public Open Space",
+        "device":"Suburb",
+        "value":0.13
+      },
+      {  
+        "reason":"Housing",
+        "device":"Suburb",
+        "value":0.35
+      },
+      {  
+        "reason":"Employment",
+        "device":"Suburb",
+        "value":0.38
+      }
+    ]
+  },
+  {  
+    "key":"LGA",
+    "values":[  
+      {  
+        "reason":"&#xf1d1;",
+        "device":"LGA",
+        "value":0.26
+      },
+      {  
+        "reason":"Walkability",
+        "device":"LGA",
+        "value":0.10
+      },
+      {  
+        "reason":"Dwelling Density",
+        "device":"LGA",
+        "value":0.30
+      },
+      {  
+        "reason":"Street Connectivity",
+        "device":"LGA",
+        "value":0.14
+      },
+      {  
+        "reason":"Social Infrastructure",
+        "device":"LGA",
+        "value":0.22
+      },
+      {  
+        "reason":"Public Open Space",
+        "device":"LGA",
+        "value":0.04
+      },
+      {  
+        "reason":"Housing",
+        "device":"LGA",
+        "value":0.41
+      },
+      {  
+        "reason":"Employment",
+        "device":"LGA",
+        "value":0.30
+      }
+    ]
+  }
+]

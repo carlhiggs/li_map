@@ -1,0 +1,22 @@
+extends layout
+//- HACK TO DUMMY UP LOGIN RESPONSE PAGE, AS SERVER NOT ON SAME DOMAIN...
+  head
+    title Login_Response
+    script(type='text/javascript').
+      //- document.cookie = "CRSFtoken=ABCDE12345";
+      var CSRFtoken = 'ABCDE12345';
+      //- if document cookies match then pass on to liveability index page
+      //- else send back to start page
+      if (CSRFtoken = csrfmiddlewaretoken) {
+      #[a(href="../li_map#puli")];
+      } else {
+      #[a(href="..")];
+      }
+      
+  body
+    h1 Login page to allow testing of CSRF token, or dummy generic cookie, retrieval
+    #container.col
+      p 
+        Testing
+      p
+        #[a(href="../li_map#puli")] Continue to pilot Liveability Index map visualisation.]
